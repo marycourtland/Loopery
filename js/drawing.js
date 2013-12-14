@@ -133,6 +133,28 @@ function marker(ctx, pos, color, size) {
   if (!size) size = 2;
   circle(ctx, pos, size);
 }
+function lineGradient(ctx, p0, p1, color0, color1, linewidth) {
+  var dp = subtract(p1, p0);
+  var angle = dp.th;
+  var length = dp.r;
+  var w = linewidth || 1;
+  
+  // translate context to p0 and rotate it so that the line is horizontal
+  ctx.save();
+  ctx.translate(p0.x, p0.y);
+  ctx.rotate(angle);
+  
+  // Draw it
+  var line = ctx.createLinearGradient(0, 0, length, 0);
+  line.addColorStop(0, color0);
+  line.addColorStop(1, color1);
+  ctx.fillStyle = line;
+  ctx.fillRect(0, -w/2, length, w);
+  
+  // Put the context back how it was before
+  ctx.restore();
+}
+
 
 // This requires colors.js
 function getPixel(ctx, pos) {

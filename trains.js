@@ -1,6 +1,7 @@
 // Train
 function makeTrain(color, track) {
   train = new GameObject(game);
+  train.type = 'train';
   train.color = color;
   train.track = track;
   train.dir = 1; // For circular tracks, 1=cw and -1=ccw. For linear tracks, 1=towards track2, -1=towards track1

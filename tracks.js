@@ -1,3 +1,5 @@
+// TODO: ensure circular tracks are drawn after linear tracks
+
 // Generic track
 function makeTrack() {
   var track = new GameObject(game);
@@ -65,6 +67,12 @@ function makeCircleTrack(pos, radius) {
     return -1 * linear_track.parent_track_winding[this.id];
   }
   
+  track.toggleJoint = function(track_id) {
+    if (!(track_id in this.connections)) return;
+    this.connections[track_id] = !this.connections[track_id];
+    
+  }
+  
   return track;
 }
 
@@ -91,7 +99,6 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
   
   var p1 = track1.getPosCoords(pos1);
   var p2 = track2.getPosCoords(pos2);
-  console.log(p1+" " + p2);
   track.angle = subtract(p2, p1).th;
   track.length = subtract(p2, p1).r;
   
@@ -102,6 +109,24 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
       game.display.track_color,
       game.display.track_width
     )
+    
+    // If the track isn't toggled, then show it
+    
+    if (!this.track1.connections[this.id]) {
+      lineGradient(game.ctx,
+        this.getPosCoords(0),
+        this.getPosCoords(game.display.darkened_track_extent),
+         'black', 'white',
+        game.display.track_width);
+    }
+    
+    if (!this.track2.connections[this.id]) {
+      lineGradient(game.ctx,
+        this.getPosCoords(1),
+        this.getPosCoords(1 - game.display.darkened_track_extent),
+        'black', 'white',
+        game.display.track_width);
+    }
   }
   
   track.getNextPos = function(old_pos, dir) {
@@ -140,6 +165,23 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
     if (circular_track.id === this.track1.id) return 1;
     return -1;
   }
+  
+  // Determine whether a clicked point is over one of the ends of the track
+  track.contains = function(p) {
+    return (distance(p, this.getPosCoords(0)) < game.joint_click_radius || distance(p, this.getPosCoords(1)) < game.joint_click_radius);
+  }
+  track.onclick = function(p) {
+    if (distance(p, this.getPosCoords(0)) < game.joint_click_radius) {
+      // track1 joint was clicked; toggle it
+      this.track1.toggleJoint(this.id);
+    }
+    if (distance(p, this.getPosCoords(1)) < game.joint_click_radius) {
+      // track2 joint was clicked; toggle it
+      this.track2.toggleJoint(this.id);
+    }
+  }
+  
+  
   
   return track;
 }

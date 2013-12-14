@@ -57,10 +57,10 @@ function Game(params) {
   this.tick = function() {
     this.state.frame++;
     this.mouse.update();
+    this.stage();
     for (var i = 0; i < this.tickActions.length; i++) {
       this.tickActions[i].call(this);
     }
-    this.stage();
   }
   this.tickActions = [];
   this.ontick = function(tick_func) { this.tickActions.push(tick_func); }
