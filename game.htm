@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script type="text/javascript" src = "js/game.js"></script>
+    <script type="text/javascript" src = "js/math2D.js"></script>
+    <script type="text/javascript" src = "js/drawing.js"></script>
+    <script type="text/javascript" src = "js/colors.js"></script>
+    <script type="text/javascript" src = "js/utility.js"></script>
+    <script type="text/javascript" src = "js/mouse.js"></script>
+    <script type="text/javascript" src = "js/keyboard.js"></script>
+    <script type="text/javascript" src = "js/gameobject.js"></script>
+    <script type="text/javascript" src = "js/field.js"></script>
+    <title>New Game</title>
+  </head>
+  
+  <body>
+    <canvas id="game_canvas" style="border:1px solid black;"></canvas>
+  </body>
+  
+  <script type="text/javascript">
+    // The game
+    game = new Game();
+    game.setTitle("New game");
+    game.setSize(xy(600, 400));
+    window.onload = function() {
+      game.start();
+    }
+    
+    // The turtle
+    turtle = new GameObject(game);
+    turtle.setImage("images/turtle.png", {rotate: true});
+    turtle.placeAt(xy(100, 100));
+    navigate(turtle, keydirs_lrud, 3);
+    character(turtle);
+    
+    
+  </script>
+</html>
