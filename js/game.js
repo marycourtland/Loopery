@@ -57,8 +57,13 @@ function Game(params) {
   this.tick = function() {
     this.state.frame++;
     this.mouse.update();
+    for (var i = 0; i < this.tickActions.length; i++) {
+      this.tickActions[i].call(this);
+    }
     this.stage();
   }
+  this.tickActions = [];
+  this.ontick = function(tick_func) { this.tickActions.push(tick_func); }
   this.next = function() {
     if (!this.win) setTimeout(function() { game.tick() }, 1000/this.fps);
   }
@@ -89,5 +94,4 @@ function Game(params) {
   this.ctx.canvas.addEventListener("click", function(event) {
     console.log("Clicked at " + mouse.pos);
   })
-
 }

@@ -1,4 +1,5 @@
 <!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
   <head>
     <script type="text/javascript" src = "js/game.js"></script>
@@ -17,21 +18,51 @@
     <canvas id="game_canvas" style="border:1px solid black;"></canvas>
   </body>
   
+  <script type="text/javascript" src="tracks.js"></script>
+  <script type="text/javascript" src="trains.js"></script>
   <script type="text/javascript">
     // The game
-    game = new Game();
-    game.setTitle("New game");
-    game.setSize(xy(600, 400));
+    var game = new Game({bg_color:'#0a492c'});
+    game.setTitle("Loops!");
+    game.setSize(xy(800, 600));
     window.onload = function() {
       game.start();
     }
     
-    // The turtle
-    turtle = new GameObject(game);
-    turtle.setImage("images/turtle.png", {rotate: true});
-    turtle.placeAt(xy(100, 100));
-    navigate(turtle, keydirs_lrud, 3);
-    character(turtle);
+    game.next_track = 0;
+    game.tracks = [];
+    
+    // SETTINGS
+    
+    // Display constants
+    game.display.track_width = 8; // px
+    game.display.track_color = 'white';
+    game.display.train_radius = 12; // px
+    
+    // Other constants
+    game.train_speed = 0.5; // pixels per frame. TODO: convert to pixels per second
+    
+    
+    // TESTS
+    // Testing stuff
+    var test_track = makeCircleTrack(xy(200, 300), 60);
+    var test_track2 = makeCircleTrack(xy(400, 260), 100);
+    var test_track3 = makeLinearTrack(test_track2, 0.25, 1, test_track, 0.25, -1);
+    
+    test_track2.connections[test_track3.id] = true;
+    test_track.connections[test_track3.id] = true;
+    
+    var test_train = makeTrain('darkred', test_track);
+    var test_train2 = makeTrain('darkblue', test_track2);
+    test_train.dir = -1;
+    
+    
+    var old = 0;
+    game.ontick(function() {
+      var yesno = isBetweenOnCircle(0.25, old, test_train2.pos, 1)
+      //console.log(test_train2.pos);
+      old = test_train2.pos;
+    });
     
     
   </script>

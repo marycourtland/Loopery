@@ -281,10 +281,32 @@ function vmod(v, n) {
 function mod360(th) { // puts the angle between 0 and 360deg (in radians)
   return mod(th, 2*Math.PI)
 }
-function mod360_symmetric(th) { // puts thie angle between -180deg and 180deg (in radians)
+function mod360_symmetric(th) { // puts the angle between -180deg and 180deg (in radians)
   return mod(th + Math.PI, 2*Math.PI) - Math.PI;
 }
 
+
+// Judges whether p is between p1 and p2 on a circle of circumfrence c
+// 
+function isBetweenOnCircle(p, p1, p2, c) {
+  if (p1 === p2) return (p === p1);
+  if (p2 > p1) {
+    var s12 = p2 - p1;
+    var s21 = (c - p2) + p1;
+  }
+  else {
+    var s12 = (c - p1) + p2;
+    var s21 = p1 - p2;
+  }
+  if (s12 < s21) {
+    if (p2 > p1) return (p2 >= p && p >= p1);
+    return (p < p2) || (p > p1);
+  }
+  else {
+    if (p1 > p2) return (p1 >= p && p >= p2);
+    return (p < p1) || (p > p2);
+  }
+}
 
 // Wrapper for Math.round
 function round(x, decimals) {

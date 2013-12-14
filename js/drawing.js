@@ -3,12 +3,13 @@
 function clear(ctx) {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }
-function line(ctx, p0, p1, color) {
+function line(ctx, p0, p1, color, linewidth) {
   ctx.save();
+  ctx.lineWidth = linewidth || 1;
+  ctx.strokeStyle = color;
   ctx.beginPath();
   ctx.moveTo(p0.x, p0.y);
   ctx.lineTo(p1.x, p1.y);
-  ctx.strokeStyle = color;
   ctx.closePath();
   ctx.stroke();
   ctx.restore();
@@ -68,11 +69,11 @@ function setCircle(ctx, center, radius, color) {
   ctx.fill();
   ctx.restore();
 }
-function emptyCircle(ctx, center, radius, color) {
+function emptyCircle(ctx, center, radius, color, linewidth) {
   ctx.save();
-  ctx.globalCompositeOperation = "xor";
+  //ctx.globalCompositeOperation = "xor";
   ctx.strokeStyle = color;
-  ctx.lineWidth = 1;
+  ctx.lineWidth = (linewidth || 1);
   ctx.beginPath();
   ctx.arc(center.x, center.y, radius, 0, 2*Math.PI, false);
   ctx.closePath();
