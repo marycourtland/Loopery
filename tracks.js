@@ -103,6 +103,22 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
   track.length = subtract(p2, p1).r;
   
   track.draw = function() {
+    // Draw shadows over ends to show people where to click
+    var old_alpha = this.ctx.globalAlpha;
+    this.ctx.globalAlpha = 0.3;
+    circle(this.ctx, 
+      this.track1.getPosCoords(this.parent_track_pos[this.track1.id]),
+      game.joint_click_radius,
+      'black'
+    )
+    circle(this.ctx, 
+      this.track2.getPosCoords(this.parent_track_pos[this.track2.id]),
+      game.joint_click_radius,
+      'black'
+    )
+    this.ctx.globalAlpha = old_alpha;
+    
+    // Draw the line
     line(this.ctx,
       this.track1.getPosCoords(this.parent_track_pos[this.track1.id]),
       this.track2.getPosCoords(this.parent_track_pos[this.track2.id]),
@@ -110,8 +126,7 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
       game.display.track_width
     )
     
-    // If the track isn't toggled, then show it
-    
+    // If the track isn't toggled, then show darkened spots
     if (!this.track1.connections[this.id]) {
       lineGradient(game.ctx,
         this.getPosCoords(0),
@@ -155,7 +170,6 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
     return false;
   }
   
-  
   track.getPosFromOldTrack = function(circular_track) {
     if (circular_track.id === this.track1.id) return 0;
     return 1;
@@ -186,3 +200,43 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
   return track;
 }
 
+
+
+// Utility method - to find position of linear tracks tangent to two circular tracks
+function getOuterTangents(track1, track2, echo) {
+  if (track2.radius > track1.radius) {
+    p1 = track1.pos
+    p2 = track2.pos
+    rad1 = track1.radius
+    rad2 = track2.radius
+  }
+  else {
+    p1 = track2.pos
+    p2 = track1.pos
+    rad1 = track2.radius
+    rad2 = track1.radius
+  }
+  var dd = subtract(p2, p1);
+  var r21 = rad2 - rad1;
+  var l = Math.sqrt(dd.r*dd.r - r21*r21);
+  var lth1 = dd.th - Math.acos(l/dd.r);
+  var lth2 = dd.th + Math.acos(l/dd.r);
+  var ll1 = rth(l, lth1);
+  var ll2 = rth(l, lth2);
+  var rr1 = subtract(ll1, dd);
+  var rr2 = subtract(ll2, dd);
+  var dr1 = rth(rad1, rr1.th);
+  var dr2 = rth(rad1, rr2.th);
+  
+  // This returns the circular positions
+  return [
+    [dr1.th / (2*Math.PI), add(rr1, dr1).th / (2*Math.PI)],
+    [dr2.th / (2*Math.PI), add(rr2, dr2).th / (2*Math.PI)],
+  ]
+    
+  // This returns the actual coordinate positions of the track endpoints
+  //return [
+  //  [add(p1, dr1), add(add(p2, rr1), dr1)],
+  //  [add(p1, dr2), add(add(p2, rr2), dr2)],
+  //]
+}
