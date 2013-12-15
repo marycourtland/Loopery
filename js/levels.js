@@ -4,28 +4,35 @@
 // Call this to enable game levels 
 function enableLevels(game) {
   game.levels = [];
-  game.current_level = start_level;
+  game.current_level = 0;
   game.tickActions.push(function() { this.levels[this.current_level].tick(); });
   game.finalActions.push(function() { this.levels[this.current_level].draw(); });
   game.doNextLevel = function() {
-    if (this.current_level < this.levels.length - 1) {
-      this.levels[this.current_level].onleave();
-      this.current_level += 1; 
+    this.levels[this.current_level].onleave();
+    this.current_level += 1; 
+    
+    if (this.current_level === this.levels.length) {
+      this.current_level = 0;
+      game.stage = game.titlescreen;
+    }
+    else {
       this.levels[this.current_level].onload();
     }
-    else game.stage = game.titlescreen;
   }
 }
 
 // Call this to create a level
-function makeLevel(id) {
+function makeLevel(game, id) {
   var lvl = {
     id: id,
     
     // Fill in level data members here (e.g. level text, level solution, etc)
     
+    showText: function() {}, // overwrite
+    
     draw: function() {
       // Fill this in (code for drawing level text, background, and other non-objects)
+      this.showText();
       
     },
     onrun: function() {
@@ -62,7 +69,6 @@ function makeLevel(id) {
   lvl.leaveActions.push(function() {
     // Code to perform when the level is left
     
-    clear(game.bg_ctx); // Clean up the objects in the background
   });
   
   return lvl;

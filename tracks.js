@@ -1,8 +1,9 @@
 // TODO: ensure circular tracks are drawn after linear tracks
 
 // Generic track
-function makeTrack() {
-  var track = new GameObject(game);
+function makeTrack(level) {
+  var track = makeLevelObject(level);
+  //var track = new GameObject(game);
   track.id = game.next_track;
   game.next_track++;
   game.tracks.push(track);
@@ -19,22 +20,31 @@ function makeTrack() {
 }
 
 // Circular track
-function makeCircleTrack(pos, radius) {
-  var track = makeTrack();
+function makeCircleTrack(level, pos, radius) {
+  var track = makeTrack(level);
   track.type = 'circular';
   
   track.radius = radius;
   track.placeAt(pos);
   track.connections = {}; // linear tracks connecting this with another circular track
   
-  track.draw = function() {
+  track.drawActions.push(function() {
     emptyCircle(this.ctx,
       this.pos,
       this.radius,
       game.display.track_color,
       game.display.track_width
     );
-  }
+  })
+  
+  track.old_pos = xy(-1, -1);
+  track.tickActions.push(function() {
+    if (equals(this.pos, this.old_pos)) return;
+    this.old_pos = this.pos.copy();
+    for (var i in this.connections) {
+      game.tracks[i].recomputePlacement();
+    }
+  });
   
   track.getNextPos = function(old_pos, dir) {
     return mod(old_pos + dir * game.train_speed / (2 * Math.PI * this.radius), 1);
@@ -73,14 +83,21 @@ function makeCircleTrack(pos, radius) {
     
   }
   
+  track.contains = function(pos) {
+    return distance(pos, this.pos) < this.radius;
+  }
+  
+  // For testing purposes
+  handle(track);
+  
   return track;
 }
 
 // Linear tracks connect the circular tracks together
 // winding = 1 means: if the linear track was a string, it would wrap CW around a parent circular track
 // winding = -1 means: it would wrap CCW
-function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
-  var track = makeTrack();
+function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2) {
+  var track = makeTrack(level);
   track.type = 'linear';
   
   // parent circular tracks
@@ -97,25 +114,43 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
   track1.connections[track.id] = false;
   track2.connections[track.id] = false;
   
+  /*
   var p1 = track1.getPosCoords(pos1);
   var p2 = track2.getPosCoords(pos2);
   track.angle = subtract(p2, p1).th;
   track.length = subtract(p2, p1).r;
+  */
+  track.recomputePlacement = function() {
+    if (this.which !== undefined) {
+      // If this track was generated as an outer tangent, then regenerate it
+      var pts = getOuterTangents(track1, track2);
+      this.parent_track_pos[this.track1.id] = pts[this.which][0];
+      this.parent_track_pos[this.track2.id] = pts[this.which][1];
+    }
+    var p1 = this.track1.getPosCoords(this.parent_track_pos[this.track1.id]);
+    var p2 = this.track2.getPosCoords(this.parent_track_pos[this.track2.id]);
+    this.angle = subtract(p2, p1).th;
+    this.length = subtract(p2, p1).r;
+  }
   
-  track.draw = function() {
-    // Draw shadows over ends to show people where to click
+  track.drawActions.push(function() {
+    // If the mouse is hovering over the ends, draw shadows to show people where to click
     var old_alpha = this.ctx.globalAlpha;
     this.ctx.globalAlpha = 0.3;
-    circle(this.ctx, 
-      this.track1.getPosCoords(this.parent_track_pos[this.track1.id]),
-      game.joint_click_radius,
-      'black'
-    )
-    circle(this.ctx, 
-      this.track2.getPosCoords(this.parent_track_pos[this.track2.id]),
-      game.joint_click_radius,
-      'black'
-    )
+    if (distance(game.mouse.pos, this.getPosCoords(0)) < game.joint_click_radius) {
+      circle(this.ctx, 
+        this.track1.getPosCoords(this.parent_track_pos[this.track1.id]),
+        game.joint_click_radius,
+        'black'
+      )
+    }
+    if (distance(game.mouse.pos, this.getPosCoords(1)) < game.joint_click_radius) {
+      circle(this.ctx, 
+        this.track2.getPosCoords(this.parent_track_pos[this.track2.id]),
+        game.joint_click_radius,
+        'black'
+      )
+    }
     this.ctx.globalAlpha = old_alpha;
     
     // Draw the line
@@ -126,7 +161,7 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
       game.display.track_width
     )
     
-    // If the track isn't toggled, then show darkened spots
+    // If the track isn't toggled, then show darkened ends
     if (!this.track1.connections[this.id]) {
       lineGradient(game.ctx,
         this.getPosCoords(0),
@@ -142,7 +177,7 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
         'black', 'white',
         game.display.track_width);
     }
-  }
+  })
   
   track.getNextPos = function(old_pos, dir) {
     return old_pos + dir * game.train_speed / this.length;
@@ -156,11 +191,7 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
     return this.track1.id;
   }
   
-  track.getPosCoords = function(pos, echo) {
-    if (echo) {
-      console.log(this.track1.getPosCoords(this.parent_track_pos[this.track1.id]));
-      console.log(rth(this.length * pos, this.angle));
-    }
+  track.getPosCoords = function(pos) {
     return add(this.track1.getPosCoords(this.parent_track_pos[this.track1.id]), rth(this.length * pos, this.angle));
   }
   
@@ -195,7 +226,7 @@ function makeLinearTrack(track1, pos1, winding1, track2, pos2, winding2) {
     }
   }
   
-  
+  track.recomputePlacement();
   
   return track;
 }
@@ -229,14 +260,36 @@ function getOuterTangents(track1, track2, echo) {
   var dr2 = rth(rad1, rr2.th);
   
   // This returns the circular positions
-  return [
-    [dr1.th / (2*Math.PI), add(rr1, dr1).th / (2*Math.PI)],
-    [dr2.th / (2*Math.PI), add(rr2, dr2).th / (2*Math.PI)],
-  ]
+  // NB: the order in which they are returned should depend on the order in
+  // which they were passed into the method, not on their track size. But
+  // dr1, dr2 etc are defined based on size. So that's why this if statement
+  // is needed. 
+  // (The two return arrays in each case are the same, except for swapped elements)
+  if (track2.radius > track1.radius) {
+    return [
+      [dr1.th / (2*Math.PI), add(rr1, dr1).th / (2*Math.PI)],
+      [dr2.th / (2*Math.PI), add(rr2, dr2).th / (2*Math.PI)],
+    ]
+  }
+  else {
+    return [
+      [dr2.th / (2*Math.PI), add(rr2, dr2).th / (2*Math.PI)],
+      [dr1.th / (2*Math.PI), add(rr1, dr1).th / (2*Math.PI)],
+    ]
+  }
     
   // This returns the actual coordinate positions of the track endpoints
   //return [
   //  [add(p1, dr1), add(add(p2, rr1), dr1)],
   //  [add(p1, dr2), add(add(p2, rr2), dr2)],
   //]
+}
+
+// There are always two possible outer tangent tracks. The 'which' variable denotes which one should be made: 0 or 1.
+function makeOuterTangentTrack(level, track1, track2, which) {
+  if (which === null) which = 0;
+  var pts = getOuterTangents(track1, track2);
+  var track = makeLinearTrack(level, track1, pts[which][0], (1 - which*2), track2, pts[which][1], -(1 - which*2)); // todo: see if you need to swap the winding parities
+  track.which = which;
+  return track;
 }

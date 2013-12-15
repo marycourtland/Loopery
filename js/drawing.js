@@ -102,7 +102,7 @@ function text(ctx, txt, pos, pos_loc, color) {
   //  "se"        => the given pos will be on the SE corner of the text
   //  "sw"        => the given pos will be on the SW corner of the text
   //  Anything else: same as "sw"
-  if (color == null) color = 'black';
+  if (color == null) color = 'white';
   
   if (!isArray(txt)) txt = [txt];
   ctx.save();

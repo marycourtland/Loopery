@@ -57,13 +57,21 @@ function Game(params) {
   this.tick = function() {
     this.state.frame++;
     this.mouse.update();
-    this.stage();
     for (var i = 0; i < this.tickActions.length; i++) {
       this.tickActions[i].call(this);
     }
+    this.stage();
+    for (var i = 0; i < this.finalActions.length; i++) {
+      this.finalActions[i].call(this);
+    }
+    
   }
   this.tickActions = [];
   this.ontick = function(tick_func) { this.tickActions.push(tick_func); }
+  
+  this.finalActions = [];
+  this.onfinal = function(final_func) { this.finalActions.push(final_func); }
+  
   this.next = function() {
     if (!this.win) setTimeout(function() { game.tick() }, 1000/this.fps);
   }
@@ -79,9 +87,7 @@ function Game(params) {
   }
   this.gameplay = function() {
     clear(this.ctx);
-    if (this.isKeyPressed("L")) {
-      text(this.ctx, "L is pressed", xy(100, 100), "centered");
-    }
+    if (this.isKeyPressed("L")) {}
     iter(this.objects, function(obj) { obj.tick(); });
     iter(this.objects, function(obj) { obj.draw(); });
     this.next();

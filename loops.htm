@@ -10,7 +10,7 @@
     <script type="text/javascript" src = "js/mouse.js"></script>
     <script type="text/javascript" src = "js/keyboard.js"></script>
     <script type="text/javascript" src = "js/gameobject.js"></script>
-    <script type="text/javascript" src = "js/field.js"></script>
+    <script type="text/javascript" src = "js/levels.js"></script>
     <title>New Game</title>
   </head>
   
@@ -21,11 +21,14 @@
   
   <script type="text/javascript" src="tracks.js"></script>
   <script type="text/javascript" src="trains.js"></script>
+  
+  
   <script type="text/javascript">
     // The game
     var game = new Game({bg_color:'#0a492c'});
     game.setTitle("Loops!");
     game.setSize(xy(800, 600));
+    enableLevels(game);
     window.onload = function() {
       game.bringToFront('circular');
       game.bringToFront('train');
@@ -40,51 +43,73 @@
       }
     }
     
+    
     game.next_track = 0;
     game.tracks = [];
     
+    // Temporary button to move to next level
+    var next_level = new GameObject(game);
+    next_level.p1 = xy(30, 20);
+    next_level.p2 = xy(120, 40),
+    next_level.draw = function() {
+      rect(this.ctx, this.p1, this.p2, 'black');
+      game.setFont(game.display.font_small);
+      text(this.ctx, "Skip to next level", this.p1, "nw");
+    }
+    next_level.contains = function(pos) { return isBetweenCoords(pos, this.p1, this.p2) }
+    next_level.onclick = function() { console.log('next level!'); game.doNextLevel(); }
     
-    // SETTINGS
+    // ========== SETTINGS
     // Display constants
     game.display.track_width = 8; // px
     game.display.track_color = 'white';
     game.display.train_radius = 12; // px
     game.display.darkened_track_extent = 0.4;
     
+    game.display.font_title = {size: 48, type: 'Arial'}
+    game.display.font_large = {size: 36, type: 'Arial'}
+    game.display.font_normal = {size: 24, type: 'Arial'}
+    game.display.font_small = {size: 12, type: 'Arial'}
+    
+    game.ctx.fillStyle = 'white'; // default foreground color
+    game.ctx.strokeStyle = 'white';
+    
     // Other constants
     game.train_speed = 3; // pixels per frame. TODO: convert to pixels per second
     game.joint_click_radius = 20; // radius of area in which you can click the joining of two tracks
     
     
-    // TESTS
+    // ========== GAME STAGES
+    game.titlescreen = function() {
+      clear(this.ctx);
+      this.setFont(this.display.font_title);
+      text(this.ctx, this.title, xy(400, 200), "centered");
+      this.setFont(this.display.font_normal);
+      setTimeout(function() { game.doNextLevel(); game.stage = game.gameplay; game.next(); }, 1*1000);
+    }
+    game.gameplay = function() {
+      clear(this.ctx);
+      if (this.isKeyPressed("L")) {}
+      iter(this.objects, function(obj) { obj.tick(); });
+      iter(this.objects, function(obj) { obj.draw(); });
+      this.next();
+    }
     
-    var test_track1 = makeCircleTrack(xy(200, 290), 70);
-    var test_track2 = makeCircleTrack(xy(400, 260), 100);
-    var test_track3 = makeCircleTrack(xy(460, 70), 30);
-    var test_track4 = makeCircleTrack(xy(660, 150), 50);
-    var test_track12 = makeLinearTrack(test_track2, 0.25, 1, test_track1, 0.25, -1);
-    var test_track23 = makeLinearTrack(test_track2, 0.94, -1, test_track3, 0.45, -1);
-    //var test_track34 = makeLinearTrack(test_track3, 0.8, 1, test_track4, 0.8, -1);
     
-    test_track2.connections[test_track23.id] = true;
-    test_track3.connections[test_track23.id] = true;
-    //test_track3.connections[test_track34.id] = true;
-    //test_track4.connections[test_track34.id] = true;
-    
-    var test_train1 = makeTrain('darkred', test_track1);
-    var test_train2 = makeTrain('darkblue', test_track2);
-    test_train1.dir = -1;
-    
-    // Computed tangent track
-    var t1 = test_track3;
-    var t2 = test_track4;
-    var pts = getOuterTangents(t1, t2)
-    var test_track34 = makeLinearTrack(t1, pts[0][0], 1, t2, pts[0][1], -1);
-    
-    game.ontick(function() {
-      text(game.ctx, "Try clicking here-ish ^", xy(200, 375), 'ne', 'white')
-      text(game.ctx, "^ and/or here", xy(405, 375), 'nw', 'white')
-    })
+    game.stage = game.titlescreen; // default stages
     
   </script>
+  
+  <script type="text/javascript" src="levels/start.js"></script>
+  <script type="text/javascript" src="levels/level1.js"></script>
+  <script type="text/javascript" src="levels/level2.js"></script>
+  <script type="text/javascript" src="levels/level3.js"></script>
+  <script type="text/javascript" src="levels/level4.js"></script>
+  <script type="text/javascript" src="levels/level5.js"></script>
+  <script type="text/javascript" src="levels/level6.js"></script>
+  <script type="text/javascript" src="levels/level7.js"></script>
+  <script type="text/javascript" src="levels/level8.js"></script>
+  <script type="text/javascript" src="levels/level9.js"></script>
+  <script type="text/javascript" src="levels/level10.js"></script>
+  
 </html>

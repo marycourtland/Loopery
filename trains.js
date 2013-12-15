@@ -6,7 +6,18 @@ function makeTrain(color, track) {
   train.track = track;
   train.dir = 1; // For circular tracks, 1=cw and -1=ccw. For linear tracks, 1=towards track2, -1=towards track1
   train.pos = 0;
+  train.disabled = false;
+  train.disable = function() { this.disabled = true; }
+  train.enable = function() { this.disabled = false; }
+  train.setTrack = function(track, pos, dir) {
+    if (pos === null) pos = 0;
+    if (dir === null) dir = 1;
+    this.track = track;
+    this.pos = pos;
+    this.dir = dir;
+  }
   train.tick = function() {
+    if (this.disabled) return;
     // move the train
     var oldpos = this.pos; // it's just a number so no need to deepcopy it
     this.pos = this.track.getNextPos(this.pos, this.dir);
@@ -24,6 +35,7 @@ function makeTrain(color, track) {
     
   }
   train.draw = function() {
+    if (this.disabled) return;
     circle(this.ctx, this.track.getPosCoords(this.pos), game.display.train_radius, this.color);
   }
   return train;
