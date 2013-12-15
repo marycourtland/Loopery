@@ -17,7 +17,7 @@ function line(ctx, p0, p1, color, linewidth) {
 function rect(ctx, p0, p1, color) {
   ctx.save();
   ctx.fillStyle = color;
-  ctx.strokeStyle = 'black';
+  ctx.strokeStyle = color;
   ctx.beginPath();
   ctx.rect(p0.x+0.5, p0.y+0.5, p1.x-p0.x, p1.y-p0.y);
   ctx.closePath();

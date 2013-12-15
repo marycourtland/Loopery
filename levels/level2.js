@@ -2,6 +2,11 @@
 
 var level2 = makeLevel(game, 2);
 
+level2.showText = function() {
+  game.setFont(game.display.font_normal);
+  text(game.ctx, "Sometimes there is a single path to take", xy(400, 520), "centered");
+}
+
 var track2_start = makeCircleTrack(level2, xy(-50, 200), 40);
 var track2_1 = makeCircleTrack(level2, xy(400, 200), 40);
 var track2_2 = makeCircleTrack(level2, xy(400, 380), 40);

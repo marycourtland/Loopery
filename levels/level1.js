@@ -7,20 +7,24 @@ level1.show_click_text_2 = false;
 level1.show_click_text_3 = false;
 level1.showText = function() {
   game.setFont(game.display.font_normal);
-  text(game.ctx, "Many bodies walk the earth, but you only get one.", xy(180, 30), "nw");
-  text(game.ctx, "Choose it now!", xy(180, 60), "nw");
+  text(game.ctx, "Many bodies walk the earth, but you only get one.", xy(400, 30), "centered");
+  text(game.ctx, "Choose it now!", xy(400, 60), "centered");
   
   game.setFont(game.display.font_small, "italic");
-  text(game.ctx, ["To release one from its prison,", "hover and click over the darkened track."], xy(180, 90), "nw")
+  text(game.ctx, "To release one from its prison,", xy(400,540), "centered")
+  text(game.ctx, "hover and click over the darkened track.", xy(400,560), "centered")
   
   if (this.show_click_text_1) {
-    text(game.ctx, "Click to open track", xy(506,472), "nw");
+  game.setFont(game.display.font_tiny, "italic");
+    text(game.ctx, "Click to open track", xy(506,460), "nw");
   }
   if (this.show_click_text_2) {
-    text(game.ctx, "Click to open track", xy(255,477), "nw");
+  game.setFont(game.display.font_tiny, "italic");
+    text(game.ctx, "Click to open track", xy(255,490), "nw");
   }
   if (this.show_click_text_3) {
-    text(game.ctx, "Click to open track", xy(80, 365), "nw");
+  game.setFont(game.display.font_tiny, "italic");
+    text(game.ctx, "Click to open track", xy(87, 367), "nw");
   }
   
 }

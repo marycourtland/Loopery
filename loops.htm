@@ -15,7 +15,7 @@
   </head>
   
   <body>
-    <canvas id="game_canvas" style="border:1px solid black; position: absolute; left:0; top:0;"></canvas>
+    <canvas id="game_canvas" style="border:1px solid black; position: absolute; left:0; top:0; background-image:url('background.png');"></canvas>
   </body>
   
   
@@ -59,47 +59,52 @@
     game.next_track = 0;
     game.tracks = [];
     
+    /*
     // Temporary button to move to next level
     var next_level = new GameObject(game);
     next_level.p1 = xy(30, 50);
     next_level.p2 = xy(120, 70),
     next_level.draw = function() {
       rect(this.ctx, this.p1, this.p2, 'black');
-      game.setFont(game.display.font_small);
+      game.setFont(game.display.font_tiny);
       text(this.ctx, "Skip to next level", this.p1, "nw");
     }
     next_level.contains = function(pos) { return isBetweenCoords(pos, this.p1, this.p2) }
     next_level.onclick = function() { console.log('next level!'); game.doNextLevel(); }
-    
+    */
     
     // Button to restart level
     var restart_level = new GameObject(game);
-    restart_level.p1 = xy(30, 80);
-    restart_level.p2 = xy(120, 100),
+    restart_level.p1 = xy(15, 530);
+    restart_level.p2 = xy(105, 550),
     restart_level.draw = function() {
+      this.ctx.globalAlpha = 0.3;
       rect(this.ctx, this.p1, this.p2, 'black');
-      game.setFont(game.display.font_small);
-      text(this.ctx, "Restart level", this.p1, "nw");
+      this.ctx.globalAlpha = 1;
+      game.setFont(game.display.font_tiny);
+      text(this.ctx, "Restart level", xy(60, 538), "centered");
     }
     restart_level.contains = function(pos) { return isBetweenCoords(pos, this.p1, this.p2) }
     restart_level.onclick = function() { game.startCurrentLevel(); }
     
     // Button to restart game
     var restart_game = new GameObject(game);
-    restart_game.p1 = xy(30, 110);
-    restart_game.p2 = xy(120, 130),
+    restart_game.p1 = xy(15, 560);
+    restart_game.p2 = xy(105, 580),
     restart_game.draw = function() {
+      this.ctx.globalAlpha = 0.3;
       rect(this.ctx, this.p1, this.p2, 'black');
-      game.setFont(game.display.font_small);
-      text(this.ctx, "Restart game", this.p1, "nw");
+      this.ctx.globalAlpha = 1;
+      game.setFont(game.display.font_tiny);
+      text(this.ctx, "Restart game", xy(60, 568), "centered");
     }
     restart_game.contains = function(pos) { return isBetweenCoords(pos, this.p1, this.p2) }
     restart_game.onclick = function() { game.restart(); }
     
     // Player-driven train possibilities
-    game.train1 = makeTrain('red', null);
-    game.train2 = makeTrain('blue', null);
-    game.train3 = makeTrain('yellow', null);
+    game.train1 = makeTrain('#111f3e', null);
+    game.train2 = makeTrain('#5d1f3e', null);
+    game.train3 = makeTrain('#5da63e', null);
     
     game.train1.is_player = true;
     game.train2.is_player = true;
@@ -131,7 +136,8 @@
     game.display.font_title = {size: 72, type: 'Arial'}
     game.display.font_large = {size: 36, type: 'Arial'}
     game.display.font_normal = {size: 24, type: 'Arial'}
-    game.display.font_small = {size: 12, type: 'Arial'}
+    game.display.font_small = {size: 18, type: 'Arial'}
+    game.display.font_tiny = {size: 12, type: 'Arial'}
     
     game.ctx.fillStyle = 'white'; // default foreground color
     game.ctx.strokeStyle = 'white';

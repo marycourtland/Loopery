@@ -226,7 +226,6 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
     track.clicker2.track = track;
     track.clicker1.pos = track.getPosCoords(0.4);
     track.clicker2.pos = track.getPosCoords(0.9);
-    if (track.id === 5) console.log("track 5:", track.getPosCoords(0.4), track.clicker1.pos);
     track.clicker1.drawActions.push(function() {
       if (distance(game.mouse.pos, this.pos) > game.joint_click_radius) { return; }
       var old_alpha = this.ctx.globalAlpha;

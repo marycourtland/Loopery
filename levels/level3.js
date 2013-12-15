@@ -1,6 +1,11 @@
 // Level 3: Another simple level where the player makes his/her first choice (other than which avatar)
 var level3 = makeLevel(game, 3);
 
+level3.showText = function() {
+  game.setFont(game.display.font_normal);
+  text(game.ctx, "and sometimes", xy(210, 520), "centered");
+  text(game.ctx, "you've a choice to make.", xy(630, 520), "centered");
+}
 var track3_start = makeCircleTrack(level3, xy(-50, 300), 40);
 var track3_1 = makeCircleTrack(level3, xy(300, 270), 70);
 var track3_2 = makeCircleTrack(level3, xy(400, 120), 70);
