@@ -45,6 +45,16 @@
       }
     }
     
+    game.setAllJoints = function(setting) {
+      for (var i = 0; i < this.tracks.length; i++) {
+        if (this.tracks[i].type !== 'circular') continue;
+        for (var linear_track in this.tracks[i].connections) {
+          this.tracks[i].connections[linear_track] = setting;
+        }
+        
+      }
+    }
+    
     
     game.next_track = 0;
     game.tracks = [];
@@ -60,6 +70,31 @@
     }
     next_level.contains = function(pos) { return isBetweenCoords(pos, this.p1, this.p2) }
     next_level.onclick = function() { console.log('next level!'); game.doNextLevel(); }
+    
+    
+    // Button to restart level
+    var restart_level = new GameObject(game);
+    restart_level.p1 = xy(30, 80);
+    restart_level.p2 = xy(120, 100),
+    restart_level.draw = function() {
+      rect(this.ctx, this.p1, this.p2, 'black');
+      game.setFont(game.display.font_small);
+      text(this.ctx, "Restart level", this.p1, "nw");
+    }
+    restart_level.contains = function(pos) { return isBetweenCoords(pos, this.p1, this.p2) }
+    restart_level.onclick = function() { game.startCurrentLevel(); }
+    
+    // Button to restart game
+    var restart_game = new GameObject(game);
+    restart_game.p1 = xy(30, 110);
+    restart_game.p2 = xy(120, 130),
+    restart_game.draw = function() {
+      rect(this.ctx, this.p1, this.p2, 'black');
+      game.setFont(game.display.font_small);
+      text(this.ctx, "Restart game", this.p1, "nw");
+    }
+    restart_game.contains = function(pos) { return isBetweenCoords(pos, this.p1, this.p2) }
+    restart_game.onclick = function() { game.restart(); }
     
     // Player-driven train possibilities
     game.train1 = makeTrain('red', null);
@@ -124,6 +159,13 @@
     
     game.stage = game.titlescreen; // default stages
     
+    game.restart = function() {
+      this.current_level = 0;
+      game.stage = game.titlescreen;
+    }
+    game.startCurrentLevel = function() {
+      this.levels[this.current_level].onload();
+    }
     
   </script>
   

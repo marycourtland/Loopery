@@ -1,3 +1,5 @@
+// Level 2: simple two-circle level for the player to get used to navigating
+
 var level2 = makeLevel(game, 2);
 
 var track2_start = makeCircleTrack(level2, xy(-50, 200), 40);
@@ -10,11 +12,12 @@ var track2_start1 = makeOuterTangentTrack(level2, track2_start, track2_1, 0);
 var track2_12 = makeOuterTangentTrack(level2, track2_1, track2_2, 0 );
 var track2_2end = makeOuterTangentTrack(level2, track2_2, track2_end, 0);
 
-track2_start.connections[track2_start1.id] = true;
-track2_1.connections[track2_start1.id] = true;
-track2_2.connections[track2_12.id] = true;
-track2_end.connections[track2_2end.id] = true;
-
+level2.joints_toggled_on = [
+  [track2_start, track2_start1],
+  [track2_1, track2_start1],
+  [track2_2, track2_12],
+  [track2_end, track2_2end],
+]
 level2.loadActions.push(function() {
   game.player_train.setTrack(track2_start, 0, 1);
   game.player_train.enable()

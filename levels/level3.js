@@ -1,5 +1,5 @@
+// Level 3: Another simple level where the player makes his/her first choice (other than which avatar)
 var level3 = makeLevel(game, 3);
-// 
 
 var track3_start = makeCircleTrack(level3, xy(-50, 300), 40);
 var track3_1 = makeCircleTrack(level3, xy(300, 270), 70);
@@ -16,13 +16,15 @@ var track3_24 = makeInnerTangentTrack(level3, track3_2, track3_4, 0);
 var track3_34 = makeOuterTangentTrack(level3, track3_3, track3_4, 0);
 var track3_4end = makeOuterTangentTrack(level3, track3_4, track3_end, 0);
 
-track3_start.connections[track3_start1.id] = true;
-track3_1.connections[track3_start1.id] = true;
-track3_2.connections[track3_12.id] = true;
-track3_3.connections[track3_13.id] = true;
-track3_4.connections[track3_24.id] = true;
-track3_4.connections[track3_34.id] = true;
-track3_end.connections[track3_4end.id] = true;
+level3.joints_toggled_on = [
+  [track3_start, track3_start1],
+  [track3_1, track3_start1],
+  [track3_2, track3_12],
+  [track3_3, track3_13],
+  [track3_4, track3_24],
+  [track3_4, track3_34],
+  [track3_end, track3_4end],
+]
 
 level3.loadActions.push(function() {
   game.player_train.setTrack(track3_start, 0.3, -1);

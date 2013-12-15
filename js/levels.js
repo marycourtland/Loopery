@@ -12,11 +12,10 @@ function enableLevels(game) {
     this.current_level += 1; 
     
     if (this.current_level === this.levels.length) {
-      this.current_level = 0;
-      game.stage = game.titlescreen;
+      game.restart();
     }
     else {
-      this.levels[this.current_level].onload();
+      game.startCurrentLevel();
     }
   }
 }
@@ -29,6 +28,8 @@ function makeLevel(game, id) {
     // Fill in level data members here (e.g. level text, level solution, etc)
     
     showText: function() {}, // overwrite
+    
+    jointsToggledOn: [],
     
     draw: function() {
       // Fill this in (code for drawing level text, background, and other non-objects)
@@ -43,6 +44,12 @@ function makeLevel(game, id) {
       }
     },
     onload: function() {
+      
+      game.setAllJoints(false);
+      for (var i = 0; i < this.joints_toggled_on.length; i++) {
+        this.joints_toggled_on[i][0].connections[this.joints_toggled_on[i][1].id] = true;
+      }
+      
       for (var i = 0; i < this.loadActions.length; i++) {
         this.loadActions[i].call(this);
       }
