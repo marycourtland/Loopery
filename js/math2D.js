@@ -289,6 +289,7 @@ function mod360_symmetric(th) { // puts the angle between -180deg and 180deg (in
 // Judges whether p is between p1 and p2 on a circle of circumfrence c
 // 
 function isBetweenOnCircle(p, p1, p2, c) {
+  if (c === undefined) c = 2 * Math.PI;
   if (p1 === p2) return (p === p1);
   if (p2 > p1) {
     var s12 = p2 - p1;
@@ -300,12 +301,28 @@ function isBetweenOnCircle(p, p1, p2, c) {
   }
   if (s12 < s21) {
     if (p2 > p1) return (p2 >= p && p >= p1);
-    return (p < p2) || (p > p1);
+    return (p <= p2) || (p > p1);
   }
   else {
     if (p1 > p2) return (p1 >= p && p >= p2);
-    return (p < p1) || (p > p2);
+    return (p <= p1) || (p > p2);
   }
+}
+// Given two points on a circular track of circumfrence c:
+// - There are two possible distances between them.
+// - Return the shorter distance.
+function shortestDistanceOnCircle(p1, p2, c) {
+  if (c === undefined) c = 2 * Math.PI;
+  if (p1 === p2) return 0;
+  if (p2 > p1) {
+    var s12 = p2 - p1;
+    var s21 = (c - p2) + p1;
+  }
+  else {
+    var s12 = (c - p1) + p2;
+    var s21 = p1 - p2;
+  }
+  return Math.min(s12, s21);
 }
 
 // Wrapper for Math.round

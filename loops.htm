@@ -26,12 +26,14 @@
   <script type="text/javascript">
     // The game
     var game = new Game({bg_color:'#0a492c'});
-    game.setTitle("Loops!");
+    game.setTitle("Loops of Fate");
     game.setSize(xy(800, 600));
+    game.center = xy(400, 300);
     enableLevels(game);
     window.onload = function() {
       game.bringToFront('circular');
       game.bringToFront('train');
+      game.bringToFront('clicker');
       game.start();
     }
     
@@ -49,8 +51,8 @@
     
     // Temporary button to move to next level
     var next_level = new GameObject(game);
-    next_level.p1 = xy(30, 20);
-    next_level.p2 = xy(120, 40),
+    next_level.p1 = xy(30, 50);
+    next_level.p2 = xy(120, 70),
     next_level.draw = function() {
       rect(this.ctx, this.p1, this.p2, 'black');
       game.setFont(game.display.font_small);
@@ -58,6 +60,30 @@
     }
     next_level.contains = function(pos) { return isBetweenCoords(pos, this.p1, this.p2) }
     next_level.onclick = function() { console.log('next level!'); game.doNextLevel(); }
+    
+    // Player-driven train possibilities
+    game.train1 = makeTrain('red', null);
+    game.train2 = makeTrain('blue', null);
+    game.train3 = makeTrain('yellow', null);
+    
+    game.train1.is_player = true;
+    game.train2.is_player = true;
+    game.train3.is_player = true;
+    
+    // Reference to the player's chosen train
+    game.player_train = null;
+    game.player_has_chosen_train = false;
+    
+    game.choosePlayerTrain = function(train) {
+      if (this.player_has_chosen_train) return; // only choose the first one that gets chosen
+      this.player_train = train;
+      this.player_has_chosen_train = true;
+    }
+    game.resetPlayerTrain = function(train) { // Call this when resetting the game
+      this.player_train = null;
+      this.player_has_chosen_train = false;
+    }
+    
     
     // ========== SETTINGS
     // Display constants
@@ -98,13 +124,17 @@
     
     game.stage = game.titlescreen; // default stages
     
+    
   </script>
   
   <script type="text/javascript" src="levels/start.js"></script>
   <script type="text/javascript" src="levels/level1.js"></script>
+  
+  
   <script type="text/javascript" src="levels/level2.js"></script>
   <script type="text/javascript" src="levels/level3.js"></script>
   <script type="text/javascript" src="levels/level4.js"></script>
+  
   <script type="text/javascript" src="levels/level5.js"></script>
   <script type="text/javascript" src="levels/level6.js"></script>
   <script type="text/javascript" src="levels/level7.js"></script>
