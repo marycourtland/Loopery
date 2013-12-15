@@ -126,8 +126,9 @@
     game.display.track_color = 'white';
     game.display.train_radius = 12; // px
     game.display.darkened_track_extent = 0.4;
+    game.display.clicker_offset = 0.1;
     
-    game.display.font_title = {size: 48, type: 'Arial'}
+    game.display.font_title = {size: 72, type: 'Arial'}
     game.display.font_large = {size: 36, type: 'Arial'}
     game.display.font_normal = {size: 24, type: 'Arial'}
     game.display.font_small = {size: 12, type: 'Arial'}
@@ -144,10 +145,20 @@
     game.titlescreen = function() {
       clear(this.ctx);
       this.setFont(this.display.font_title);
-      text(this.ctx, this.title, xy(400, 200), "centered");
-      this.setFont(this.display.font_normal);
-      setTimeout(function() { game.doNextLevel(); game.stage = game.gameplay; game.next(); }, 1*1000);
+      text(this.ctx, this.title, xy(400, 150), "centered");
+      this.setFont(this.display.font_large, "italic");
+      text(this.ctx, "Click to continue", xy(400, 250), "centered");
+      this.next();
+      //setTimeout(function() { game.exitTitlescreen(); }, 1*1000);
     }
+    game.exitTitlescreen = function() {
+      this.doNextLevel();
+      this.stage = game.gameplay;
+      this.next();
+    }
+    game.ctx.canvas.addEventListener("click", function(event) {
+      if (game.stage === game.titlescreen) { game.exitTitlescreen(); }
+    })
     game.gameplay = function() {
       clear(this.ctx);
       if (this.isKeyPressed("L")) {}

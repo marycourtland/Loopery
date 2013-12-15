@@ -24,9 +24,10 @@ function Game(params) {
     this.title = title;
     window.document.title = title;
   }
-  this.setFont = function(font) {
+  this.setFont = function(font, stylestring) {
+    if (!stylestring) stylestring = "";
     this.display.font = font;
-    this.ctx.font = this.display.font.size.toString() + "px " + this.display.font.type;
+    this.ctx.font = stylestring + " " + this.display.font.size.toString() + "px " + this.display.font.type;
     this.ctx.fontsize = this.display.font.size;
   }
   

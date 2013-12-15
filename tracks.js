@@ -123,58 +123,6 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
   track1.connections[track.id] = false;
   track2.connections[track.id] = false;
   
-  // Make 'clicker' objects
-  // These are the little shadows that appear over joints between
-  // linear and circular tracks. When clicked, they toggle the joint.
-  if (!disable_clickers) {
-    track.clicker1 = makeLevelObject(level);
-    track.clicker2 = makeLevelObject(level);
-    track.clicker1.type = 'clicker';
-    track.clicker2.type = 'clicker';
-    track.clicker1.track = track; // circular references, yay
-    track.clicker2.track = track;
-    track.clicker1.pos = track1.getPosCoords(pos1);
-    track.clicker2.pos = track2.getPosCoords(pos2);
-    track.clicker1.drawActions.push(function() {
-      if (distance(game.mouse.pos, this.pos) > game.joint_click_radius) { return; }
-      var old_alpha = this.ctx.globalAlpha;
-      this.ctx.globalAlpha = 0.3;
-      circle(this.ctx, 
-        this.pos,
-        game.joint_click_radius,
-        'black'
-      )
-      this.ctx.globalAlpha = old_alpha;
-    })
-    track.clicker2.drawActions.push(function() {
-      if (distance(game.mouse.pos, this.pos) > game.joint_click_radius) { return; }
-      var old_alpha = this.ctx.globalAlpha;
-      this.ctx.globalAlpha = 0.3;
-      circle(this.ctx, 
-        this.pos,
-        game.joint_click_radius,
-        'black'
-      )
-      this.ctx.globalAlpha = old_alpha;
-    })
-    track.clicker1.contains = function(p) {
-      if (game.levels[game.current_level].id != this.level.id) return false;
-      return distance(p, this.pos) <= game.joint_click_radius;
-    }
-    track.clicker2.contains = function(p) { // todo: this is also supposed to be the same as clicker1.contains
-      if (game.levels[game.current_level].id != this.level.id) return false;
-      return distance(p, this.pos) <= game.joint_click_radius;
-    }
-    track.clicker1.onclick = function(p) {
-      if (game.levels[game.current_level].id != this.level.id) return;
-      this.track.track1.toggleJoint(this.track.id);
-    }
-    track.clicker2.onclick = function(p) {
-      if (game.levels[game.current_level].id != this.level.id) return;
-      this.track.track2.toggleJoint(this.track.id);
-    }
-  }
-  
   track.recomputePlacement = function() {
     if (this.which_outer !== undefined) {
       // If this track was generated as an outer tangent, then regenerate it
@@ -197,6 +145,8 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
     if (this.clicker1 && this.clicker2) {
       this.clicker1.pos = track.getPosCoords(0);
       this.clicker2.pos = track.getPosCoords(1);
+      track.clicker1.pos = track.getPosCoords(game.display.clicker_offset);
+      track.clicker2.pos = track.getPosCoords(1 - game.display.clicker_offset);
     }
   }
   
@@ -260,7 +210,63 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
     return -1;
   }
   
+  
+  
   track.recomputePlacement();
+  
+  // Make 'clicker' objects
+  // These are the little shadows that appear over joints between
+  // linear and circular tracks. When clicked, they toggle the joint.
+  if (!disable_clickers) {
+    track.clicker1 = makeLevelObject(level);
+    track.clicker2 = makeLevelObject(level);
+    track.clicker1.type = 'clicker';
+    track.clicker2.type = 'clicker';
+    track.clicker1.track = track; // circular references, yay
+    track.clicker2.track = track;
+    track.clicker1.pos = track.getPosCoords(0.4);
+    track.clicker2.pos = track.getPosCoords(0.9);
+    if (track.id === 5) console.log("track 5:", track.getPosCoords(0.4), track.clicker1.pos);
+    track.clicker1.drawActions.push(function() {
+      if (distance(game.mouse.pos, this.pos) > game.joint_click_radius) { return; }
+      var old_alpha = this.ctx.globalAlpha;
+      this.ctx.globalAlpha = 0.3;
+      circle(this.ctx, 
+        this.pos,
+        game.joint_click_radius,
+        'black'
+      )
+      this.ctx.globalAlpha = old_alpha;
+    })
+    track.clicker2.drawActions.push(function() {
+      if (distance(game.mouse.pos, this.pos) > game.joint_click_radius) { return; }
+      var old_alpha = this.ctx.globalAlpha;
+      this.ctx.globalAlpha = 0.3;
+      circle(this.ctx, 
+        this.pos,
+        game.joint_click_radius,
+        'black'
+      )
+      this.ctx.globalAlpha = old_alpha;
+    })
+    track.clicker1.contains = function(p) {
+      if (game.levels[game.current_level].id != this.level.id) return false;
+      return distance(p, this.pos) <= game.joint_click_radius;
+    }
+    track.clicker2.contains = function(p) { // todo: this is also supposed to be the same as clicker1.contains
+      if (game.levels[game.current_level].id != this.level.id) return false;
+      return distance(p, this.pos) <= game.joint_click_radius;
+    }
+    track.clicker1.onclick = function(p) {
+      if (game.levels[game.current_level].id != this.level.id) return;
+      this.track.track1.toggleJoint(this.track.id);
+    }
+    track.clicker2.onclick = function(p) {
+      if (game.levels[game.current_level].id != this.level.id) return;
+      this.track.track2.toggleJoint(this.track.id);
+    }
+  }
+  
   
   return track;
 }

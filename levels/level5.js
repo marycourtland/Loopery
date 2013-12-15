@@ -1,5 +1,5 @@
 // Level 5: the first sort-of-puzzlish level
-var level5 = makeLevel(game, 6);
+var level5 = makeLevel(game, 5);
 
 var l6_r = 100;
 

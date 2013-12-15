@@ -2,11 +2,47 @@
 
 var level1 = makeLevel(game, 1);
 
+level1.show_click_text_1 = false;
+level1.show_click_text_2 = false;
+level1.show_click_text_3 = false;
 level1.showText = function() {
   game.setFont(game.display.font_normal);
   text(game.ctx, "Many bodies walk the earth, but you only get one.", xy(180, 30), "nw");
   text(game.ctx, "Choose it now!", xy(180, 60), "nw");
+  
+  game.setFont(game.display.font_small, "italic");
+  text(game.ctx, ["To release one from its prison,", "hover and click over the darkened track."], xy(180, 90), "nw")
+  
+  if (this.show_click_text_1) {
+    text(game.ctx, "Click to open track", xy(506,472), "nw");
+  }
+  if (this.show_click_text_2) {
+    text(game.ctx, "Click to open track", xy(255,477), "nw");
+  }
+  if (this.show_click_text_3) {
+    text(game.ctx, "Click to open track", xy(80, 365), "nw");
+  }
+  
 }
+level1.tickActions.push(function() {
+  this.show_click_text_1 = false;
+  this.show_click_text_2 = false;
+  this.show_click_text_3 = false;
+  if (track1_1center.clicker1.contains(mouse.pos)) {
+    this.show_click_text_1 = true;
+    // TODO: put train1 text here
+  }
+  else if (track1_2center.clicker1.contains(mouse.pos)) {
+    this.show_click_text_2 = true;
+    // TODO: put train2 text here
+  }
+  else if (track1_3center.clicker1.contains(mouse.pos)) {
+    this.show_click_text_3 = true;
+    // TODO: put train3 text here
+  }
+  else {
+  }
+});
 
 var l1_center = xy(400, 260);
 var l1_r = 220;
