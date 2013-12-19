@@ -1,12 +1,31 @@
 // TODO: ensure circular tracks are drawn after linear tracks
 
 // Generic track
-function makeTrack(level) {
+function makeTrack(level, id) {
   var track = makeLevelObject(level);
   //var track = new GameObject(game);
-  track.id = game.next_track;
+  track.id = (id || game.next_track);
+  
+  level.tracks[track.id] = track;
+  
   game.next_track++;
-  game.tracks.push(track);
+  game.tracks[track.id] = track;
+  
+  // This is true if the track is the starting pseudotrack (offscreen to the left)
+  track.is_start = false;
+  track.setStart = function() { this.is_start = true; }
+  
+  // This is true if the track is the ending pseudotrack (offscreen to the right)
+  track.is_end = false;
+  track.setEnd = function() { this.is_end = true; }
+  
+  // This is true if the track is next to the starting pseudotrack
+  track.is_first = false;
+  track.setFirst = function() { this.is_first = true; }
+  
+  // This is true if the track is next to the ending pseudotrack
+  track.is_last = false;
+  track.setLast = function() { this.is_last = true; }
   
   // Subclasses should implement these methods:
   //   track.getNextPos
@@ -20,8 +39,8 @@ function makeTrack(level) {
 }
 
 // Circular track
-function makeCircleTrack(level, pos, radius) {
-  var track = makeTrack(level);
+function makeCircleTrack(level, pos, radius, id) {
+  var track = makeTrack(level, id);
   track.type = 'circular';
   
   track.color = game.display.track_color;
@@ -29,10 +48,7 @@ function makeCircleTrack(level, pos, radius) {
   track.radius = radius;
   track.placeAt(pos);
   track.connections = {}; // linear tracks connecting this with another circular track
-  
-  track.is_end = false;
-  track.setEnd = function() { this.is_end = true; }
-  
+    
   track.drawActions.push(function() {
     emptyCircle(this.ctx,
       this.pos,
@@ -46,8 +62,8 @@ function makeCircleTrack(level, pos, radius) {
   track.tickActions.push(function() {
     if (equals(this.pos, this.old_pos)) return;
     this.old_pos = this.pos.copy();
-    for (var i in this.connections) {
-      game.tracks[i].recomputePlacement();
+    for (var id in this.connections) {
+      game.tracks[id].recomputePlacement();
     }
   });
   
@@ -98,12 +114,14 @@ function makeCircleTrack(level, pos, radius) {
   return track;
 }
 
-// Linear tracks connect the circular tracks together
+// Linear tracks connect the circular tracks together.
+// NOTE: Usually, linear tracks are created with the makeOuterTangentTrack or makeInnerTangentTrack methods.
 // winding = 1 means: if the linear track was a string, it would wrap CW around a parent circular track
 // winding = -1 means: it would wrap CCW
-function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, disable_clickers) {
-  var track = makeTrack(level);
+function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, disable_clickers, id) {
+  var track = makeTrack(level, id);
   track.type = 'linear';
+  track.subtype = ''; // 'out' or 'in'
   track.color = game.display.track_color;
   
   pos1 = mod(pos1, 1);
@@ -143,10 +161,10 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
     this.length = subtract(p2, p1).r;
     
     if (this.clicker1 && this.clicker2) {
-      this.clicker1.pos = track.getPosCoords(0);
-      this.clicker2.pos = track.getPosCoords(1);
-      track.clicker1.pos = track.getPosCoords(game.display.clicker_offset);
-      track.clicker2.pos = track.getPosCoords(1 - game.display.clicker_offset);
+      this.clicker1.pos = this.getPosCoords(game.display.clicker_offset);
+      this.clicker2.pos = this.getPosCoords(1 - game.display.clicker_offset);
+      this.clicker1.pos = add(this.getPosCoords(0), rth(game.joint_click_distance, this.angle));
+      this.clicker2.pos = add(this.getPosCoords(1), rth(-game.joint_click_distance, this.angle));
     }
   }
   
@@ -273,8 +291,7 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
 
 
 // Utility methods - to find position of linear tracks tangent to two circular tracks
-// WARNING: BAD CODE (but it works)
-
+// WARNING: MESSY CODE (but it works)
 function getOuterTangents(track1, track2, echo) {
   if (track2.radius === track1.radius) {
     var dd = subtract(track1.pos, track2.pos);
@@ -335,6 +352,8 @@ function getOuterTangents(track1, track2, echo) {
   //]
 }
 
+// This only works if track1's radius is greater or equal to track2's radius
+// TODO: fix that
 function getInnerTangents(track1, track2, echo) {
   /*if (track2.radius === track1.radius) {
     var dd = subtract(p2, p1);
@@ -401,15 +420,25 @@ function getInnerTangents(track1, track2, echo) {
 function makeOuterTangentTrack(level, track1, track2, which, disable_clicker) {
   if (which === null) which = 0;
   var pts = getOuterTangents(track1, track2);
+  if (isNaN(pts[which][0]) || isNaN(pts[which][1])) {
+    console.log("Warning: points for outer linear track between", track1.id, "and", track2.id, " could not be computed");
+    return null;
+  }
   var track = makeLinearTrack(level, track1, mod(pts[which][0], 1), (1 - which*2), track2, mod(pts[which][1], 1), -(1 - which*2), disable_clicker);
   track.which_outer = which;
+  track.subtype = 'out';
   return track;
 }
 
 function makeInnerTangentTrack(level, track1, track2, which, disable_clicker) {
   if (which === null) which = 0;
   var pts = getInnerTangents(track1, track2);
+  if (isNaN(pts[which][0]) || isNaN(pts[which][1])) {
+    console.log("Warning: points for inner linear track between", track1.id, "and", track2.id, " could not be computed");
+    return null;
+  }
   var track = makeLinearTrack(level, track1, mod(pts[which][0], 1), -(1 - which*2), track2, mod(pts[which][1], 1), -(1 - which*2), disable_clicker);
   track.which_inner = which;
+  track.subtype = 'in';
   return track;
 }
