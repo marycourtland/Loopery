@@ -18,6 +18,13 @@ function enableLevels(game) {
       game.startCurrentLevel();
     }
   }
+  
+  game.goToLevel = function(id) {
+    if (id >= this.levels.length || id < 0) return;
+    this.levels[this.current_level].onleave();
+    this.current_level = id;
+    game.startCurrentLevel();
+  }
 }
 
 // Call this to create a level
@@ -27,9 +34,11 @@ function makeLevel(game, id) {
     
     // Fill in level data members here (e.g. level text, level solution, etc)
     
+    tracks: {},
+    
     showText: function() {}, // overwrite
     
-    jointsToggledOn: [],
+    joints_toggled_on: [],
     
     draw: function() {
       // Fill this in (code for drawing level text, background, and other non-objects)
@@ -79,6 +88,44 @@ function makeLevel(game, id) {
     // Code to perform when the level is left
     
   });
+  
+  // Other methods
+  lvl.getTrackById = function(id) {
+    if (id in this.tracks) return this.tracks[id];
+    return null;
+  }
+  
+  lvl.getStartTrack = function() {
+    // There should be only one start track, so loop through till we find it
+    for (var id in this.tracks) {
+      if (this.tracks[id].is_start) return this.tracks[id];
+    }
+    return null;
+  }
+  
+  lvl.getEndTrack = function() {
+    // There should be only one end track, so loop through till we find it
+    for (var id in this.tracks) {
+      if (this.tracks[id].is_end) return this.tracks[id];
+    }
+    return null;
+  }
+  
+  lvl.getFirstTrack = function() {
+    // There should be only one first track, so loop through till we find it
+    for (var id in this.tracks) {
+      if (this.tracks[id].is_first) return this.tracks[id];
+    }
+    return null;
+  }
+  
+  lvl.getLastTrack = function() {
+    // There should be only one last track, so loop through till we find it
+    for (var id in this.tracks) {
+      if (this.tracks[id].is_last) return this.tracks[id];
+    }
+    return null;
+  }
   
   return lvl;
 }

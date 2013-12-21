@@ -11,10 +11,67 @@
     <script type="text/javascript" src = "js/gameobject.js"></script>
     <script type="text/javascript" src = "js/levels.js"></script>
     <title>New Game</title>
+    <style>
+      html {
+        font-family: Arial;
+      }
+      #game_canvas {
+        position: absolute;
+        left:0; top:0;
+        border:1px solid black;
+        background-image:url('background.png');
+      }
+      #game_fadeout {
+        position: absolute;
+        left:0; top:0;
+        width: 801px;
+        height: 601px;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      #level_loader {
+        position: absolute;
+        left: 100px; top:60px;
+        width: 580px;
+        height: 460px;
+        padding:10px 20px;
+        background-color: rgb(157, 189, 116);
+        border:1px solid black;
+        text-align: center;
+      }
+      #level_output, #level_input {
+        display: block;
+        background-color: white;
+        margin: 1em 20px;
+        padding: 5px;
+        border: 1px solid black;
+        height: 100px;
+        width: 528px;
+        text-align: left;
+        white-space: pre-wrap;       /* css-3 */
+        white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+        white-space: -pre-wrap;      /* Opera 4-6 */
+        white-space: -o-pre-wrap;    /* Opera 7 */
+        word-wrap: break-word;       /* Internet Explorer 5.5+ */
+        
+      }
+    </style>
   </head>
   
   <body>
-    <canvas id="game_canvas" style="border:1px solid black; position: absolute; left:0; top:0; background-image:url('background.png');"></canvas>
+    <div id="game">
+      <canvas id="game_canvas"></canvas>
+      <div id="game_fadeout"></div>
+      <div id="level_loader">
+        <h3>SAVE LEVEL</h3>
+        Copy this text and save it somewhere safe.
+        <textarea id="level_output">test1</textarea>
+        <h3>LOAD LEVEL</h3>
+        Paste the text from another level here.
+        <textarea id="level_input"></textarea>
+        <button onclick="game.exitLoader()">Cancel</button>
+        <button onclick="game.loadInputLevel()">Load it!</button>
+      </div>
+    </div>
   </body>
   
   
@@ -29,11 +86,15 @@
     game.setSize(xy(800, 600));
     game.center = xy(400, 300);
     enableLevels(game);
-    window.onload = function() {      
+    window.onload = function() {
+      game.orderObjects();
+      game.start();
+    }
+    
+    game.orderObjects = function() {
       game.bringToFront('circular');
       game.bringToFront('train');
       game.bringToFront('clicker');
-      game.start();
     }
     
     game.bringToFront = function(type) {
@@ -93,14 +154,6 @@
       this.next();
       //setTimeout(function() { game.exitTitlescreen(); }, 1*1000);
     }
-    game.exitTitlescreen = function() {
-      this.doNextLevel();
-      this.stage = game.gameplay;
-      this.next();
-    }
-    game.ctx.canvas.addEventListener("click", function(event) {
-      if (game.stage === game.titlescreen) { game.exitTitlescreen(); }
-    })
     game.gameplay = function() {
       clear(this.ctx);
       if (this.isKeyPressed("L")) {}
@@ -110,8 +163,15 @@
     }
     
     
-    game.stage = game.titlescreen; // default stages
-    
+    // Stage-switching methods
+    game.exitTitlescreen = function() {
+      this.doNextLevel();
+      this.stage = game.gameplay;
+      this.next();
+    }
+    game.ctx.canvas.addEventListener("click", function(event) {
+      if (game.stage === game.titlescreen) { game.exitTitlescreen(); }
+    })
     game.restart = function() {
       this.current_level = 0;
       game.stage = game.titlescreen;
@@ -119,6 +179,25 @@
     game.startCurrentLevel = function() {
       this.levels[this.current_level].onload();
     }
+    
+    game.toggleElement = function(element_id) {
+      var v = document.getElementById(element_id).style.visibility;
+      if (v === 'hidden') document.getElementById(element_id).style.visibility = '';
+      else document.getElementById(element_id).style.visibility = 'hidden';
+    }
+    game.hideElement = function(element_id) {
+      document.getElementById(element_id).style.visibility = 'hidden';
+    }
+    game.showElement = function(element_id) {
+      document.getElementById(element_id).style.visibility = '';
+    }
+    
+    
+    game.hideElement("game_fadeout"); // start with the fadeout layer hidden (i.e. game is not faded out)
+    game.hideElement("level_loader");
+    
+    // Initial stage
+    game.stage = game.titlescreen;
     
   </script>
   
@@ -129,17 +208,11 @@
   
   <script type="text/javascript" src="levels/start.js"></script>
   <script type="text/javascript" src="levels/level1.js"></script>
-  
-  
   <script type="text/javascript" src="levels/level2.js"></script>
   <script type="text/javascript" src="levels/level3.js"></script>
   <script type="text/javascript" src="levels/level4.js"></script>
-  
   <script type="text/javascript" src="levels/level5.js"></script>
   <script type="text/javascript" src="levels/level6.js"></script>
   <script type="text/javascript" src="levels/level7.js"></script>
-  <script type="text/javascript" src="levels/level8.js"></script>
-  <script type="text/javascript" src="levels/level9.js"></script>
-  <script type="text/javascript" src="levels/level10.js"></script>
   
 </html>

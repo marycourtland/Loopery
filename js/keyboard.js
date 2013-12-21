@@ -1,5 +1,4 @@
 function getKeyFromEvent(event) {
-  if (event.preventDefault) event.preventDefault();
   return keycodes[(event.fake||window.event? event.keyCode: event.which)];
 }
 

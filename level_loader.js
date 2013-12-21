@@ -1,13 +1,17 @@
 //var test_level_string = "c:17=70,300,270,start,1;18=70,400,120;19=70,400,480;20=70,497,329,end,0;l:17,18,out,1,off,on;17,19,in,0,off,on;18,20,in,0,off,on;19,20,out,0,off,on;"
 var test_level_string = "c:10=40,400,200,start,0;11=40,400,380,end,0;l:10,11,out,0,off,on;"
 
+
+game.loadCurrentLevel = function() {
+}
+
 game.loader = {} // scope
 
 game.loader.start_track_indicator = 'start';
 game.loader.end_track_indicator = 'end';
 
 // This takes a level object and returns a string representation
-game.loader.saveLevel = function(level) { // The argument should be a level object
+game.loader.getLevelString = function(level) { // The argument should be a level object
   var s = "";
   
   if (level.getStartTrack()) var start_which = level.getTrackById(Object.keys(level.getStartTrack().connections)[0]).which_outer; // start/end linear tracks are always outer tangents
@@ -66,7 +70,7 @@ game.loader.saveLevel = function(level) { // The argument should be a level obje
 
 
 // This takes a string representation of a level and creates & returns a level object
-game.loader.loadLevel = function(level_string) {
+game.loader.loadLevelFromString = function(level_string) {
   var new_level = makeLevel(game, game.levels.length);
   var level_items = level_string.split(/:|;/)
   
@@ -80,6 +84,11 @@ game.loader.loadLevel = function(level_string) {
     if (current_parser === null) throw "Can't load this level string because it doesn't have a mode delimiter: <" + level_string + ">";
     current_parser(item, new_level)
   });
+  game.orderObjects();
+  
+  // Switch to new level
+  game.goToLevel(new_level.id);
+  
   return new_level;
 }
 
@@ -183,4 +192,21 @@ game.loader.track_parsers = {
 }
 
 
+game.exitLoader = function() {
+  // TODO: if game pausing is implemented, unpause the game
+  this.hideElement("game_fadeout"); 
+  this.hideElement("level_loader");
+}
 
+game.showLoader = function() {
+  // TODO: if game pausing is implemented, pause the game
+  this.showElement("game_fadeout"); 
+  this.showElement("level_loader");
+  document.getElementById("level_output").textContent = this.loader.getLevelString(this.levels[this.current_level]);
+}
+
+game.loadInputLevel = function() {
+  // TODO: doublecheck if the player wants to clear/leave the current level
+  this.loader.loadLevelFromString(document.getElementById("level_input").value);
+  this.exitLoader();
+}

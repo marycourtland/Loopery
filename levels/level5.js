@@ -21,12 +21,16 @@ var track5_24a = makeInnerTangentTrack(level5, track5_2, track5_4, 0);
 var track5_24b = makeInnerTangentTrack(level5, track5_2, track5_4, 1);
 var track5_34a = makeInnerTangentTrack(level5, track5_3, track5_4, 0);
 var track5_34b = makeInnerTangentTrack(level5, track5_3, track5_4, 1);
+var track5_12c = makeOuterTangentTrack(level5, track5_1, track5_2, 1);
+var track5_34c = makeOuterTangentTrack(level5, track5_3, track5_4, 0);
+var track5_13c = makeOuterTangentTrack(level5, track5_1, track5_3, 0);
+var track5_24c = makeOuterTangentTrack(level5, track5_2, track5_4, 1);
 
 level5.joints_toggled_on = [
   [track5_start, track5_start1],
   [track5_1, track5_start1],
   [track5_4, track5_4end],
-  [track5_end, track5_4end],
+  //[track5_end, track5_4end],
 ]
 
 level5.loadActions.push(function() {

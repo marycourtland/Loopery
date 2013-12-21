@@ -12,6 +12,9 @@ var track3_2 = makeCircleTrack(level3, xy(400, 120), 70);
 var track3_3 = makeCircleTrack(level3, xy(400, 480), 70);
 var track3_4 = makeCircleTrack(level3, xy(500, 330), 70);
 var track3_end = makeCircleTrack(level3, xy(850, track3_4.pos.y-30), 40);
+track3_start.setStart();
+track3_1.setFirst();
+track3_4.setLast();
 track3_end.setEnd();
 
 var track3_start1 = makeOuterTangentTrack(level3, track3_start, track3_1, 1, true);

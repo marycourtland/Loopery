@@ -1,4 +1,5 @@
 function Game(params) {
+  
   // Initialize game settings
   if (params == null) params = {};
   this.fps = 60,
@@ -20,6 +21,7 @@ function Game(params) {
     this.canvas.width = size.x;
     this.canvas.height = size.y;
   }
+  
   this.setTitle = function(title) {
     this.title = title;
     window.document.title = title;
@@ -48,6 +50,7 @@ function Game(params) {
   this.setTitle(params.title? params.title : "New Game");
   config_mouse(this);
   config_keyboard(this);
+  
   
   // Game loop
   this.start = function() {

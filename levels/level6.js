@@ -40,7 +40,6 @@ makeOuterTangentTrack(level6, track6_12, track6_9, 0);
 makeInnerTangentTrack(level6, track6_5, track6_9, 0);
 makeInnerTangentTrack(level6, track6_13, track6_9, 1);
 makeOuterTangentTrack(level6, track6_6, track6_10, 1);
-makeInnerTangentTrack(level6, track6_4, track6_8, 1);
 makeInnerTangentTrack(level6, track6_2, track6_5, 0);
 makeOuterTangentTrack(level6, track6_6, track6_13, 0);
 makeInnerTangentTrack(level6, track6_6, track6_3, 0);
