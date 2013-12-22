@@ -167,7 +167,6 @@
     game.exitTitlescreen = function() {
       this.doNextLevel();
       this.stage = game.gameplay;
-      this.next();
     }
     game.ctx.canvas.addEventListener("click", function(event) {
       if (game.stage === game.titlescreen) { game.exitTitlescreen(); }

@@ -17,6 +17,6 @@ game.ctx.fillStyle = 'white'; // default foreground color
 game.ctx.strokeStyle = 'white';
 
 // Other constants
-game.train_speed = 3; // pixels per frame. TODO: convert to pixels per second
+game.train_speed = 5; // pixels per frame. TODO: convert to pixels per second
 game.joint_click_radius = 20; // radius of area in which you can click the joining of two tracks
 game.joint_click_distance = 40;
