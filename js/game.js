@@ -101,7 +101,14 @@ function Game(params) {
   this.stage = this.gameplay; // default stages
   
   // GAME EVENTS
-  this.ctx.canvas.addEventListener("click", function(event) {
-    console.log("Clicked at " + mouse.pos);
-  })
+  this.onclick = function(callback) {
+    this.ctx.canvas.addEventListener("click", callback);
+  }
+  
+  this.onmousedown = function(callback) {
+    this.ctx.canvas.addEventListener("mousedown", callback);
+  }
+  
+  this.onclick(function() { console.log("Clicked at " + mouse.pos); })
 }
+

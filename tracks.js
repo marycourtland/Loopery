@@ -1,5 +1,6 @@
 // TODO: ensure circular tracks are drawn after linear tracks
 
+
 // Generic track
 function makeTrack(level, id) {
   var track = makeLevelObject(level);
@@ -56,7 +57,20 @@ function makeCircleTrack(level, pos, radius, id) {
       this.color,
       game.display.track_width
     );
+    if (game.display.shade_hovered_circle_track && this.contains(game.mouse.pos)) {
+      this.shade();
+    }
   })
+  
+  track.shade = function() {
+    this.ctx.globalAlpha = 0.5;
+    circle(this.ctx,
+      this.pos,
+      this.radius - game.display.track_width/2,
+      "black"
+    );
+    this.ctx.globalAlpha = 1;
+  }
   
   track.old_pos = xy(-1, -1);
   track.tickActions.push(function() {
@@ -71,6 +85,7 @@ function makeCircleTrack(level, pos, radius, id) {
     return mod(old_pos + dir * game.train_speed / (2 * Math.PI * this.radius), 1);
   }
   
+  // Given a position on the track (from 0 to 1), return the XY coords
   track.getPosCoords = function(pos) {
     var angle = pos * 2 * Math.PI;
     return add(this.pos, rth(this.radius, angle));
@@ -106,6 +121,15 @@ function makeCircleTrack(level, pos, radius, id) {
   
   track.contains = function(pos) {
     return distance(pos, this.pos) < (this.radius - game.display.track_width/2);
+  }
+  
+  track.onclick = function(pos) {
+    // The purpose of this is to enable the level editor to know which track
+    // has been selected.
+    // Splice is used instead of push because we want the most recently
+    // clicked track (i.e. the one later in game.objects) to be at position 0.
+    if (this.level && this.level.id !== game.current_level) return;
+    game.clicked_tracks.splice(0, 0, this);
   }
   
   // For testing purposes
@@ -169,30 +193,39 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
   }
   
   track.drawActions.push(function() {
-    // Draw the line
-    line(this.ctx,
-      this.track1.getPosCoords(this.parent_track_pos[this.track1.id]),
-      this.track2.getPosCoords(this.parent_track_pos[this.track2.id]),
-      this.color,
-      game.display.track_width
-    )
+    var p1 = this.getPosCoords(0);
+    var p2a = this.getPosCoords(game.display.darkened_track_extent);
+    var p2b = this.getPosCoords(game.display.darkened_track_extent - 0.01);
+    var p3a = this.getPosCoords(1 - game.display.darkened_track_extent);
+    var p3b = this.getPosCoords(1 - game.display.darkened_track_extent + 0.01);
+    var p4 = this.getPosCoords(1);
     
-    // If the track isn't toggled, then show darkened ends
-    if (!this.track1.connections[this.id]) {
-      lineGradient(game.ctx,
-        this.getPosCoords(0),
-        this.getPosCoords(game.display.darkened_track_extent),
-         'black', 'white',
-        game.display.track_width);
+    // Determine which ends to darken (based whether connections are on or off)
+    var dark_end1 = !this.track1.connections[this.id];
+    var dark_end2 = !this.track2.connections[this.id];
+    
+    // Neither ends are darkened
+    if (!(dark_end1 || dark_end2)) line(this.ctx, p1, p4, this.color, game.display.track_width);
+    
+    // Only first end is darkened
+    if (dark_end1 && !dark_end2) {
+      lineGradient(game.ctx, p1, p2a, 'black', 'white', game.display.track_width);
+      line(this.ctx, p2b, p4, this.color, game.display.track_width)
     }
     
-    if (!this.track2.connections[this.id]) {
-      lineGradient(game.ctx,
-        this.getPosCoords(1),
-        this.getPosCoords(1 - game.display.darkened_track_extent),
-        'black', 'white',
-        game.display.track_width);
+    // Only second end is darkened
+    if (!dark_end1 && dark_end2) {
+      line(this.ctx, p1, p3b, this.color, game.display.track_width)
+      lineGradient(game.ctx, p4, p3a, 'black', 'white', game.display.track_width);
     }
+    
+    // Both ends are darkened
+    if (dark_end1 && dark_end2) {
+      lineGradient(game.ctx, p1, p2a, 'black', 'white', game.display.track_width);
+      line(this.ctx, p2b, p3b, this.color, game.display.track_width)
+      lineGradient(game.ctx, p4, p3a, 'black', 'white', game.display.track_width);
+    }
+    
   })
   
   track.getNextPos = function(old_pos, dir) {
@@ -245,7 +278,10 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
     track.clicker1.pos = track.getPosCoords(0.4);
     track.clicker2.pos = track.getPosCoords(0.9);
     track.clicker1.drawActions.push(function() {
-      if (distance(game.mouse.pos, this.pos) > game.joint_click_radius) { return; }
+      // Draw the clicker if any of these conditions are met:
+      // - SHIFT is pressed (which should let the player see all clickers)
+      // - The mouse is over the clicker
+      if (!(game.isKeyPressed("SHIFT") || distance(game.mouse.pos, this.pos) <= game.joint_click_radius)) { return; }
       var old_alpha = this.ctx.globalAlpha;
       this.ctx.globalAlpha = 0.3;
       circle(this.ctx, 
@@ -256,7 +292,10 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
       this.ctx.globalAlpha = old_alpha;
     })
     track.clicker2.drawActions.push(function() {
-      if (distance(game.mouse.pos, this.pos) > game.joint_click_radius) { return; }
+      // Draw the clicker if any of these conditions are met:
+      // - SHIFT is pressed (which should let the player see all clickers)
+      // - The mouse is over the clicker
+      if (!(game.isKeyPressed("SHIFT") || distance(game.mouse.pos, this.pos) <= game.joint_click_radius)) { return; }
       var old_alpha = this.ctx.globalAlpha;
       this.ctx.globalAlpha = 0.3;
       circle(this.ctx, 

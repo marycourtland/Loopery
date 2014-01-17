@@ -18,6 +18,7 @@ function makeTrain(color, track) {
     this.dir = dir;
   }
   train.tick = function() {
+    if (game.hide_trains) return;
     if (this.disabled) return;
     // move the train
     this.oldpos = this.pos; // it's just a number so no need to deepcopy it
@@ -45,6 +46,7 @@ function makeTrain(color, track) {
     
   }
   train.draw = function() {
+    if (game.hide_trains) return;
     if (this.disabled) return;
     circle(this.ctx, this.track.getPosCoords(this.pos), game.display.train_radius, this.color);
   }

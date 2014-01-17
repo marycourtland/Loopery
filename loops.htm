@@ -119,6 +119,10 @@
     game.next_track = 0;
     game.tracks = {};
     
+    game.clicked_tracks = [];
+    game.tickActions.push(function() { this.clicked_tracks = []; });
+
+    
     // Player-driven train possibilities
     game.train1 = makeTrain('#111f3e', null);
     game.train2 = makeTrain('#5d1f3e', null);
@@ -142,7 +146,7 @@
       this.player_has_chosen_train = false;
     }
     
-
+    game.hide_trains = false;
     
     // ========== GAME STAGES
     game.titlescreen = function() {

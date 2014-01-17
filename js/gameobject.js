@@ -80,6 +80,27 @@ function GameObject(game, params) {
   this.onmousedown = function(evt) {};
   this.onmouseup = function(evt) {};
   
+  // This method simply removes it from global arrays. It does not use the delete keyword
+  this.destroy = function() {
+    // Remove it from the game.objects array
+    for (var obj = 0; obj < game.objects.length; obj++) {
+      if (game.objects[obj] === this) {
+        game.objects.splice(obj, 1);
+        break;
+      }
+    }
+    
+    // Remove it from the game.ctx.canvas.objects array
+    for (var obj = 0; obj < game.ctx.canvas.objects.length; obj++) {
+      if (game.ctx.canvas.objects[obj] === this) {
+        game.ctx.canvas.objects.splice(obj, 1);
+        break;
+      }
+    }
+    
+    // Also, set this flag
+    this.destroyed = true;
+  }
 
   game.objects.push(this);
   

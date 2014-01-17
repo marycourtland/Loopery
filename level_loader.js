@@ -25,9 +25,9 @@ game.loader.getLevelString = function(level) { // The argument should be a level
     if (level.tracks[i].is_end) continue;
     
     s += level.tracks[i].id.toString() + "="
-    s += level.tracks[i].radius.toString() + ","
-    s += level.tracks[i].pos.x.toString() + ","
-    s += level.tracks[i].pos.y.toString()
+    s += round(level.tracks[i].radius, 1).toString() + ","
+    s += round(level.tracks[i].pos.x, 1).toString() + ","
+    s += round(level.tracks[i].pos.y, 1).toString()
     
     if (level.tracks[i].is_first) { s += ",start," + start_which.toString() } 
     if (level.tracks[i].is_last) { s += ",end," + end_which.toString() }

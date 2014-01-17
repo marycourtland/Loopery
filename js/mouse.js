@@ -60,7 +60,9 @@ function config_mouse(game) {
     
     for (var i=0; i < game.objects.length; i++) {
       obj = game.objects[i]
-      if (obj.contains && obj.contains(this.pos)) this.clicked_object = obj;
+      if (obj.contains && obj.contains(this.pos) && !(obj.level && obj.level.id !== game.current_level)) {
+        this.clicked_object = obj;
+      }
     }
     if (this.clicked_object) {
       this.clicked_object.onmousedown(this.pos);

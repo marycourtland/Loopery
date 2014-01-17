@@ -308,6 +308,7 @@ function isBetweenOnCircle(p, p1, p2, c) {
     return (p <= p1) || (p > p2);
   }
 }
+
 // Given two points on a circular track of circumfrence c:
 // - There are two possible distances between them.
 // - Return the shorter distance.
@@ -325,6 +326,28 @@ function shortestDistanceOnCircle(p1, p2, c) {
   return Math.min(s12, s21);
 }
 
+// Finds the distance of point p from the line that goes through pos1 and pos2.
+function distanceFromLine(p, pos1, pos2) {
+  var posp1 = subtract(p, pos1);
+  var pos12  = subtract(pos2, pos1);
+  var theta = posp1.th - pos12.th;
+  return Math.abs(posp1.r * Math.sin(theta));
+}
+
+// Determines whether the point p lies on the line segment from pos1 to pos2
+// (within the given line width)
+function isOnLineSegment(p, pos1, pos2, line_width) {
+  var posp1 = subtract(p, pos1);
+  var posp2 = subtract(p, pos2);
+  var pos12  = subtract(pos2, pos1);
+  var pos21  = subtract(pos1, pos2);
+  var theta1 = Math.abs(posp1.th - pos12.th);
+  var theta2 = Math.abs(posp2.th - pos21.th);
+  if (Math.abs(theta1) > Math.PI/2 || Math.abs(theta2) > Math.PI/2) return false;
+  return posp1.r * Math.sin(theta1) <= line_width;
+}
+
+
 // Wrapper for Math.round
 function round(x, decimals) {
   if (decimals == null) decimals = 0;
@@ -334,6 +357,16 @@ function round(x, decimals) {
 // This applies the round function to the X and Y coords of a vector
 function vround(v, decimals) {
   return xy(round(v.x, decimals), round(v.y, decimals));
+}
+
+// "Snap" the vector to a grid
+// i.e round its components to multiples of the gridsize's components
+function snapToGrid(v, gridsize) {
+  // NB: this changes the vector itself
+  v._set_xy(
+    round(v.x / gridsize.x) * gridsize.x,
+    round(v.y / gridsize.y) * gridsize.y
+  )
 }
 
 

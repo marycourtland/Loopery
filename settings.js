@@ -16,6 +16,8 @@ game.display.font_tiny = {size: 12, type: 'Arial'}
 game.ctx.fillStyle = 'white'; // default foreground color
 game.ctx.strokeStyle = 'white';
 
+game.display.shade_hovered_circle_track = false;
+
 // Other constants
 game.train_speed = 5; // pixels per frame. TODO: convert to pixels per second
 game.joint_click_radius = 20; // radius of area in which you can click the joining of two tracks

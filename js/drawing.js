@@ -25,6 +25,15 @@ function rect(ctx, p0, p1, color) {
   ctx.stroke();
   ctx.restore();
 }
+function emptyRect(ctx, p0, p1, color) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.beginPath();
+  ctx.rect(p0.x+0.5, p0.y+0.5, p1.x-p0.x, p1.y-p0.y);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.restore();
+}
 function rect_rounded(ctx, p0, p1, corner_radius, color) {
   var r = corner_radius;
   ctx.save();
