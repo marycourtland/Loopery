@@ -1,0 +1,41 @@
+html {
+  font-family: Arial;
+}
+#game_canvas {
+  position: absolute;
+  left:0; top:0;
+  border:1px solid black;
+  background-image:url('background.png');
+}
+#game_fadeout {
+  position: absolute;
+  left:0; top:0;
+  width: 801px;
+  height: 601px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+#level_loader {
+  position: absolute;
+  left: 100px; top:60px;
+  width: 580px;
+  height: 460px;
+  padding:10px 20px;
+  background-color: rgb(157, 189, 116);
+  border:1px solid black;
+  text-align: center;
+}
+#level_output, #level_input {
+  display: block;
+  background-color: white;
+  margin: 1em 20px;
+  padding: 5px;
+  border: 1px solid black;
+  height: 100px;
+  width: 528px;
+  text-align: left;
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
