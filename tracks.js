@@ -34,6 +34,7 @@ function makeTrack(level, id) {
   //   track.checkForConnections
   //   track.getPosFromOldTrack
   //   track.getDirFromOldTrack
+  //   track.delete
   
   return track;
   
@@ -132,6 +133,15 @@ function makeCircleTrack(level, pos, radius, id) {
     game.clicked_tracks.splice(0, 0, this);
   }
   
+  track.delete = function() {
+    // Delete any linear tracks connected to this track
+    for (track_id in this.connections) {
+      game.tracks[track_id].delete();
+    }
+    
+    this.destroy();
+  }
+  
   // For testing purposes
   handle(track);
   
@@ -226,7 +236,19 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
       lineGradient(game.ctx, p4, p3a, 'black', 'white', game.display.track_width);
     }
     
+    if (game.display.shade_hovered_line_track && this.contains(game.mouse.pos)) {
+      this.shade();
+    }
+    
   })
+  
+  track.shade = function() {
+    this.ctx.globalAlpha = 0.5;
+    line(this.ctx, this.getPosCoords(0), this.getPosCoords(1), 'black', game.display.track_width)
+    this.ctx.globalAlpha = 1;
+  }
+  
+  track.contains = function(pos) { return isOnLineSegment(pos, this.getPosCoords(0), this.getPosCoords(1), game.display.track_width); }
   
   track.getNextPos = function(old_pos, dir) {
     return old_pos + dir * game.train_speed / this.length;
@@ -321,6 +343,27 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
       if (game.levels[game.current_level].id != this.level.id) return;
       this.track.track2.toggleJoint(this.track.id);
     }
+  }
+  
+  track.onclick = function(pos) {
+    // The purpose of this is to enable the level editor to know which track
+    // has been selected.
+    // Splice is used instead of push because we want the most recently
+    // clicked track (i.e. the one later in game.objects) to be at position 0.
+    if (this.level && this.level.id !== game.current_level) return;
+    game.clicked_tracks.splice(0, 0, this);
+  }
+  
+  track.delete = function() {
+    // Delete the clicker objects
+    if (this.clicker1) { this.clicker1.destroy(); }
+    if (this.clicker2) { this.clicker2.destroy(); }
+    
+    // Remove references from parent circle tracks
+    delete this.track1.connections[this.id];
+    delete this.track2.connections[this.id];
+    
+    this.destroy();
   }
   
   

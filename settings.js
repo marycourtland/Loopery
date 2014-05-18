@@ -17,6 +17,7 @@ game.ctx.fillStyle = 'white'; // default foreground color
 game.ctx.strokeStyle = 'white';
 
 game.display.shade_hovered_circle_track = false;
+game.display.shade_hovered_line_track = false;
 
 // Other constants
 game.train_speed = 5; // pixels per frame. TODO: convert to pixels per second
