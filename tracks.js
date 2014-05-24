@@ -58,7 +58,7 @@ function makeCircleTrack(level, pos, radius, id) {
       this.color,
       game.display.track_width
     );
-    if (game.display.shade_hovered_circle_track && this.contains(game.mouse.pos)) {
+    if (game.display.shade_hovered_circle_track && this.contains(game.mouse.pos) || this.show_shade) {
       this.shade();
     }
   })
@@ -71,6 +71,8 @@ function makeCircleTrack(level, pos, radius, id) {
       "black"
     );
     this.ctx.globalAlpha = 1;
+    
+    this.show_shade = false;
   }
   
   track.old_pos = xy(-1, -1);

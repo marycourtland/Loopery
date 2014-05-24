@@ -19,12 +19,12 @@ game.editor.select_tool.resizer.ondrag = function() { this.dragging = true; }
 
 game.editor.select_tool.resizer.tickActions.push(function() {
   if (!game.editor.select_tool.params.selected_track) { return; }
-  console.log("Dragging:", this.dragging);
   
   var track_center = game.editor.select_tool.params.selected_track.pos;
 
   if (this.dragging) {
     this.pos = game.mouse.pos.copy();
+    if (game.editor.snap_to_grid) { snapToGrid(this.pos, game.editor.gridsize); }
     game.editor.select_tool.params.selected_track.radius = distance(this.pos, track_center);
   }
   else {
@@ -42,8 +42,6 @@ game.editor.select_tool.resizer.drawActions.push(function() {
   if (!game.editor.select_tool.params.selected_track) { return; }
   
   circle(game.ctx, this.pos, this.radius, game.display.track_color)
-  
-  // TODO: snap to gridsize
   
 });
 
@@ -84,7 +82,7 @@ game.editor.select_tool.states = {
   track_is_selected: {
     onenter: function() { console.log("track_is_selected#onenter"); },
     draw: function() {
-      game.editor.select_tool.params.selected_track.shade();
+      game.editor.select_tool.params.selected_track.show_shade = true;
     },
     onleave: function() {
       console.log("track_is_selected#onenter"); 

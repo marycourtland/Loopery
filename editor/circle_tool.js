@@ -14,6 +14,7 @@ game.editor.circle_tool.complete = function() {
   
   // Make the track
   var track = makeCircleTrack(game.editor.custom_level, this.params.center_pos, this.params.radius); 
+  game.orderObjects();
   
   // Reset the params
   this.params.center_pos = null;
