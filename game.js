@@ -14,6 +14,7 @@ game.orderObjects = function() {
   game.bringToFront('circular');
   game.bringToFront('train');
   game.bringToFront('clicker');
+  game.bringToFront('resizer');
 }
 
 game.bringToFront = function(type) {

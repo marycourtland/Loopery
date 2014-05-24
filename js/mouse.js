@@ -8,7 +8,8 @@ MOUSE_UP = "mouse up";
 MOUSE_DRAG = "mouse drag";
 MOUSE_STILL = "still";
 MOUSE_MOVING = "moving";
-MOUSE_STOPPED = "stopped"; // Why is this different than "still"?
+MOUSE_STOPPED = "stopped";
+// After moving, the mouse goes to the 'stopped' state for one frame before going to the 'still' state
 
 function calcMouseCanvasPos(event, canvas) {
   if (navigator.userAgent.match(/Firefox/i)) {
