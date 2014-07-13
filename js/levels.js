@@ -7,15 +7,26 @@ function enableLevels(game) {
   game.current_level = 0;
   game.tickActions.push(function() { this.levels[this.current_level].tick(); });
   game.finalActions.push(function() { this.levels[this.current_level].draw(); });
-  game.doNextLevel = function() {
+
+  game.endLevel = function() {
     this.levels[this.current_level].onleave();
+    if (this.editor.enabled) {
+      // switch to a different editor tool
+      this.editor.setTool(this.editor.select_tool);
+    }
+    else {
+      this.doNextLevel();
+    }
+  }
+
+  game.doNextLevel = function() {
     this.current_level += 1; 
     
     if (this.current_level === this.levels.length) {
-      game.restart();
+      this.restart();
     }
     else {
-      game.startCurrentLevel();
+      this.startCurrentLevel();
     }
   }
   

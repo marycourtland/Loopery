@@ -59,7 +59,7 @@ var load_level = makeButton(
 var next_level = makeButton(
   xy(15, 500),
   "Skip to next level",
-  function() { game.doNextLevel(); }
+  function() { game.endLevel(); }
 );
 
 // Button to restart level

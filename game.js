@@ -63,7 +63,7 @@ game.resetPlayerTrain = function(train) { // Call this when resetting the game
   this.player_has_chosen_train = false;
 }
 
-game.hide_trains = false;
+game.disable_gameplay = false;
 
 // ========== GAME STAGES
 game.titlescreen = function() {

@@ -20,10 +20,10 @@ function makeEditorButton(pos, label, callback) {
   return button;
 }
 
-game.editor.test_button = makeEditorButton(
+game.editor.test_level_tool.button = makeEditorButton(
   xy(15, 40),
   "Test level (NYI)",
-  function() { } // TODO: Level editor's "test level" method
+  function() { game.editor.setTool(game.editor.test_level_tool); }
 );
 
 

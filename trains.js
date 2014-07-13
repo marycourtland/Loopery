@@ -21,7 +21,7 @@ function makeTrain(color, track) {
     this.dir = dir;
   }
   train.tick = function() {
-    if (game.hide_trains) return;
+    if (game.disable_gameplay) return;
     if (this.disabled) return;
     // move the train
     this.oldpos = this.pos; // it's just a number so no need to deepcopy it
@@ -40,7 +40,7 @@ function makeTrain(color, track) {
         // when a train reaches track1_end, then the player has chosen it
         if (new_track.id === track1_end.id) game.choosePlayerTrain(this);
         
-        game.doNextLevel();
+        game.endLevel();
       }
       
       // TODO (low priority): a train encounters a movement hiccup when it goes backwards
@@ -49,7 +49,7 @@ function makeTrain(color, track) {
     
   }
   train.draw = function() {
-    if (game.hide_trains) return;
+    if (game.disable_gameplay) return;
     if (this.disabled) return;
     circle(this.ctx, this.track.getPosCoords(this.pos), game.display.train_radius, this.color);
   }

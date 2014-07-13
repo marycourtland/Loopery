@@ -36,13 +36,13 @@ game.enableEditor = function() {
   }
   game.editor.custom_level = makeLevel(game, game.levels.length);
   game.current_level = game.editor.custom_level.id;
-  game.hide_trains = true;
+  game.disable_gameplay = true;
 }
 
 game.disableEditor = function() {
   if (this.editor.current_tool) this.editor.current_tool.end();
   this.editor.enabled = false;
-  game.hide_trains = false;
+  game.disable_gameplay = false;
 }
 
 game.editor.setTool = function(tool) {
