@@ -60,7 +60,7 @@ game.editor.draw = function() {
   
   // Menu labels
   text(this.ctx, "LEVEL EDITOR", xy(15, 20), "nw");
-  text(this.ctx, "Tools", xy(15, 170), "nw");
+  text(this.ctx, "Tools", xy(15, 200), "nw");
 }
 
 game.editor.tick = function() {

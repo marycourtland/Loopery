@@ -36,6 +36,11 @@ function makeLevel(game, id) {
     
     tracks: {},
     
+    start_track: null,
+    end_track: null,
+
+    start_dir: 1, // rotation direction of train on the starting track (1 or -1)
+    
     showText: function() {}, // overwrite
     
     joints_toggled_on: [],
@@ -95,36 +100,32 @@ function makeLevel(game, id) {
     return null;
   }
   
-  lvl.getStartTrack = function() {
-    // There should be only one start track, so loop through till we find it
-    for (var id in this.tracks) {
-      if (this.tracks[id].is_start) return this.tracks[id];
-    }
-    return null;
+  lvl.getStart = function() {
+    return this.start_track;
   }
   
-  lvl.getEndTrack = function() {
-    // There should be only one end track, so loop through till we find it
-    for (var id in this.tracks) {
-      if (this.tracks[id].is_end) return this.tracks[id];
-    }
-    return null;
+  lvl.setStart = function(track) {
+    if (this.start_track) { this.start_track.unsetStart(); }
+    this.start_track = track;
+    track.setStart();
   }
   
-  lvl.getFirstTrack = function() {
-    // There should be only one first track, so loop through till we find it
-    for (var id in this.tracks) {
-      if (this.tracks[id].is_first) return this.tracks[id];
-    }
-    return null;
+  lvl.getEnd = function() {
+    return this.end_track;
   }
   
-  lvl.getLastTrack = function() {
-    // There should be only one last track, so loop through till we find it
-    for (var id in this.tracks) {
-      if (this.tracks[id].is_last) return this.tracks[id];
-    }
-    return null;
+  lvl.setEnd = function(track) {
+    if (this.end_track) { this.end_track.unsetEnd(); }
+    this.end_track = track;
+    track.setEnd();
+  }
+
+  lvl.getStartDir = function() {
+    return this.start_dir;
+  }
+  
+  lvl.setStartDir = function(dir) {
+    this.start_dir = dir;
   }
   
   return lvl;

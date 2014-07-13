@@ -5,9 +5,8 @@ var l6_r = 100;
 var l6_d = 30;
 var l6_first_pos = xy(225, 300);
 
-var track6_start = makeCircleTrack(level6, xy(-50, l6_first_pos.y), l6_d);
-var track6_end = makeCircleTrack(level6, xy(850, l6_first_pos.y), l6_d);
-track6_end.setEnd();
+level6.setStart(makeCircleTrack(level6, xy(-50, l6_first_pos.y), l6_d));
+level6.setEnd(makeCircleTrack(level6, xy(850, l6_first_pos.y), l6_d));
 
 
 var track6_1 = makeCircleTrack(level6, add(l6_first_pos, rth(3*l6_r, -Math.PI/3)), l6_d);
@@ -27,8 +26,8 @@ var track6_14 = makeCircleTrack(level6, add(l6_first_pos, rth(2*l6_r, Math.PI/3)
 var track6_15 = makeCircleTrack(level6, xshift(add(l6_first_pos, rth(2*l6_r, Math.PI/3)), l6_r), l6_d);
 var track6_16 = makeCircleTrack(level6, add(l6_first_pos, rth(3*l6_r, Math.PI/3)), l6_d);
 
-var track6_start7 = makeOuterTangentTrack(level6, track6_start, track6_7, 1);
-var track6_10end = makeOuterTangentTrack(level6, track6_10, track6_end, 1);
+var track6_start7 = makeOuterTangentTrack(level6, level6.getStart(), track6_7, 1);
+var track6_10end = makeOuterTangentTrack(level6, track6_10, level6.getEnd(), 1);
 
 makeInnerTangentTrack(level6, track6_7, track6_4, 0);
 makeOuterTangentTrack(level6, track6_7, track6_4, 0);
@@ -58,14 +57,14 @@ makeInnerTangentTrack(level6, track6_14, track6_16, 0);
 
 
 level6.joints_toggled_on = [
-  [track6_start, track6_start7],
+  [level6.getStart(), track6_start7],
   [track6_7, track6_start7],
   [track6_10, track6_10end],
-  [track6_end, track6_10end],
+  [level6.getEnd(), track6_10end],
 ]
 
 level6.loadActions.push(function() {
-  game.player_train.setTrack(track6_start, 0.5, -1);
+  game.player_train.setTrack(level6.getStart(), 0.5, -1);
   game.player_train.enable()
 });
 

@@ -62,10 +62,9 @@ game.editor.select_tool.end = function() {
 // Tool states
 game.editor.select_tool.states = {
   nothing_is_selected: {
-    onenter: function() { console.log("nothing_is_selected#onenter"); },
+    onenter: function() {},
     draw: function() {},
-    onleave: function() {
-      console.log("nothing_is_selected#onleave"); 
+    onleave: function() { 
       if (game.clicked_tracks.length > 0) {
         // A track has been selected
         game.editor.select_tool.params.selected_track = game.clicked_tracks[0];
@@ -80,12 +79,11 @@ game.editor.select_tool.states = {
     next_state: "track_is_selected"
   },
   track_is_selected: {
-    onenter: function() { console.log("track_is_selected#onenter"); },
+    onenter: function() {},
     draw: function() {
       game.editor.select_tool.params.selected_track.show_shade = true;
     },
     onleave: function() {
-      console.log("track_is_selected#onenter"); 
       if (game.clicked_tracks.length > 0) {
         // A different track has been selected - repeat this state
         game.editor.select_tool.params.selected_track = game.clicked_tracks[0];

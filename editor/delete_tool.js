@@ -33,6 +33,7 @@ game.editor.delete_tool.states = {
     onleave: function() {
       // If a track was clicked, then delete it
       if (game.clicked_tracks.length > 0) {
+        delete game.editor.custom_level.tracks[game.clicked_tracks[0].id]
         game.clicked_tracks[0].delete();
       }
     },

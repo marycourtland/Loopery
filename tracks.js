@@ -1,5 +1,3 @@
-// TODO: ensure circular tracks are drawn after linear tracks
-
 
 // Generic track
 function makeTrack(level, id) {
@@ -12,21 +10,15 @@ function makeTrack(level, id) {
   game.next_track++;
   game.tracks[track.id] = track;
   
-  // This is true if the track is the starting pseudotrack (offscreen to the left)
+  // This is true if the track is the starting track (offscreen to the left)
   track.is_start = false;
   track.setStart = function() { this.is_start = true; }
+  track.unsetStart = function() { this.is_start = false; }
   
-  // This is true if the track is the ending pseudotrack (offscreen to the right)
+  // This is true if the track is the ending track (offscreen to the right)
   track.is_end = false;
   track.setEnd = function() { this.is_end = true; }
-  
-  // This is true if the track is next to the starting pseudotrack
-  track.is_first = false;
-  track.setFirst = function() { this.is_first = true; }
-  
-  // This is true if the track is next to the ending pseudotrack
-  track.is_last = false;
-  track.setLast = function() { this.is_last = true; }
+  track.unsetEnd = function() { this.is_end = false; }
   
   // Subclasses should implement these methods:
   //   track.getNextPos
@@ -50,7 +42,7 @@ function makeCircleTrack(level, pos, radius, id) {
   track.radius = radius;
   track.placeAt(pos);
   track.connections = {}; // linear tracks connecting this with another circular track
-    
+  
   track.drawActions.push(function() {
     emptyCircle(this.ctx,
       this.pos,
@@ -61,14 +53,19 @@ function makeCircleTrack(level, pos, radius, id) {
     if (game.display.shade_hovered_circle_track && this.contains(game.mouse.pos) || this.show_shade) {
       this.shade();
     }
+    if (game.display.shade_start_end_tracks) {
+      if (this.is_start) { this.shade('green'); }
+      if (this.is_end) { this.shade('red'); }
+    }
   })
   
-  track.shade = function() {
+  track.shade = function(color) {
+    if (!color) { color = 'black'; }
     this.ctx.globalAlpha = 0.5;
     circle(this.ctx,
       this.pos,
       this.radius - game.display.track_width/2,
-      "black"
+      color
     );
     this.ctx.globalAlpha = 1;
     
@@ -113,6 +110,7 @@ function makeCircleTrack(level, pos, radius, id) {
   }
   
   track.getDirFromOldTrack = function(linear_track) {
+    console.log("GOT DIR:", -1 * linear_track.parent_track_winding[this.id])
     return -1 * linear_track.parent_track_winding[this.id];
   }
   
@@ -244,9 +242,10 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
     
   })
   
-  track.shade = function() {
+  track.shade = function(color) {
+    if (!color) { color = 'black'; }
     this.ctx.globalAlpha = 0.5;
-    line(this.ctx, this.getPosCoords(0), this.getPosCoords(1), 'black', game.display.track_width)
+    line(this.ctx, this.getPosCoords(0), this.getPosCoords(1), color, game.display.track_width)
     this.ctx.globalAlpha = 1;
   }
   
@@ -371,8 +370,6 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
   
   return track;
 }
-
-
 
 // Utility methods - to find position of linear tracks tangent to two circular tracks
 // WARNING: MESSY CODE (but it works)

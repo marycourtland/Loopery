@@ -6,20 +6,19 @@ level4.showText = function() {
   text(game.ctx, "But when your path is done", xy(400, 480), "centered");
   text(game.ctx, "you've only taken one.", xy(400, 520), "centered");
 }
-var track4_start = makeCircleTrack(level4, xy(-50, 300), 40);
-var track4_end = makeCircleTrack(level4, xy(850, track4_start.pos.y), 40);
-track4_end.setEnd();
+level4.setStart(makeCircleTrack(level4, xy(-50, 300), 40));
+level4.setEnd(makeCircleTrack(level4, xy(850, level4.getStart().pos.y), 40));
 
-var track4_startend = makeOuterTangentTrack(level4, track4_start, track4_end, 0);
+var track4_startend = makeOuterTangentTrack(level4, level4.getStart(), level4.getEnd(), 0);
 
 
 level4.joints_toggled_on = [
-  [track4_start, track4_startend],
-  [track4_end, track4_startend],
+  [level4.getStart(), track4_startend],
+  [level4.getEnd(), track4_startend],
 ]
 
 level4.loadActions.push(function() {
-  game.player_train.setTrack(track4_start, 0, 1);
+  game.player_train.setTrack(level4.getStart(), 0, 1);
   game.player_train.enable()
 });
 

@@ -48,32 +48,38 @@ game.editor.clear_all_button = makeEditorButton(
   function() {  } // TODO: level editor's "clear all" method
 );
 
-game.editor.choose_startend_circles = makeEditorButton(
+game.editor.select_start_tool.button = makeEditorButton(
   xy(15, 130),
-  "Choose start/end (NYI)",
-  function() { } // TODO: function to choose start and end points in level editor
+  "Choose start point",
+  function() { game.editor.setTool(game.editor.select_start_tool); }
+);
+
+game.editor.select_end_tool.button = makeEditorButton(
+  xy(15, 160),
+  "Choose end point",
+  function() { game.editor.setTool(game.editor.select_end_tool); }
 );
 
 game.editor.circle_tool.button = makeEditorButton(
-  xy(15, 190),
+  xy(15, 220),
   "Circular tracks",
   function() { game.editor.setTool(game.editor.circle_tool); }
 );
 
 game.editor.linear_tool.button = makeEditorButton(
-  xy(15, 220),
+  xy(15, 250),
   "Linear tracks",
   function() { game.editor.setTool(game.editor.linear_tool); }
 );
 
 game.editor.select_tool.button = makeEditorButton(
-  xy(15, 250),
-  "Select",
+  xy(15, 280),
+  "Select/Edit",
   function() { game.editor.setTool(game.editor.select_tool); }
 );
 
 game.editor.delete_tool.button = makeEditorButton(
-  xy(15, 280),
+  xy(15, 310),
   "Delete",
   function() { game.editor.setTool(game.editor.delete_tool); }
 );

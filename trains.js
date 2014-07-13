@@ -17,6 +17,9 @@ function makeTrain(color, track) {
     this.pos = pos;
     this.dir = dir;
   }
+  train.setDir = function(dir) {
+    this.dir = dir;
+  }
   train.tick = function() {
     if (game.hide_trains) return;
     if (this.disabled) return;

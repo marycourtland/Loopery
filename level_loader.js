@@ -7,30 +7,32 @@ game.loadCurrentLevel = function() {
 
 game.loader = {} // scope
 
-game.loader.start_track_indicator = 'start';
-game.loader.end_track_indicator = 'end';
-
 // This takes a level object and returns a string representation
 game.loader.getLevelString = function(level) { // The argument should be a level object
   var s = "";
   
-  if (level.getStartTrack()) var start_which = level.getTrackById(Object.keys(level.getStartTrack().connections)[0]).which_outer; // start/end linear tracks are always outer tangents
-  if (level.getEndTrack()) var end_which = level.getTrackById(Object.keys(level.getEndTrack().connections)[0]).which_outer;
+  // // Determine the which for the start and end linear tracks
+  // if (level.getStart()) {
+  //   var start_which = level.getTrackById(Object.keys(level.getStart().connections)[0]).which_outer; // start/end linear tracks are always outer tangents
+  //   console.log("start_which:", start_which)
+  // }
+  // if (level.getEnd()) {
+  //   var end_which = level.getTrackById(Object.keys(level.getEnd().connections)[0]).which_outer;
+  //   console.log("end_which:", start_which)
+  // }
   
   // Encode circular tracks
   s += "c:";
   for (var i in level.tracks) {
     if (level.tracks[i].type !== "circular") continue;
-    if (level.tracks[i].is_start) continue; // don't encode these
-    if (level.tracks[i].is_end) continue;
     
     s += level.tracks[i].id.toString() + "="
     s += round(level.tracks[i].radius, 1).toString() + ","
     s += round(level.tracks[i].pos.x, 1).toString() + ","
     s += round(level.tracks[i].pos.y, 1).toString()
     
-    if (level.tracks[i].is_first) { s += ",start," + start_which.toString() } 
-    if (level.tracks[i].is_last) { s += ",end," + end_which.toString() }
+    if (level.tracks[i].is_start) { s += ",start," + level.getStartDir().toString() } 
+    if (level.tracks[i].is_end) { s += ",end"}
     s += ";"
   }
   
@@ -38,12 +40,6 @@ game.loader.getLevelString = function(level) { // The argument should be a level
   s += "l:";
   for (var i in level.tracks) {
     if (level.tracks[i].type !== "linear") continue;
-    if (level.tracks[i].is_start) continue; // don't encode these
-    if (level.tracks[i].is_end) continue;
-    if (level.tracks[i].track1.is_start) continue;
-    if (level.tracks[i].track2.is_start) continue;
-    if (level.tracks[i].track1.is_end) continue;
-    if (level.tracks[i].track2.is_end) continue;
     
     // Tracks
     s += level.tracks[i].track1.id + ","
@@ -71,6 +67,8 @@ game.loader.getLevelString = function(level) { // The argument should be a level
 
 // This takes a string representation of a level and creates & returns a level object
 game.loader.loadLevelFromString = function(level_string) {
+  console.debug("Level string:");
+  console.debug(level_string);
   var new_level = makeLevel(game, game.levels.length);
   var level_items = level_string.split(/:|;/)
   
@@ -104,49 +102,54 @@ game.loader.track_parsers = {
     params = params[1].split(",");
     var radius = parseInt(params[0]);
     var pos = xy(parseInt(params[1]),parseInt(params[2]));
+
+    console.log(id, "PARAMS:", params.length, params)
+
     // Todo: throw an error if the parameters (radius, positionX, positionY) weren't all there
     var new_track = makeCircleTrack(level, pos, radius, id);
     
     // If this is the starting track, create a pseudotrack offscreen (of the same radius)
     // and a linear track connecting them
-    // It needs to have 2 extra params (for a total of 5)
+    // It needs to have 2 extra params (for a total of 5). Last two are the 'start' indicator and the start_dir.
     // TODO: this could be put in a separate method
-    if (params.length >= 5 && params[3] === game.loader.start_track_indicator) {
-      var start_pseudotrack = makeCircleTrack(level, xy(-radius - game.display.train_radius, pos.y), radius, 'level#' + level.id + '_start');
-      var which = parseInt(params[4]);
-      var start_track_linear = makeOuterTangentTrack(level, start_pseudotrack, new_track, which);      
+    if (params.length >= 5 && params[3] === 'start') {
+      // var start_pseudotrack = makeCircleTrack(level, xy(-radius - game.display.train_radius, pos.y), radius, 'level#' + level.id + '_start');
+      level.setStartDir(parseInt(params[4]));
+      // var start_track_linear = makeOuterTangentTrack(level, start_pseudotrack, new_track, which);      
       
+      level.setStart(new_track);
+
       // Always have the track ends toggled on
-      level.joints_toggled_on.push([start_pseudotrack, start_track_linear]);
-      level.joints_toggled_on.push([new_track, start_track_linear]);
+      // level.joints_toggled_on.push([start_pseudotrack, start_track_linear]);
+      // level.joints_toggled_on.push([new_track, start_track_linear]);
       
       // Have the player train start here
       level.loadActions.push(function() {
         // TODO: it would be nice if this method referred to a track id, not that track object. SO CHANGE ALL REFERENCES TO THIS METHOD
-        game.player_train.setTrack(start_track_linear, 0, 1);
+        game.player_train.setTrack(new_track, 0, level.getStartDir());
         game.player_train.enable()
       });
       
-      start_pseudotrack.setStart();
+      // start_pseudotrack.setStart();
 
     }
     
     // Similarly, create an ending pseudotrack if needed
     // TODO: this can also be a separate method
-    if (params.length >= 5 && params[3] === game.loader.end_track_indicator) {
-      var end_pseudotrack = makeCircleTrack(level, xy(game.size.x + radius + game.display.train_radius, pos.y), radius, 'level#' + level.id + '_end');
-      var which = parseInt(params[4]);
-      var end_track_linear = makeOuterTangentTrack(level, new_track, end_pseudotrack, which);      
+    if (params.length >= 4 && params[3] === 'end') {
+      // var end_pseudotrack = makeCircleTrack(level, xy(game.size.x + radius + game.display.train_radius, pos.y), radius, 'level#' + level.id + '_end');
+      // var which = parseInt(params[4]);
+      // var end_track_linear = makeOuterTangentTrack(level, new_track, end_pseudotrack, which);      
       
+      new_track.setEnd();
+
       // Always have the track ends toggled on
-      level.joints_toggled_on.push([new_track, end_track_linear]);
-      level.joints_toggled_on.push([end_pseudotrack, end_track_linear]);
+      // level.joints_toggled_on.push([new_track, end_track_linear]);
+      // level.joints_toggled_on.push([end_pseudotrack, end_track_linear]);
       
-      end_pseudotrack.setEnd();
+      // end_pseudotrack.setEnd();
 
     }
-    
-      
     
   },
   
