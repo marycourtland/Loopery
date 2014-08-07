@@ -2,7 +2,6 @@
 // Generic track
 function makeTrack(level, id) {
   var track = makeLevelObject(level);
-  //var track = new GameObject(game);
   track.id = (id || game.next_track);
   
   level.tracks[track.id] = track;
@@ -43,6 +42,15 @@ function makeCircleTrack(level, pos, radius, id) {
   track.placeAt(pos);
   track.connections = {}; // linear tracks connecting this with another circular track
   
+  track.data = function() {
+    return {
+      id: this.id,
+      x: Math.round(this.pos.x),
+      y: Math.round(this.pos.y),
+      r: Math.round(this.radius)
+    };
+  }
+
   track.drawActions.push(function() {
     emptyCircle(this.ctx,
       this.pos,
@@ -174,6 +182,16 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
   track.parent_track_winding[track2.id] = winding2;
   track1.connections[track.id] = false;
   track2.connections[track.id] = false;
+
+  track.data = function() {
+    return{
+      id: this.id,
+      t1: this.track1.id,
+      t2: this.track2.id,
+      in: (this.subtype === 'in'),
+      w: (this.subtype === 'in' ? this.which_inner : this.which_outer)
+    };
+  }
   
   track.recomputePlacement = function() {
     if (this.which_outer !== undefined) {
@@ -300,7 +318,8 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
     track.clicker2.track = track;
     track.clicker1.pos = track.getPosCoords(0.4);
     track.clicker2.pos = track.getPosCoords(0.9);
-    track.clicker1.drawActions.push(function() {
+
+    var clicker_draw = function() {
       // Draw the clicker if any of these conditions are met:
       // - SHIFT is pressed (which should let the player see all clickers)
       // - The mouse is over the clicker
@@ -313,37 +332,25 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
         'black'
       )
       this.ctx.globalAlpha = old_alpha;
-    })
-    track.clicker2.drawActions.push(function() {
-      // Draw the clicker if any of these conditions are met:
-      // - SHIFT is pressed (which should let the player see all clickers)
-      // - The mouse is over the clicker
-      if (!(game.isKeyPressed("SHIFT") || distance(game.mouse.pos, this.pos) <= game.joint_click_radius)) { return; }
-      var old_alpha = this.ctx.globalAlpha;
-      this.ctx.globalAlpha = 0.3;
-      circle(this.ctx, 
-        this.pos,
-        game.joint_click_radius,
-        'black'
-      )
-      this.ctx.globalAlpha = old_alpha;
-    })
-    track.clicker1.contains = function(p) {
+    }
+    track.clicker1.drawActions.push(clicker_draw)
+    track.clicker2.drawActions.push(clicker_draw)
+
+    var clicker_contains = function(p) {
       if (game.levels[game.current_level].id != this.level.id) return false;
       return distance(p, this.pos) <= game.joint_click_radius;
     }
-    track.clicker2.contains = function(p) { // todo: this is also supposed to be the same as clicker1.contains
-      if (game.levels[game.current_level].id != this.level.id) return false;
-      return distance(p, this.pos) <= game.joint_click_radius;
+    track.clicker1.contains = clicker_contains;
+    track.clicker2.contains = clicker_contains;
+
+    var clicker_onclick = function(track) {
+      return function(p) {
+        if (game.levels[game.current_level].id != this.level.id) return;
+        this.track[track].toggleJoint(this.track.id);
+      }
     }
-    track.clicker1.onclick = function(p) {
-      if (game.levels[game.current_level].id != this.level.id) return;
-      this.track.track1.toggleJoint(this.track.id);
-    }
-    track.clicker2.onclick = function(p) {
-      if (game.levels[game.current_level].id != this.level.id) return;
-      this.track.track2.toggleJoint(this.track.id);
-    }
+    track.clicker1.onclick = clicker_onclick('track1');
+    track.clicker2.onclick = clicker_onclick('track2');
   }
   
   track.onclick = function(pos) {
