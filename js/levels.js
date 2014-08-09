@@ -139,6 +139,22 @@ function makeLevel(game, id) {
     this.start_dir = dir;
   }
   
+
+  lvl.data = function() {
+    var track_data = {c:[], l:[]}
+    for (var id in this.tracks) {
+      var type_label = (this.tracks[id].type === 'circular') ? 'c' : 'l'
+      track_data[type_label].push(this.tracks[id].data());
+    }
+    return {
+      s: this.start_track ? this.start_track.id : null,
+      sd: this.start_dir ? this.start_dir : null,
+      e: this.end_track ? this.end_track.id : null,
+      j: this.joints_toggled_on.map(function(joint) { return [joint[0].id, joint[1].id] }),
+      t: track_data
+    }
+  }
+
   return lvl;
 }
 

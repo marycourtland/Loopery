@@ -32,6 +32,10 @@ function makeTrack(level, id) {
 }
 
 // Circular track
+function loadCircleTrackFromData(level, data) {
+  return makeCircleTrack(level, xy(data.x, data.y), data.r, data.id)
+}
+
 function makeCircleTrack(level, pos, radius, id) {
   var track = makeTrack(level, id);
   track.type = 'circular';
@@ -41,7 +45,7 @@ function makeCircleTrack(level, pos, radius, id) {
   track.radius = radius;
   track.placeAt(pos);
   track.connections = {}; // linear tracks connecting this with another circular track
-  
+
   track.data = function() {
     return {
       id: this.id,
@@ -160,6 +164,21 @@ function makeCircleTrack(level, pos, radius, id) {
 // NOTE: Usually, linear tracks are created with the makeOuterTangentTrack or makeInnerTangentTrack methods.
 // winding = 1 means: if the linear track was a string, it would wrap CW around a parent circular track
 // winding = -1 means: it would wrap CCW
+function loadLinearTrackFromData(level, data) {
+  var track = makeLinearTrack(level,
+    level.tracks[data.t1], data.p1, data.w1,
+    level.tracks[data.t2], data.p2, data.w2,
+    false,
+    data.id
+  );
+  track.subtype = data.in ? 'in' : 'out';
+  if (data.in) {
+    track.which_inner = data.w;
+  }
+  else {
+    track.which_outer = data.w;
+  }
+}
 function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, disable_clickers, id) {
   var track = makeTrack(level, id);
   track.type = 'linear';
@@ -188,6 +207,10 @@ function makeLinearTrack(level, track1, pos1, winding1, track2, pos2, winding2, 
       id: this.id,
       t1: this.track1.id,
       t2: this.track2.id,
+      p1: this.parent_track_pos[this.track1.id],
+      p2: this.parent_track_pos[this.track2.id],
+      w1: this.parent_track_winding[track1.id],
+      w2: this.parent_track_winding[track2.id],
       in: (this.subtype === 'in'),
       w: (this.subtype === 'in' ? this.which_inner : this.which_outer)
     };
