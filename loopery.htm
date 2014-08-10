@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script type="text/javascript" src = "js/engine/game.js"></script>
+    <script type="text/javascript" src = "js/engine/math2D.js"></script>
+    <script type="text/javascript" src = "js/engine/drawing.js"></script>
+    <script type="text/javascript" src = "js/engine/colors.js"></script>
+    <script type="text/javascript" src = "js/engine/utility.js"></script>
+    <script type="text/javascript" src = "js/engine/mouse.js"></script>
+    <script type="text/javascript" src = "js/engine/keyboard.js"></script>
+    <script type="text/javascript" src = "js/engine/gameobject.js"></script>
+    <title>Loopery</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  
+  <body>
+    <div id="game">
+      <canvas id="game_canvas"></canvas>
+      
+      <div id="game_fadeout"></div>
+      
+      <div id="level_loader">
+        <h3>SAVE LEVEL</h3>
+        Copy this text and save it somewhere safe.
+        <textarea id="level_output">test1</textarea>
+        <h3>LOAD LEVEL</h3>
+        Paste the text from another level here.
+        <textarea id="level_input"></textarea>
+        <button onclick="loopery.exitLoader()">Go back</button>
+        <button onclick="loopery.loadInputLevel()">Load it!</button>
+      </div>
+    </div>
+  </body>
+  
+  <script type="text/javascript" src="js/loopery.js"></script>
+  <script type="text/javascript" src="js/settings.js"></script>
+  <script type="text/javascript" src="js/menus/level_menu.js"></script>
+  <script type="text/javascript" src="js/gameplay.js"></script>
+  
+
+</html>

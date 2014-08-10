@@ -13,7 +13,7 @@ function Game(params) {
     win: false,
     frame: 0
   },
-  this.stage = null,
+  this.currentStage = null,
   this.objects = [],
   this.addObject = function(obj) { this.objects.push(obj); }
   this.setSize = function(size) {
@@ -64,7 +64,7 @@ function Game(params) {
     for (var i = 0; i < this.tickActions.length; i++) {
       this.tickActions[i].call(this);
     }
-    this.stage();
+    this.currentStage();
     for (var i = 0; i < this.finalActions.length; i++) {
       this.finalActions[i].call(this);
     }
@@ -77,19 +77,23 @@ function Game(params) {
   this.onfinal = function(final_func) { this.finalActions.push(final_func); }
   
   this.next = function() {
-    if (!this.win) setTimeout(function() { game.tick() }, 1000/this.fps);
+    var _this = this;
+    if (!this.win) setTimeout(function() { _this.tick() }, 1000/_this.fps);
   }
 
   // Game stages
-  this.titlescreen = function() {
+  this.stages = {};
+
+  this.stages.titlescreen = function() {
     clear(this.ctx);
     var old_font = this.display.font;
     this.setFont({size: 36, type: 'Arial'});
     text(this.ctx, this.title, "center", "centered");
     this.setFont(old_font);
-    setTimeout(function() { game.stage = game.gameplay; game.next(); }, 5*1000);
+    var _this = this;
+    setTimeout(function() { _this.currentStage = _this.gameplay; _this.next(); }, 5*1000);
   }
-  this.gameplay = function() {
+  this.stages.gameplay = function() {
     clear(this.ctx);
     if (this.isKeyPressed("L")) {}
     iter(this.objects, function(obj) { obj.tick(); });
@@ -98,7 +102,7 @@ function Game(params) {
   }
   
   
-  this.stage = this.gameplay; // default stages
+  this.currentStage = this.stages.gameplay; // default stages
   
   // GAME EVENTS
   this.onclick = function(callback) {
