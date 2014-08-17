@@ -2,7 +2,7 @@ loopery.Loop = function(data, canvas_context, lookup_func) {
   this.id = data.id;
   this.loc = xy(data.x, data.y);
   this.radius = data.r;
-  
+
   this.ctx = canvas_context;
   this.lookup = lookup_func;
 
@@ -41,7 +41,7 @@ loopery.Loop = function(data, canvas_context, lookup_func) {
   this.checkForConnections = function(oldpos, newpos) {
     for (connector_id in this.connections) {
       if (!this.connections[connector_id]) continue; // skip joints that aren't turned on
-      var connector = this.lookup(id);
+      var connector = this.lookup('connectors', id);
       var p = connector.parent_track_pos[this.id];
       if (isBetweenOnCircle(p, oldpos, newpos, 1)) { return connector; }
     }
