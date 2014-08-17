@@ -5,25 +5,9 @@ loopery.setSize(xy(800, 600));
 loopery.center = xy(400, 300);
 
 window.onload = function() {
-  loopery.orderObjects();
   loopery.start();
 }
 
-loopery.orderObjects = function() {
-  loopery.bringToFront('connector');
-  loopery.bringToFront('loop');
-  loopery.bringToFront('orb');
-  loopery.bringToFront('joint');
-  loopery.bringToFront('resizer');
-}
-
-loopery.bringToFront = function(type) {
-  // loop backwards so we don't skip items
-  for (var i = this.objects.length - 1; i >= 0; i--) {
-    if (!this.objects[i].type || this.objects[i].type !== type) continue;
-    this.objects.push(this.objects.splice(i, 1)[0]);
-  }
-}
 
 // TODO: hopefully do a better way of detecting clicked tracks
 // (necessary for level editor)
@@ -60,15 +44,19 @@ loopery.stages.gameplay = function() {
 
 // Stage-switching methods
 loopery.exitTitlescreen = function() {
-  this.doNextLevel();
-  this.currentStage = loopery.gameplay;
+  // this.doNextLevel(); // TODO: gameplay loads a level. TODO: know which level to load
+  this.currentStage = loopery.stages.gameplay;
+  loopery.gameplay.init();
+
+  // Load a test level (temporary)
+  loopery.gameplay.loadLevel(test_level)
 }
 loopery.ctx.canvas.addEventListener("click", function(event) {
-  if (loopery.currentStage === loopery.titlescreen) { loopery.exitTitlescreen(); }
+  if (loopery.currentStage === loopery.stages.titlescreen) { loopery.exitTitlescreen(); }
 })
 loopery.restart = function() {
   this.current_level = 0;
-  loopery.currentStage = loopery.titlescreen;
+  loopery.currentStage = loopery.stages.titlescreen;
 }
 loopery.startCurrentLevel = function() {
   this.levels[this.current_level].onload();
@@ -91,4 +79,4 @@ loopery.hideElement("game_fadeout"); // start with the fadeout layer hidden (i.e
 loopery.hideElement("level_loader");
 
 // Initial stage
-loopery.currentStage = loopery.titlescreen;
+loopery.currentStage = loopery.stages.titlescreen;

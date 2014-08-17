@@ -2,7 +2,7 @@ function Game(params) {
   
   // Initialize game settings
   if (params == null) params = {};
-  this.fps = 60,
+  this.fps = 2,
   this.t0 = new Date().getTime(),
   this.mouse = null,
   this.display = {
@@ -84,25 +84,25 @@ function Game(params) {
   // Game stages
   this.stages = {};
 
-  this.stages.titlescreen = function() {
-    clear(this.ctx);
-    var old_font = this.display.font;
-    this.setFont({size: 36, type: 'Arial'});
-    text(this.ctx, this.title, "center", "centered");
-    this.setFont(old_font);
-    var _this = this;
-    setTimeout(function() { _this.currentStage = _this.gameplay; _this.next(); }, 5*1000);
-  }
-  this.stages.gameplay = function() {
-    clear(this.ctx);
-    if (this.isKeyPressed("L")) {}
-    iter(this.objects, function(obj) { obj.tick(); });
-    iter(this.objects, function(obj) { obj.draw(); });
-    this.next();
-  }
+  // this.stages.titlescreen = function() {
+  //   clear(this.ctx);
+  //   var old_font = this.display.font;
+  //   this.setFont({size: 36, type: 'Arial'});
+  //   text(this.ctx, this.title, "center", "centered");
+  //   this.setFont(old_font);
+  //   var _this = this;
+  //   setTimeout(function() { _this.currentStage = _this.gameplay; _this.next(); }, 5*1000);
+  // }
+  // this.stages.gameplay = function() {
+  //   clear(this.ctx);
+  //   if (this.isKeyPressed("L")) {}
+  //   iter(this.objects, function(obj) { obj.tick(); });
+  //   iter(this.objects, function(obj) { obj.draw(); });
+  //   this.next();
+  // }
   
   
-  this.currentStage = this.stages.gameplay; // default stages
+  // this.currentStage = this.stages.gameplay; // default stages
   
   // GAME EVENTS
   this.onclick = function(callback) {
