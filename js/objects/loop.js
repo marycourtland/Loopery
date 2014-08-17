@@ -2,8 +2,8 @@ loopery.Loop = function(data, canvas_context, lookup_func) {
   this.id = data.id;
   this.loc = xy(data.x, data.y);
   this.radius = data.r;
+  
   this.ctx = canvas_context;
-
   this.lookup = lookup_func;
 
   this.getData = function() {
