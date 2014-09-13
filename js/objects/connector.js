@@ -1,47 +1,28 @@
 loopery.Connector = function(data, canvas_context, lookup_func) {
 
   this.id = data.id;
-
-  // set loop endpoints
-  this.loops = [
-    {
-      id: data.loop1,
-      pos: data.pos1,
-      wind: data.wind1
-    },
-    {
-      id: data.loop2,
-      pos: data.pos2,
-      wind: data.wind2
-    }
-  ]
-
   this.ctx = canvas_context;
   this.lookup = lookup_func;
 
-  // TODO: SERIOUSLY STOP USING THESE STUPIDLY REDUNDANT THINGS
-  // (the 'wind' values make these redundant)
-  this.subtype = data.in ? 'in' : 'out';
-  if (data.in) {
-    this.which_inner = data.which;
-  }
-  else {
-    this.which_outer = data.which;
+  // set joints
+  this.joints = [
+    this.lookup("joints", data.joint1),
+    this.lookup("joints", data.joint2)
+  ]
+
+  // cache this stuff so it doesn't have to be recomputed at each frame
+  this.geometry = {
+    pos1: null,
+    pos2: null,
+    length: null,
+    angle: null
   }
 
   this.getData = function() {
     return {
       id: this.id,
-      loop1: this.loops[0].id,
-      pos1: this.loops[0].pos,
-      wind1: this.loops[0].wind,
-      loop1: this.loops[1].id,
-      pos2: this.loops[1].pos,
-      wind2: this.loops[1].wind,
-
-      // THESE ARE THE REDUNDANT THINGS THAT NEED TO NOT EXIST
-      in: (this.subtype === 'in'),
-      which: (this.subtype === 'in' ? this.which_inner : this.which_outer)
+      joint1: this.joints[0].id,
+      joint2: this.joints[1].id
     }
   }
 
@@ -95,7 +76,7 @@ loopery.Connector = function(data, canvas_context, lookup_func) {
 
   this.getPosCoords = function(pos) {
     return add(
-      this.lookup('loops', this.loops[0].id).getPosCoords(this.loops[0].pos),
+      this.joints[0].loop.getPosCoords(this.geometry.pos1),
       rth(this.length * pos, this.angle)
     );
   }
@@ -103,23 +84,39 @@ loopery.Connector = function(data, canvas_context, lookup_func) {
 
   this.recomputePlacement = function() {
     // TODO: refactor this, along with the getOuterTangents and getInnerTangents methods
-    var loop1 = this.lookup('loops', this.loops[0].id);
-    var loop2 = this.lookup('loops', this.loops[1].id);
+    var loop1 = this.joints[0].loop;
+    var loop2 = this.joints[1].loop;
 
-    if (this.which_outer !== undefined) {
-      var pts = loopery.getOuterTangents(loop1, loop2);
-      this.loops[0].pos = pts[this.which_outer][0];
-      this.loops[1].pos = pts[this.which_outer][1];
-    }
-    if (this.which_inner !== undefined) {
+    var wind1 = this.joints[0].winding;
+    var wind2 = this.joints[1].winding;
+
+    var which = (wind1 === 1) ? 0 : 1;
+
+    window.l1 = loop1;
+    window.l2 = loop2;
+
+    // var loop1 = this.lookup('loops', this.loops[0].id);
+    // var loop2 = this.lookup('loops', this.loops[1].id);
+
+    // Compute endpoints (currently, the computations outputs the endpoints
+    // as loop-based position)
+    if (wind1 === wind2) {
       // If this track was generated as an outer tangent, then regenerate it
       var pts = loopery.getInnerTangents(loop1, loop2);
-      this.loops[0].pos = pts[this.which_inner][0];
-      this.loops[1].pos = pts[this.which_inner][1];
+      this.geometry.pos1 = pts[which][0];
+      this.geometry.pos2 = pts[which][1];
+    }
+    else {
+      var pts = loopery.getOuterTangents(loop1, loop2);
+      this.geometry.pos1 = pts[which][0];
+      this.geometry.pos2 = pts[which][1];
     }
     
-    var p1 = loop1.getPosCoords(this.loops[0].pos);
-    var p2 = loop2.getPosCoords(this.loops[1].pos);
+    // Grab the absolute coordinates of the endpoints
+    var p1 = loop1.getPosCoords(this.geometry.pos1);
+    var p2 = loop2.getPosCoords(this.geometry.pos2);
+
+    // Compute this connector's length/angle from the absolute positions
     this.angle = subtract(p2, p1).th;
     this.length = subtract(p2, p1).r;
     
@@ -132,7 +129,6 @@ loopery.Connector = function(data, canvas_context, lookup_func) {
     }
   }
 
-  console.log('About to recompute linear track placement')
   this.recomputePlacement();
 
 

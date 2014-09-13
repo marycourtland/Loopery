@@ -11,16 +11,16 @@ loopery.getOuterTangents = function(track1, track2, echo) {
   
   // circle1 should be the smaller one, and circle2 should be the larger one
   if (track2.radius > track1.radius) {
-    p1 = track1.pos
-    p2 = track2.pos
-    rad1 = track1.radius
-    rad2 = track2.radius
+    p1 = track1.loc;
+    p2 = track2.loc;
+    rad1 = track1.radius;
+    rad2 = track2.radius;
   }
   else {
-    p1 = track2.pos
-    p2 = track1.pos
-    rad1 = track2.radius
-    rad2 = track1.radius
+    p1 = track2.loc;
+    p2 = track1.loc;
+    rad1 = track2.radius;
+    rad2 = track1.radius;
   }
   var dd = subtract(p2, p1);
   var r21 = rad2 - rad1;
@@ -73,16 +73,16 @@ loopery.getInnerTangents = function(track1, track2, echo) {
   
   // circle1 should be the larger one, and circle2 should be the smaller one
   if (track1.radius >= track2.radius) {
-    p1 = track1.pos
-    p2 = track2.pos
-    rad1 = track1.radius
-    rad2 = track2.radius
+    p1 = track1.loc;
+    p2 = track2.loc;
+    rad1 = track1.radius;
+    rad2 = track2.radius;
   }
   else {
-    p1 = track2.pos
-    p2 = track1.pos
-    rad1 = track2.radius
-    rad2 = track1.radius
+    p1 = track2.loc;
+    p2 = track1.loc;
+    rad1 = track2.radius;
+    rad2 = track1.radius;
   }
   var dd = subtract(p2, p1);
   var r21 = rad2 + rad1;

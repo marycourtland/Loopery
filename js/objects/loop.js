@@ -55,7 +55,6 @@ loopery.Loop = function(data, canvas_context, lookup_func) {
   }
 
   this.getDirFromOldTrack = function(connector) {
-    console.log("GOT DIR:", -1 * connector.parent_track_winding[this.id])
     return -1 * connector.parent_track_winding[this.id];
     // TODO: fix this method
   }

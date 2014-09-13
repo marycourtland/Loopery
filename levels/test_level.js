@@ -1,3 +1,12 @@
+ // (9)16 -13- 17(10)
+ //               18
+ //               |
+ //               14
+ //               |
+ //               19
+ //              (11)20 -15- 21(12)
+
+
 var test_level = {
   "loops":[  
     {  
@@ -28,63 +37,61 @@ var test_level = {
   "connectors":[
     {  
       "id":13,
-      "loop1":9,
-      "loop2":10,
-      "pos1":0.75,
-      "pos2":0.75,
-      "wind1":1,
-      "wind2":-1,
-      "in":false,
-      "which":0
+      "joint1":16,
+      "joint2":17
     },
     {  
       "id":14,
-      "loop1":10,
-      "loop2":11,
-      "pos1":1,
-      "pos2":1,
-      "wind1":1,
-      "wind2":-1,
-      "in":false,
-      "which":0
+      "joint1":18,
+      "joint2":19
     },
     {  
       "id":15,
-      "loop1":11,
-      "loop2":12,
-      "pos1":0.75,
-      "pos2":0.75,
-      "wind1":1,
-      "wind2":-1,
-      "in":false,
-      "which":0
+      "joint1":20,
+      "joint2":21
     }
   ],
   "joints":[
     {
       "id":16,
       "loop":9,
-      "connector":13
+      "connector":13,
+      "winding":1
     },
     {
       "id":17,
       "loop":10,
-      "connector":13
+      "connector":13,
+      "winding":-1
     },
     {
       "id":18,
-      "loop":11,
-      "connector":14
+      "loop":10,
+      "connector":14,
+      "winding":1
     },
     {
       "id":19,
+      "loop":11,
+      "connector":14,
+      "winding":-1
+    },
+    {
+      "id":20,
+      "loop":11,
+      "connector":15,
+      "winding":1
+    },
+    {
+      "id":21,
       "loop":12,
-      "connector":15
+      "connector":15,
+      "winding":-1
     }
   ],
   "orbs":[
     {
-      "id":20,
+      "id":22,
       "color":"purple",
       "start":9,
       "start_dir":1,
