@@ -1,22 +1,27 @@
-loopery.Connector = function(data, canvas_context, lookup_func) {
-
-  this.id = data.id;
+loopery.Connector = function(id, canvas_context, lookup_func) {
+  this.obj_type = 'connector';
+  this.id = id;
   this.ctx = canvas_context;
   this.lookup = lookup_func;
 
-  // set joints
-  this.joints = [
-    this.lookup("joints", data.joint1),
-    this.lookup("joints", data.joint2)
-  ]
+  this.init = function(data) {
+    // set joints
+    this.joints = [
+      this.lookup(data.joint1, "joints"),
+      this.lookup(data.joint2, "joints")
+    ]
 
-  // cache this stuff so it doesn't have to be recomputed at each frame
-  this.geometry = {
-    pos1: null,
-    pos2: null,
-    length: null,
-    angle: null
+    // cache this stuff so it doesn't have to be recomputed at each frame
+    this.geometry = {
+      pos1: null,
+      pos2: null,
+      length: null,
+      angle: null
+    }
+
+    this.recomputePlacement();
   }
+
 
   this.getData = function() {
     return {
@@ -76,9 +81,13 @@ loopery.Connector = function(data, canvas_context, lookup_func) {
 
   this.getPosCoords = function(pos) {
     return add(
-      this.joints[0].loop.getPosCoords(this.geometry.pos1),
-      rth(this.length * pos, this.angle)
+      this.joints[0].loop.getPosCoords(this.joints[0].pos),
+      rth(this.geometry.length * pos, this.geometry.angle)
     );
+  }
+
+   this.getNextPos = function(old_pos, dir, speed) {
+    return old_pos + dir * speed / this.geometry.length;
   }
 
 
@@ -95,41 +104,37 @@ loopery.Connector = function(data, canvas_context, lookup_func) {
     window.l1 = loop1;
     window.l2 = loop2;
 
-    // var loop1 = this.lookup('loops', this.loops[0].id);
-    // var loop2 = this.lookup('loops', this.loops[1].id);
-
     // Compute endpoints (currently, the computations outputs the endpoints
     // as loop-based position)
     if (wind1 === wind2) {
       // If this track was generated as an outer tangent, then regenerate it
       var pts = loopery.getInnerTangents(loop1, loop2);
-      this.geometry.pos1 = pts[which][0];
-      this.geometry.pos2 = pts[which][1];
+      this.joints[0].pos = pts[which][0];
+      this.joints[1].pos = pts[which][1];
     }
     else {
       var pts = loopery.getOuterTangents(loop1, loop2);
-      this.geometry.pos1 = pts[which][0];
-      this.geometry.pos2 = pts[which][1];
+      this.joints[0].pos = pts[which][0];
+      this.joints[1].pos = pts[which][1];
     }
     
     // Grab the absolute coordinates of the endpoints
-    var p1 = loop1.getPosCoords(this.geometry.pos1);
-    var p2 = loop2.getPosCoords(this.geometry.pos2);
+    var p1 = loop1.getPosCoords(this.joints[0].pos);
+    var p2 = loop2.getPosCoords(this.joints[1].pos);
 
     // Compute this connector's length/angle from the absolute positions
-    this.angle = subtract(p2, p1).th;
-    this.length = subtract(p2, p1).r;
+    this.geometry.angle = subtract(p2, p1).th;
+    this.geometry.length = subtract(p2, p1).r;
     
     // TODO: move this clicker code to Joint object when ready
     if (this.clicker1 && this.clicker2) {
       this.clicker1.pos = this.getPosCoords(loopery.display.clicker_offset);
       this.clicker2.pos = this.getPosCoords(1 - loopery.display.clicker_offset);
-      this.clicker1.pos = add(this.getPosCoords(0), rth(game.joint_click_distance, this.angle));
-      this.clicker2.pos = add(this.getPosCoords(1), rth(-game.joint_click_distance, this.angle));
+      this.clicker1.pos = add(this.getPosCoords(0), rth(game.joint_click_distance, this.geometry.angle));
+      this.clicker2.pos = add(this.getPosCoords(1), rth(-game.joint_click_distance, this.geometry.angle));
     }
   }
 
-  this.recomputePlacement();
 
 
 }

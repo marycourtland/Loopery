@@ -92,7 +92,7 @@ var test_level = {
   "orbs":[
     {
       "id":22,
-      "color":"purple",
+      "color":"blue",
       "start":9,
       "start_dir":1,
       "end":12

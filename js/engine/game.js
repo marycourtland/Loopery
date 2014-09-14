@@ -2,7 +2,7 @@ function Game(params) {
   
   // Initialize game settings
   if (params == null) params = {};
-  this.fps = 2,
+  this.fps = 60,
   this.t0 = new Date().getTime(),
   this.mouse = null,
   this.display = {

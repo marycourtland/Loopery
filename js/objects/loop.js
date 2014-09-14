@@ -1,10 +1,15 @@
-loopery.Loop = function(data, canvas_context, lookup_func) {
-  this.id = data.id;
-  this.loc = xy(data.x, data.y);
-  this.radius = data.r;
-
+loopery.Loop = function(id, canvas_context, lookup_func) {
+  this.obj_type = 'loop';
+  this.id = id;
   this.ctx = canvas_context;
   this.lookup = lookup_func;
+
+  this.init = function(data) {
+    this.old_loc = xy(-1, -1);
+    this.loc = xy(data.x, data.y);
+    this.radius = data.r;
+  }
+
 
   this.getData = function() {
     return {
@@ -16,7 +21,6 @@ loopery.Loop = function(data, canvas_context, lookup_func) {
     // todo: shading
   }
 
-  this.old_loc = xy(-1, -1);
   this.tick = function() {
     // See if the loop has moved placement (e.g. in level editor)
     if (equals(this.loc, this.old_loc)) return;
@@ -25,8 +29,8 @@ loopery.Loop = function(data, canvas_context, lookup_func) {
   }
 
   // Determine an orb's next position on the loop (as it's moving)
-  this.getNextpos = function(old_pos, dir) {
-    return mod(old_pos + dir * loopery.orb_speed / (2 * Math.PI * this.radius), 1);
+  this.getNextPos = function(old_pos, dir, speed) {
+    return mod(old_pos + dir * speed / (2 * Math.PI * this.radius), 1);
   }
   
   // Given an orb's position on the loop (from 0 to 1), return the XY coords
@@ -41,7 +45,7 @@ loopery.Loop = function(data, canvas_context, lookup_func) {
   this.checkForConnections = function(oldpos, newpos) {
     for (connector_id in this.connections) {
       if (!this.connections[connector_id]) continue; // skip joints that aren't turned on
-      var connector = this.lookup('connectors', id);
+      var connector = this.lookup(id, 'connectors');
       var p = connector.parent_track_pos[this.id];
       if (isBetweenOnCircle(p, oldpos, newpos, 1)) { return connector; }
     }
