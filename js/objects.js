@@ -1,8 +1,8 @@
 // map group name to object name
 loopery.objectTypes = [
-  {group: 'loops',       type: 'Loop'},
-  {group: 'joints',      type: 'Joint'},
-  {group: 'connectors',  type: 'Connector'},
-  {group: 'orbs',        type: 'Orb'},
-  {group: 'decorations', type: 'Decoration'}
+  {group: 'loops',       type: 'Loop',       renderOrder: 1},
+  {group: 'joints',      type: 'Joint',      renderOrder: 2},
+  {group: 'connectors',  type: 'Connector',  renderOrder: 0},
+  {group: 'orbs',        type: 'Orb',        renderOrder: 3},
+  {group: 'decorations', type: 'Decoration', renderOrder: 4}
 ];

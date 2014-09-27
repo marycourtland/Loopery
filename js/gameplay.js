@@ -21,12 +21,14 @@ loopery.gameplay = {
   },
 
   tick: function() { this.applyToObjectGroups('tick') },
-  draw: function() { this.applyToObjectGroups('draw') },
+  draw: function() { this.applyToObjectGroups('draw', {ordering: 'renderOrder'}) },
 
-  applyToObjectGroups: function(func_name) {
-    for (var object_group in this.levelObjects) {
+  applyToObjectGroups: function(func_name, params) {
+    obj_types = !params.ordering ? loopery.objectTypes : _.sortBy(loopery.objectTypes, function(obj_type) { return obj_type[ordering]; })
+    for (var i = 0; i < obj_types.length; i++) {
+      object_group = obj_types[i].group;
       for (var id in this.levelObjects[object_group]) {
-        this.levelObjects[object_group][id][func_name]()
+        this.levelObjects[object_group][id][func_name]();
       }
     }
   },

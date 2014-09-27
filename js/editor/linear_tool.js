@@ -68,12 +68,10 @@ game.editor.linear_tool.makeSampleTrack = function(type, which) {
       game.ctx.globalAlpha = 0.3;
       color = 'black';
     }
-    line(game.ctx,
-      this.pos1,
-      this.pos2,
-      color,
-      game.display.track_width
-    )
+    draw.line(game.ctx, this.pos1, this.pos2, {
+      stroke: color,
+      linewidth: game.display.track_width
+    })
     game.ctx.globalAlpha = 1;
   });
   track.onclick = function(pos) {

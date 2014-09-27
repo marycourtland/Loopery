@@ -8,11 +8,11 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     this.loop = this.lookup(data.loop, 'loops');
     this.connector = this.lookup(data.connector, 'connectors');
     this.winding = data.winding;
+    this.initially_on = data.on;
+    this.on = this.initially_on;
 
     // Position on loop; this will be set by connector
-    this.pos = null; 
-
-    // TODO: implement on/off state 
+    this.pos = null;
   }
 
   this.getData = function() {
@@ -20,7 +20,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
       id: this.id,
       loop: this.loop.id,
       connector: this.connector.id,
-      winding: this.winding
+      winding: this.winding,
+      on: this.initially_on
     }
   }
 
@@ -28,10 +29,11 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     // Transfer any orb which is on this joint
     // TODO: maybe there's an easier way for this joint to have access to orbs
     // or, even better, to know which orbs are on its relevant tracks
+
     for (var orb_id in loopery.gameplay.levelObjects.orbs) {
       var orb = loopery.gameplay.levelObjects.orbs[orb_id];
       this.attemptTransfer(orb);
-    }
+    }    
   }
 
   this.attemptTransfer = function(orb) {
@@ -40,7 +42,10 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     // Check for transfer from loop to connector
     if (orb.track.id === this.loop.id) {
 
-       // make sure orb is going in correct direction
+      // Don't do loop>connector transfers if the joint is turned off
+      if (!this.on) { return; }
+
+      // make sure orb is going in correct direction
       if (orb.dir !== this.winding) { return; }
 
 
@@ -81,9 +86,27 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     return this.connector.joints.indexOf(this);
   }
 
+  this.getLoc = function() {
+    // todo: cache this value
+    return this.loop.getPosCoords(this.pos);
+  }
+
 
   this.draw = function() {
-    //use  loopery.joint_click_radius
+    this.drawClicker();
+  }
+
+  this.drawClicker = function() {
+    var loc = this.getLoc();
+    if (!loc) {return; }
+    draw.circle(this.ctx, loc, loopery.joint_click_radius, {
+      fill: loopery.display.joint_click_color,
+      alpha: loopery.display.joint_click_alpha
+    });
+  }
+
+  this.contains = function(loc) {
+    return distance(loc, this.getLoc() < loopery.joint_click_radius)
   }
 
 }

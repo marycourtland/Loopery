@@ -18,8 +18,14 @@ game.editor.delete_tool.end = function() {
 game.editor.delete_tool.drawCursor = function() {
   // Draw an X to remind people that they're deleting things
   // TODO: make sure it draws itself over the track
-  line(game.ctx, add(game.mouse.pos, xy(-7, -10)), add (game.mouse.pos, xy(3, 0)), 'white', 3)
-  line(game.ctx, add(game.mouse.pos, xy(3, -10)), add (game.mouse.pos, xy(-7, 0)), 'white', 3)
+  draw.line(game.ctx, add(game.mouse.pos, xy(-7, -10)), add(game.mouse.pos, xy(3, 0)), {
+    stroke:'white',
+    linewidth: 3
+  })
+  draw.line(game.ctx, add(game.mouse.pos, xy(3, -10)), add(game.mouse.pos, xy(-7, 0)), {
+    stroke:'white',
+    linewidth: 3
+  })
 }
 
 

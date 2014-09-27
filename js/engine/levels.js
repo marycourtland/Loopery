@@ -59,7 +59,7 @@ function makeLevel(game, id) {
     draw: function() {
       // Fill this in (code for drawing level text, background, and other non-objects)
       //game.setFont(game.display.font_normal);
-      //text(game.ctx, "Level " + this.id.toString(), xy(30, 20), "nw");
+      //draw.text(game.ctx, "Level " + this.id.toString(), xy(30, 20), "nw");
       this.showText();
       
     },

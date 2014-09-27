@@ -46,31 +46,31 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
     // TODO: implement this with new Joint object
     // Alternatively, the Joint object could do the rendering of the darkened track
     // ...or tell this connector to render it
-    var dark_end1 = true; //!this.track1.connections[this.id];
-    var dark_end2 = true; //!this.track2.connections[this.id];
+    var dark_end1 = !this.joints[0].on;
+    var dark_end2 = !this.joints[1].on;
     
     // Neither ends are darkened
     if (!(dark_end1 || dark_end2)) {
-      line(this.ctx, p1, p4, color, loopery.display.track_width);
+      draw.line(this.ctx, p1, p4, {stroke: color, lineWidth: loopery.display.track_width});
     }
     
     // Only first end is darkened
     if (dark_end1 && !dark_end2) {
-      lineGradient(this.ctx, p1, p2a, 'black', color, loopery.display.track_width);
-      line(this.ctx, p2b, p4, color, loopery.display.track_width)
+      draw.lineGradient(this.ctx, p1, p2a, 'black', color, {lineWidth: loopery.display.track_width});
+      draw.line(this.ctx, p2b, p4, {stroke: color, lineWidth: loopery.display.track_width});
     }
     
     // Only second end is darkened
     if (!dark_end1 && dark_end2) {
-      line(this.ctx, p1, p3b, color, loopery.display.track_width)
-      lineGradient(this.ctx, p4, p3a, 'black', color, loopery.display.track_width);
+      draw.line(this.ctx, p1, p3b, {stroke: color, lineWidth: loopery.display.track_width});
+      draw.lineGradient(this.ctx, p4, p3a, 'black', color, {lineWidth: loopery.display.track_width});
     }
     
     // Both ends are darkened
     if (dark_end1 && dark_end2) {
-      lineGradient(this.ctx, p1, p2a, 'black', color, loopery.display.track_width);
-      line(this.ctx, p2b, p3b, color, loopery.display.track_width)
-      lineGradient(this.ctx, p4, p3a, 'black', color, loopery.display.track_width);
+      draw.lineGradient(this.ctx, p1, p2a, 'black', color, {lineWidth: loopery.display.track_width});
+      draw.line(this.ctx, p2b, p3b, {stroke: color, lineWidth: loopery.display.track_width});
+      draw.lineGradient(this.ctx, p4, p3a, 'black', color, {lineWidth: loopery.display.track_width});
     }
     
     if (loopery.display.shade_hovered_line_track && this.contains(game.mouse.pos)) {
@@ -134,7 +134,4 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
       this.clicker2.pos = add(this.getPosCoords(1), rth(-game.joint_click_distance, this.geometry.angle));
     }
   }
-
-
-
 }

@@ -146,7 +146,7 @@ function Vector(vec_params, mode) {
     ctx.strokeStyle = color;
     if (!center) { center = xy(0, 0); }
     var end = add(center, this);
-    line(ctx, center, end, color);
+    draw.line(ctx, center, end, {stroke:color});
     
     arrowhead1 = rth(-5, this.th);
     arrowhead1.rotate(radians(20));

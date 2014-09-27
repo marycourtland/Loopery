@@ -9,7 +9,7 @@ game.editor.drawGrid = function() {
   game.ctx.globalAlpha = 0.7;
   while (pos.y < game.size.y) {
     while (pos.x < game.size.x) {
-      if (!game.menu.contains(pos)) circle(game.ctx, pos, 1, 'black');
+      if (!game.menu.contains(pos)) draw.circle(game.ctx, pos, 1, 'black');
       pos.xshift(this.gridsize.x);
     }
     pos.x = 0;

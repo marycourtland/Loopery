@@ -59,8 +59,8 @@ game.editor.draw = function() {
   this.current_tool.button.highlight();
   
   // Menu labels
-  text(this.ctx, "LEVEL EDITOR", xy(15, 20), "nw");
-  text(this.ctx, "Tools", xy(15, 200), "nw");
+  draw.text(this.ctx, "LEVEL EDITOR", xy(15, 20), "nw");
+  draw.text(this.ctx, "Tools", xy(15, 200), "nw");
 }
 
 game.editor.tick = function() {

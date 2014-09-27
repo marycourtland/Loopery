@@ -20,7 +20,12 @@ loopery.display.shade_hovered_circle_track = false;
 loopery.display.shade_hovered_line_track = false;
 loopery.display.shade_start_end_tracks = false;
 
+loopery.display.track_color = 'white';
+
+loopery.display.joint_click_color = 'black';
+loopery.display.joint_click_alpha = 0.5;
+
 // Other constants
 loopery.orb_speed = 5; // pixels per frame. TODO: convert to pixels per second
 loopery.joint_click_radius = 12; // radius of area in which you can click the joining of two tracks
-loopery.joint_click_distance = 20;
+loopery.joint_click_distance = 20; // distance of clicker from intersection point between loop and connector

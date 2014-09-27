@@ -106,7 +106,7 @@ function drawGrid(ctx, grid) {
         if (grid.X && i % grid.X != 0) {
             p1.x = grid.dash;
             while(p1.x <= W) {
-                line(ctx, p0, p1);
+                draw.line(ctx, p0, p1);
                 p0.add({x:grid.dash*2, y:0});
                 p1.add({x:grid.dash*2, y:0});
             }
@@ -115,7 +115,7 @@ function drawGrid(ctx, grid) {
         }
         // Major grid lines
         else {
-            line(ctx, p0, p1);
+            draw.line(ctx, p0, p1);
         }
         p0.add({x:0, y:grid.y});
         p1.add({x:0, y:grid.y});
@@ -130,7 +130,7 @@ function drawGrid(ctx, grid) {
         if (grid.Y && i % grid.Y != 0) {
             p1.y = grid.dash;
             while(p1.y <= H) {
-                line(ctx, p0, p1);
+                draw.line(ctx, p0, p1);
                 p0.add({x:0, y:grid.dash*2});
                 p1.add({x:0, y:grid.dash*2});
             }
@@ -139,7 +139,7 @@ function drawGrid(ctx, grid) {
         }
         // Major grid lines
         else {
-            line(ctx, p0, p1);
+            draw.line(ctx, p0, p1);
         }
         p0.add({x:grid.x, y:0});
         p1.add({x:grid.x, y:0});

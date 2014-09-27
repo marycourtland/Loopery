@@ -43,6 +43,9 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
   }
 
   this.draw = function() {
-    circle(this.ctx, this.track.getPosCoords(this.pos), loopery.display.orb_radius, this.color);
+    draw.circle(this.ctx, this.track.getPosCoords(this.pos), loopery.display.orb_radius, {
+      fill: this.color,
+      stroke: this.color
+    });
   }
 }

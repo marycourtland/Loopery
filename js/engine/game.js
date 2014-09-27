@@ -88,7 +88,7 @@ function Game(params) {
   //   clear(this.ctx);
   //   var old_font = this.display.font;
   //   this.setFont({size: 36, type: 'Arial'});
-  //   text(this.ctx, this.title, "center", "centered");
+  //   draw.text(this.ctx, this.title, "center", "centered");
   //   this.setFont(old_font);
   //   var _this = this;
   //   setTimeout(function() { _this.currentStage = _this.gameplay; _this.next(); }, 5*1000);

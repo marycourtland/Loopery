@@ -510,7 +510,7 @@ function character(obj) {
   }
   obj.drawActions.push(function() {
     if (obj.comment != null) {
-      text(obj.ctx, obj.comment, add(obj.pos, obj.comment_offset), 'sw');
+      draw.text(obj.ctx, obj.comment, add(obj.pos, obj.comment_offset), 'sw');
     }
   });
   return obj

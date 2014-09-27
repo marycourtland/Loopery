@@ -41,7 +41,7 @@ game.editor.circle_tool.states = {
     draw: function() {
       var pos = mouse.pos.copy();
       if (game.editor.snap_to_grid) { snapToGrid(pos, game.editor.gridsize); }
-      circle(game.ctx, pos, game.display.track_width/2, game.display.track_color);
+      draw.circle(game.ctx, pos, game.display.track_width/2, game.display.track_color);
     },
     
     onleave: function() {

@@ -75,11 +75,10 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   }
   
   this.draw = function() {
-    emptyCircle(this.ctx,
-      this.loc,
-      this.radius,
-      this.color,
-      loopery.display.track_width
-    );
+    draw.circle(this.ctx, this.loc, this.radius, {
+      fill: 'transparent',
+      stroke: loopery.display.track_color,
+      lineWidth: loopery.display.track_width
+    });
   }
 }

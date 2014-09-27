@@ -21,9 +21,9 @@ loopery.disable_gameplay = false;
 loopery.stages.titlescreen = function() {
   clear(this.ctx);
   this.setFont(this.display.font_title);
-  text(this.ctx, this.title, xy(400, 150), "centered");
+  draw.text(this.ctx, this.title, xy(400, 150), "centered");
   this.setFont(this.display.font_large, "italic");
-  text(this.ctx, "Click to continue", xy(400, 250), "centered");
+  draw.text(this.ctx, "Click to continue", xy(400, 250), "centered");
   this.next();
   //setTimeout(function() { loopery.exitTitlescreen(); }, 1*1000);
 }

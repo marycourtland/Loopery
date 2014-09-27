@@ -1,8 +1,5 @@
 loopery.levelMenu = new GameObject(loopery);
 
-
-
-
 loopery.levelMenu.tickActions.push(function() {
 })
 

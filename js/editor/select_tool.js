@@ -41,7 +41,7 @@ game.editor.select_tool.resizer.tickActions.push(function() {
 game.editor.select_tool.resizer.drawActions.push(function() {
   if (!game.editor.select_tool.params.selected_track) { return; }
   
-  circle(game.ctx, this.pos, this.radius, game.display.track_color)
+  draw.circle(game.ctx, this.pos, this.radius, game.display.track_color)
   
 });
 
