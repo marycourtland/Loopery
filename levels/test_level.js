@@ -57,42 +57,42 @@ var test_level = {
       "loop":9,
       "connector":13,
       "winding":1,
-      "on": true
+      "state": true
     },
     {
       "id":17,
       "loop":10,
       "connector":13,
       "winding":-1,
-      "on": false
+      "state": false
     },
     {
       "id":18,
       "loop":10,
       "connector":14,
       "winding":1,
-      "on": false
+      "state": false
     },
     {
       "id":19,
       "loop":11,
       "connector":14,
       "winding":-1,
-      "on": false
+      "state": false
     },
     {
       "id":20,
       "loop":11,
       "connector":15,
       "winding":1,
-      "on": false
+      "state": false
     },
     {
       "id":21,
       "loop":12,
       "connector":15,
       "winding":-1,
-      "on": false
+      "state": false
     }
   ],
   "orbs":[

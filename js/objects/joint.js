@@ -8,8 +8,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     this.loop = this.lookup(data.loop, 'loops');
     this.connector = this.lookup(data.connector, 'connectors');
     this.winding = data.winding;
-    this.initially_on = data.on;
-    this.on = this.initially_on;
+    this.initial_state = data.state;
+    this.state = this.initial_state;
 
     // Position on loop; this will be set by connector
     this.pos = null;
@@ -21,7 +21,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
       loop: this.loop.id,
       connector: this.connector.id,
       winding: this.winding,
-      on: this.initially_on
+      state: this.initial_state
     }
   }
 
@@ -33,7 +33,13 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     for (var orb_id in loopery.gameplay.levelObjects.orbs) {
       var orb = loopery.gameplay.levelObjects.orbs[orb_id];
       this.attemptTransfer(orb);
-    }    
+    }
+  }
+
+  this.bindEvents = function() {
+    this.on('click', function(pos) {
+      this.state = !this.state;
+    })
   }
 
   this.attemptTransfer = function(orb) {
@@ -43,7 +49,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     if (orb.track.id === this.loop.id) {
 
       // Don't do loop>connector transfers if the joint is turned off
-      if (!this.on) { return; }
+      if (!this.state) { return; }
 
       // make sure orb is going in correct direction
       if (orb.dir !== this.winding) { return; }
@@ -91,23 +97,43 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     return this.loop.getPosCoords(this.pos);
   }
 
-
   this.draw = function() {
     this.drawClicker();
   }
 
   this.drawClicker = function() {
     var loc = this.getLoc();
-    if (!loc) {return; }
+    if (!loc) { return; }
+    var alpha = this.getAlpha();
     draw.circle(this.ctx, loc, loopery.joint_click_radius, {
       fill: loopery.display.joint_click_color,
-      alpha: loopery.display.joint_click_alpha
+      alpha: alpha,
+      stroke: 'transparent'
     });
   }
 
-  this.contains = function(loc) {
-    return distance(loc, this.getLoc() < loopery.joint_click_radius)
+  this.getAlpha = function() {
+    if (loopery.features.clickerDisplay === 'pulse-all')  {
+      return this.contains(loopery.mouse.pos) ? loopery.display.joint_click_max_alpha : this.alphaPulse(loopery.state.frame); 
+    }
+
+    if (loopery.features.clickerDisplay === 'show-when-mouse-is-near')  {
+      return this.alphaMouse(distance(this.getLoc(), loopery.mouse.pos));
+    }
+
+    else {
+      return loopery.display.joint_click_max_alpha;
+    }
   }
 
-}
+  this.alphaMouse = function(mouse_distance) {
+    return loopery.display.joint_click_max_alpha * Math.exp(-(mouse_distance * mouse_distance) / (50 * loopery.display.joint_click_mouse_distance))
+  }
 
+  this.alphaPulse = oscillator(loopery.display.joint_click_pulse_period, 0, loopery.display.joint_click_max_alpha);
+
+  this.contains = function(loc) {
+    // console.log(this.getAlpha(loopery.state.frame))
+    return distance(loc, this.getLoc()) < loopery.joint_click_radius
+  }
+}

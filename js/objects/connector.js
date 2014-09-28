@@ -46,8 +46,8 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
     // TODO: implement this with new Joint object
     // Alternatively, the Joint object could do the rendering of the darkened track
     // ...or tell this connector to render it
-    var dark_end1 = !this.joints[0].on;
-    var dark_end2 = !this.joints[1].on;
+    var dark_end1 = !this.joints[0].state;
+    var dark_end2 = !this.joints[1].state;
     
     // Neither ends are darkened
     if (!(dark_end1 || dark_end2)) {

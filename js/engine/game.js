@@ -48,7 +48,7 @@ function Game(params) {
   this.setFont(params.font? params.font : {size: 18, type: 'Arial'});
   this.setSize(params.size? params.size : xy(600,400));
   this.setTitle(params.title? params.title : "New Game");
-  config_mouse(this);
+  mouse.init(this);
   config_keyboard(this);
   
   
@@ -105,14 +105,14 @@ function Game(params) {
   // this.currentStage = this.stages.gameplay; // default stages
   
   // GAME EVENTS
-  this.onclick = function(callback) {
-    this.ctx.canvas.addEventListener("click", callback);
-  }
+  // this.onclick = function(callback) {
+  //   this.ctx.canvas.addEventListener("click", callback);
+  // }
   
-  this.onmousedown = function(callback) {
-    this.ctx.canvas.addEventListener("mousedown", callback);
-  }
+  // this.onmousedown = function(callback) {
+  //   this.ctx.canvas.addEventListener("mousedown", callback);
+  // }
   
-  this.onclick(function() { console.log("Clicked at " + mouse.pos); })
+  // this.onclick(function() { console.log("Clicked at " + mouse.pos); })
 }
 

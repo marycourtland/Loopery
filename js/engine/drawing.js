@@ -6,9 +6,9 @@ var draw = {
     if (!params) { return; }
     ctx.fillStyle = params.fill || "";
     ctx.strokeStyle = params.stroke || "black";
-    ctx.lineWidth = params.lineWidth || 1;
+    ctx.lineWidth = params.lineWidth !== null ? params.lineWidth : 1;
     ctx.lineCap = params.linecap || 'butt';
-    ctx.globalAlpha = params.alpha || 1;
+    ctx.globalAlpha = params.alpha !== null ? params.alpha : 1;
   },
 
   doDrawing: function(ctx, params, draw_function) {

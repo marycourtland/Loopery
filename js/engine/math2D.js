@@ -411,3 +411,12 @@ function doLinesCross(p1, p2, eA, eB) {
 
     return (condition1 && condition2);
 }
+
+// Returns a function that oscillates its input. woohoooo
+function oscillator(period, min, max) {
+  var amplitude = (max - min)/2;
+  var yshift = min + amplitude;
+  return function(t) {
+    return yshift + amplitude * Math.cos(t * (2 * Math.PI / period))
+  }
+}

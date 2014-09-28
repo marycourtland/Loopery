@@ -23,7 +23,11 @@ loopery.display.shade_start_end_tracks = false;
 loopery.display.track_color = 'white';
 
 loopery.display.joint_click_color = 'black';
-loopery.display.joint_click_alpha = 0.5;
+loopery.display.joint_click_max_alpha = 0.7;
+loopery.display.joint_click_pulse_period = 100; // frames per pulse. TODO: cache the alpha values
+loopery.display.joint_click_mouse_distance = 100; // pixels
+
+
 
 // Other constants
 loopery.orb_speed = 5; // pixels per frame. TODO: convert to pixels per second

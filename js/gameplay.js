@@ -24,7 +24,8 @@ loopery.gameplay = {
   draw: function() { this.applyToObjectGroups('draw', {ordering: 'renderOrder'}) },
 
   applyToObjectGroups: function(func_name, params) {
-    obj_types = !params.ordering ? loopery.objectTypes : _.sortBy(loopery.objectTypes, function(obj_type) { return obj_type[ordering]; })
+    params = params || {};
+    obj_types = !params.ordering ? loopery.objectTypes : _.sortBy(loopery.objectTypes, function(obj_type) { return obj_type[params.ordering]; })
     for (var i = 0; i < obj_types.length; i++) {
       object_group = obj_types[i].group;
       for (var id in this.levelObjects[object_group]) {
@@ -57,6 +58,10 @@ loopery.gameplay = {
     var lookup = this.getLookupMethod();
     var _this = this;
 
+    // the sole purpose of having loopery.objects is for the mouse to access them
+    // TODO: refactor that
+    loopery.objects = []
+
     // Create objects
     loopery.objectTypes.forEach(function(obj) {
       level_data[obj.group].forEach(function(object_data) {
@@ -73,8 +78,33 @@ loopery.gameplay = {
       level_data[obj.group].forEach(function(object_data) {
         var id = object_data["id"];
         _this.levelObjects[obj.group][id].init(object_data);
+
+        loopery.objects.push(_this.levelObjects[obj.group][id]);
+        _this.configObjectEvents(_this.levelObjects[obj.group][id]);
       })
     })
 
+  },
+
+  configObjectEvents: function(obj) {
+    // TODO: redo this. I wrote this method just to make mouse.js happy. But that doesn't have to be the case.
+
+    obj.boundEvents = {}
+
+    obj.do = function(evt, pos) {
+      if (evt in obj.boundEvents) {
+        if (!obj.contains(pos)) { return; }
+        obj.boundEvents[evt].forEach(function(func) { func.call(obj, pos); })
+      }
+    }
+
+    obj.on = function(evt, func) {
+      if (!(evt in this.boundEvents)) { this.boundEvents[evt] = []; }
+      this.boundEvents[evt].push(func);
+    }
+
+    if (obj.bindEvents && typeof obj.bindEvents === 'function') {
+      obj.bindEvents();
+    }
   }
 }
