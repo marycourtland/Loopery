@@ -18,8 +18,16 @@
   <body>
     <div id="game">
       <canvas id="game_canvas"></canvas>
+
+      <div id="hud" class="game-overlay">
+        <a href="#" onclick="loopery.setStage('levelmenu');">Menu</a>
+      </div>
       
-      <div id="game_fadeout"></div>
+      <div id="game_fadeout" class="game-overlay"></div>
+
+      <div id="level_menu">
+        <h2>Pick a level!</h2>
+      </div>
       
       <div id="level_loader">
         <h3>SAVE LEVEL</h3>
@@ -31,10 +39,27 @@
         <button onclick="loopery.exitLoader()">Go back</button>
         <button onclick="loopery.loadInputLevel()">Load it!</button>
       </div>
+      <div id="settings">
+        Clicker display:
+        <form>
+        <input type="radio" name="clickerdisplay" onclick="loopery.features.clickerDisplay = 'pulse-all'">Pulse<br />
+        <input type="radio" name="clickerdisplay" onclick="loopery.features.clickerDisplay = 'show-when-mouse-is-near'">Show when mouse is near<br />
+        <input type="radio" name="clickerdisplay" onclick="loopery.features.clickerDisplay = 'show-all'">Show all of them, all of the time
+        </form>
+        <br />
+        Clicker size (diameter): <br />
+        10px<input id="clicker-radius" type="range" min="5" max= "20">40px
+        <br /><br />
+        Clicker distance from intersection: <br />
+        0px<input id="clicker-distance" type="range" min="0" max= "30" value="0">30px
+        <br /><br />
+        <iframe src="https://docs.google.com/forms/d/11cXRs-th22foWAW9nxN7Wd5O9hGyOGUQioXUURhUw68/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+      </div>
     </div>
   </body>
   
   <script type="text/javascript" src="levels/test_level.js"></script>
+  <script type="text/javascript" src="levels/test_level_2.js"></script>
   <script type="text/javascript" src="js/loopery.js"></script>
   <script type="text/javascript" src="js/computations.js"></script>
   
@@ -50,5 +75,13 @@
   <script type="text/javascript" src="js/menus/level_menu.js"></script>
   <script type="text/javascript" src="js/gameplay.js"></script>
   
+  <script type="text/javascript">
+    $("#clicker-radius").on('input', function(e) {
+      loopery.joint_click_radius = e.target.value;
+    })
+    $("#clicker-distance").on('input', function(e) {
+      loopery.joint_click_distance = e.target.value;
+    })
+  </script>
 
 </html>

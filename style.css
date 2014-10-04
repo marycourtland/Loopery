@@ -1,19 +1,49 @@
 html {
   font-family: Arial;
+  color: #fff;
 }
+
 #game_canvas {
   position: absolute;
   left:0; top:0;
   border:1px solid black;
   background-image:url('background.png');
 }
-#game_fadeout {
+
+.game-overlay {
   position: absolute;
   left:0; top:0;
   width: 801px;
   height: 601px;
+}
+
+#hud {
+  display: none;
+  background: transparent;
+}
+
+#game_fadeout {
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+#level_menu {
+  position: absolute;
+  left: 100px; top:60px;
+  width: 580px;
+  height: 460px;
+  padding:10px 20px;
+  background-color: transparent;
+  text-align: center;
+  display: none;
+}
+
+#level_menu a {
+  display: block;
+  color: #fff;
+  margin-bottom: 1em;
+  text-decoration: none;
+}
+
 #level_loader {
   position: absolute;
   left: 100px; top:60px;
@@ -24,6 +54,7 @@ html {
   border:1px solid black;
   text-align: center;
 }
+
 #level_output, #level_input {
   display: block;
   background-color: white;
@@ -38,4 +69,11 @@ html {
   white-space: -pre-wrap;      /* Opera 4-6 */
   white-space: -o-pre-wrap;    /* Opera 7 */
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+
+#settings {
+  position: absolute;
+  left: 820px;
+  color: black;
 }

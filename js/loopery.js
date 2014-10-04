@@ -3,80 +3,90 @@ var loopery = new Game();
 loopery.setTitle("Loopery");
 loopery.setSize(xy(800, 600));
 loopery.center = xy(400, 300);
+loopery.hud = $("#hud")[0];
 
 window.onload = function() {
   loopery.start();
 }
-
 
 // TODO: hopefully do a better way of detecting clicked tracks
 // (necessary for level editor)
 loopery.clicked_tracks = [];
 loopery.tickActions.push(function() { this.clicked_tracks = []; });
 
-
 loopery.disable_gameplay = false;
 
 // ========== GAME STAGES
-loopery.stages.titlescreen = function() {
-  clear(this.ctx);
-  this.setFont(this.display.font_title);
-  draw.text(this.ctx, this.title, xy(400, 150), "centered");
-  this.setFont(this.display.font_large, "italic");
-  draw.text(this.ctx, "Click to continue", xy(400, 250), "centered");
-  this.next();
-  //setTimeout(function() { loopery.exitTitlescreen(); }, 1*1000);
+loopery.stages.titlescreen = {
+  tick: function() {
+    clear(loopery.ctx);
+    loopery.setFont(loopery.display.font_title);
+    draw.text(loopery.ctx, loopery.title, xy(400, 150), "centered");
+    loopery.setFont(loopery.display.font_large, "italic");
+    draw.text(loopery.ctx, "Click to continue", xy(400, 250), "centered");
+    loopery.next();
+    //setTimeout(function() { loopery.exitTitlescreen(); }, 1*1000);
+  }
 }
 
-loopery.stages.levelmenu = function() {
-  clear(this.ctx);
-  this.levelMenu.tick();
-  this.levelMenu.draw();
-  this.next();
+loopery.stages.levelmenu = {
+  tick: function() {
+    clear(loopery.ctx);
+    loopery.levelMenu.tick();
+    loopery.levelMenu.draw();
+    loopery.next();
+  },
+  stageStart: function() { $("#level_menu").show(); },
+  stageEnd: function() { $("#level_menu").hide(); }
+} 
+
+loopery.stages.gameplay = {
+  tick: function() {
+    clear(loopery.ctx);
+    loopery.gameplay.tick();
+    loopery.gameplay.draw();
+    loopery.next();
+  }
 }
 
-loopery.stages.gameplay = function() {
-  clear(this.ctx);
-  this.gameplay.tick();
-  this.gameplay.draw();
-  this.next();
+
+// ========== Stage-switching methods
+loopery.setStage = function(stage_name) {
+  if (!(stage_name in loopery.stages)) { return; }
+
+  if (loopery.currentStage && typeof loopery.currentStage.stageEnd === 'function') { loopery.currentStage.stageEnd(); }
+  loopery.currentStage = loopery.stages[stage_name];
+  if (loopery.currentStage && typeof loopery.currentStage.stageStart === 'function') { loopery.currentStage.stageStart(); }
+
 }
 
-// Stage-switching methods
-loopery.exitTitlescreen = function() {
+loopery.startGameplay = function(level_data) {
   // this.doNextLevel(); // TODO: gameplay loads a level. TODO: know which level to load
-  this.currentStage = loopery.stages.gameplay;
-  loopery.gameplay.init();
+
+  loopery.setStage('gameplay');
 
   // Load a test level (temporary)
-  loopery.gameplay.loadLevel(test_level)
+  loopery.gameplay.loadLevel(level_data)
 }
+
 loopery.ctx.canvas.addEventListener("click", function(event) {
-  if (loopery.currentStage === loopery.stages.titlescreen) { loopery.exitTitlescreen(); }
+  if (loopery.currentStage === loopery.stages.titlescreen) { loopery.setStage('levelmenu'); }
 })
+
 loopery.restart = function() {
-  this.current_level = 0;
-  loopery.currentStage = loopery.stages.titlescreen;
+  loopery.current_level = 0;
+  loopery.setStage('titlescreen');
 }
+
 loopery.startCurrentLevel = function() {
-  this.levels[this.current_level].onload();
+  loopery.levels[loopery.current_level].onload();
 }
 
-loopery.toggleElement = function(element_id) {
-  var v = document.getElementById(element_id).style.visibility;
-  if (v === 'hidden') document.getElementById(element_id).style.visibility = '';
-  else document.getElementById(element_id).style.visibility = 'hidden';
-}
-loopery.hideElement = function(element_id) {
-  document.getElementById(element_id).style.visibility = 'hidden';
-}
-loopery.showElement = function(element_id) {
-  document.getElementById(element_id).style.visibility = '';
-}
+$(document).ready(function() {
+  $("#game_fadeout").hide(); // start with the fadeout layer hidden (i.e. game is not faded out)
+  $("#level_loader").hide();  
 
+  // Initial stage
+  loopery.setStage('titlescreen')
+})
 
-loopery.hideElement("game_fadeout"); // start with the fadeout layer hidden (i.e. game is not faded out)
-loopery.hideElement("level_loader");
-
-// Initial stage
-loopery.currentStage = loopery.stages.titlescreen;

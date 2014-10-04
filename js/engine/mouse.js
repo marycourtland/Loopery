@@ -17,13 +17,23 @@ var mouse = {
   canvas: null,
   game: null,
 
+  inputElements: [],
 
   init: function(game) {
     this.game = game;
     this.canvas = game.ctx.canvas;
-    this.canvas.addEventListener("mousemove", function(event) { mouse.evt_move(event); });
-    this.canvas.addEventListener("mousedown", function(event) { mouse.evt_down(event); });
-    this.canvas.addEventListener("mouseup", function(event) { mouse.evt_up(event); });
+
+    this.inputElements.push(this.canvas);
+    if (game.hud) {
+      this.inputElements.push(game.hud);
+    }
+
+    this.inputElements.forEach(function(element) {
+      element.addEventListener("mousemove", function(event) { mouse.evt_move(event); });
+      element.addEventListener("mousedown", function(event) { mouse.evt_down(event); });
+      element.addEventListener("mouseup", function(event) { mouse.evt_up(event); });
+    })
+
     game.mouse = this;
   },
 

@@ -54,7 +54,7 @@ function Game(params) {
   
   // Game loop
   this.start = function() {
-    iter(this.objects, function(obj) { if (obj.kind.indexOf('dynamic') == -1) actuate(obj); });
+    // iter(this.objects, function(obj) { if (obj.kind.indexOf('dynamic') == -1) actuate(obj); });
     this.setFont(this.display.font);
     this.next();
   }
@@ -64,7 +64,7 @@ function Game(params) {
     for (var i = 0; i < this.tickActions.length; i++) {
       this.tickActions[i].call(this);
     }
-    this.currentStage();
+    this.currentStage.tick();
     for (var i = 0; i < this.finalActions.length; i++) {
       this.finalActions[i].call(this);
     }

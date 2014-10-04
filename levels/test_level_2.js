@@ -7,9 +7,9 @@
  //              (11)20 -15- 21(12)
 
 
-var test_level = {
+var test_level_2 = {
   "info": {
-    "name": "Test Level"
+    "name": "Second Test Level"
   },
   "loops":[  
     {  
@@ -52,11 +52,6 @@ var test_level = {
       "id":15,
       "joint1":20,
       "joint2":21
-    },
-    {  
-      "id":23,
-      "joint1":22,
-      "joint2":24
     }
   ],
   "joints":[
@@ -100,20 +95,6 @@ var test_level = {
       "loop":12,
       "connector":15,
       "winding":-1,
-      "state": false
-    },
-    {
-      "id":22,
-      "loop":10,
-      "connector":23,
-      "winding":-1,
-      "state": false
-    },
-    {
-      "id":24,
-      "loop":12,
-      "connector":23,
-      "winding":1,
       "state": false
     }
   ],

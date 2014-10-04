@@ -94,7 +94,9 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
 
   this.getLoc = function() {
     // todo: cache this value
-    return this.loop.getPosCoords(this.pos);
+    var dir = this.connector.joints[0] === this ? 1 : -1;
+    var offset = rth(dir * loopery.joint_click_distance, this.connector.geometry.angle);
+    return add(this.loop.getPosCoords(this.pos), offset);
   }
 
   this.draw = function() {
@@ -125,6 +127,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
       return loopery.display.joint_click_max_alpha;
     }
   }
+
 
   this.alphaMouse = function(mouse_distance) {
     return loopery.display.joint_click_max_alpha * Math.exp(-(mouse_distance * mouse_distance) / (50 * loopery.display.joint_click_mouse_distance))

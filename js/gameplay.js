@@ -13,10 +13,44 @@ loopery.gameplay = {
 
   levelObjects: {},
 
-  init: function() {
+  clear: function() {
     var _this = this;
     loopery.objectTypes.forEach(function(obj) {
       _this.levelObjects[obj.group] = {};
+    })
+  },
+
+  loadLevel: function(level_data) {
+    var lookup = this.getLookupMethod();
+    var _this = this;
+
+    this.clear();
+
+    // the sole purpose of having loopery.objects is for the mouse to access them
+    // TODO: refactor that
+    loopery.objects = []
+
+    // Create objects
+    loopery.objectTypes.forEach(function(obj) {
+      console.log(level_data)
+      level_data[obj.group].forEach(function(object_data) {
+        var id = object_data["id"];
+        var ObjectType = loopery[obj.type];
+        _this.levelObjects[obj.group][id] = new ObjectType(id, loopery.ctx, lookup);
+      })
+    })
+
+    // Initialize them
+    // *** Since the different object types refer to each other (during initializing), this
+    // needs to be totally separate from the object creation
+    loopery.objectTypes.forEach(function(obj) {
+      level_data[obj.group].forEach(function(object_data) {
+        var id = object_data["id"];
+        _this.levelObjects[obj.group][id].init(object_data);
+
+        loopery.objects.push(_this.levelObjects[obj.group][id]);
+        _this.configObjectEvents(_this.levelObjects[obj.group][id]);
+      })
     })
   },
 
@@ -52,38 +86,6 @@ loopery.gameplay = {
       }
       return null;
     }
-  },
-
-  loadLevel: function(level_data) {
-    var lookup = this.getLookupMethod();
-    var _this = this;
-
-    // the sole purpose of having loopery.objects is for the mouse to access them
-    // TODO: refactor that
-    loopery.objects = []
-
-    // Create objects
-    loopery.objectTypes.forEach(function(obj) {
-      level_data[obj.group].forEach(function(object_data) {
-        var id = object_data["id"];
-        var ObjectType = loopery[obj.type];
-        _this.levelObjects[obj.group][id] = new ObjectType(id, loopery.ctx, lookup);
-      })
-    })
-
-    // Initialize them
-    // *** Since the different object types refer to each other (during initializing), this
-    // needs to be totally separate from the object creation
-    loopery.objectTypes.forEach(function(obj) {
-      level_data[obj.group].forEach(function(object_data) {
-        var id = object_data["id"];
-        _this.levelObjects[obj.group][id].init(object_data);
-
-        loopery.objects.push(_this.levelObjects[obj.group][id]);
-        _this.configObjectEvents(_this.levelObjects[obj.group][id]);
-      })
-    })
-
   },
 
   configObjectEvents: function(obj) {
