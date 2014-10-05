@@ -24,7 +24,7 @@ var mouse = {
     this.canvas = game.ctx.canvas;
 
     this.inputElements.push(this.canvas);
-    if (game.hud) {
+    if (this.game.hud) {
       this.inputElements.push(game.hud);
     }
 
@@ -34,7 +34,7 @@ var mouse = {
       element.addEventListener("mouseup", function(event) { mouse.evt_up(event); });
     })
 
-    game.mouse = this;
+    this.game.mouse = this;
   },
 
   calcCanvasPos: function(event) {
@@ -109,7 +109,7 @@ var mouse = {
 
   evt_up: function(event) {
     // Pass click to clicked object
-    if (this.state == this.STATE_DOWN && this.clicked_object) {
+    if ((this.state == this.STATE_DOWN || this.state == this.STATE_DRAG) && this.clicked_object) {
       this.clicked_object.do('click', this.pos);
     }
     
