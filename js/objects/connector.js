@@ -7,8 +7,8 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
   this.init = function(data) {
     // set joints
     this.joints = [
-      this.lookup(data.joint1, "joints"),
-      this.lookup(data.joint2, "joints")
+      this.lookup({id:data.joint1, group:"joints"}),
+      this.lookup({id:data.joint2, group:"joints"})
     ]
 
     // cache this stuff so it doesn't have to be recomputed at each frame

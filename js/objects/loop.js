@@ -45,7 +45,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   this.checkForConnections = function(oldpos, newpos) {
     for (connector_id in this.connections) {
       if (!this.connections[connector_id]) continue; // skip joints that aren't turned on
-      var connector = this.lookup(id, 'connectors');
+      var connector = this.lookup({id:id, group:'connectors'});
       var p = connector.parent_track_pos[this.id];
       if (isBetweenOnCircle(p, oldpos, newpos, 1)) { return connector; }
     }

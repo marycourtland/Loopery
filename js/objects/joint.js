@@ -5,8 +5,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
   this.lookup = lookup_func;
 
   this.init = function(data) {
-    this.loop = this.lookup(data.loop, 'loops');
-    this.connector = this.lookup(data.connector, 'connectors');
+    this.loop = this.lookup({id:data.loop, group:'loops'});
+    this.connector = this.lookup({id:data.connector, group:'connectors'});
     this.winding = data.winding;
     this.initial_state = data.state;
     this.state = this.initial_state;

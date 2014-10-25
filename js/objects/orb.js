@@ -13,7 +13,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     // dynamic things
     this.oldpos = null;
     this.pos = 0.5; // should the orb have an initial starting pos?
-    this.track = this.lookup(data.start);
+    this.track = this.lookup({id: data.start});
     this.dir = this.start_dir; 
   }
 
@@ -32,6 +32,9 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     // if (this.disabled) return;
 
     this.move();
+
+    // check to see whether the orb is bumping into another orb
+
     
     // check to see whether the orb is on its ending track
     // (TODO)

@@ -64,21 +64,34 @@ loopery.gameplay = {
   },
 
   getLookupMethod: function() {
-    // This method will be given to child objects so that they
-    // can reference other objects by id
+    // This method will be given to child objects so that they can lookup junk
+    // Possible params:
+    // id, group
+    // Call lookup(group:"groupname") to get all objs in that group
     var _this = this;
-    return function(id, object_group) {
-      // allow the function to be called with the object group/type (optional)
-      // to improve performance
-      if (object_group in _this.levelObjects) {
-        return _this.levelObjects[object_group][id] || null;
+    return function(params) {
+      if (typeof params !== 'object') {
+        throw 'Error... why did you not call lookup() with a params object???';
       }
 
-      for (var object_group in _this.levelObjects) {
-        if (id in _this.levelObjects[object_group]) {
-          return _this.levelObjects[object_group][id];
+      console.debug(params.group, _this.levelObjects, (params.group in _this.levelObjects))
+      console.debug(params.id, params.id === null)
+      if (params.group in _this.levelObjects) {
+        if (params.id === null || params.id === undefined) {
+          return _this.levelObjects[params.group]
+        }
+        else {
+          return _this.levelObjects[params.group][params.id] || null;
         }
       }
+
+      if (params.id !== null || params.id === undefined) {
+        for (var group in _this.levelObjects) {
+          if (params.id in _this.levelObjects[group]) {
+            return _this.levelObjects[group][params.id];
+          }
+        }
+      } 
       return null;
     }
   },

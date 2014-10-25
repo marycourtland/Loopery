@@ -126,7 +126,7 @@ var test_level = {
       "end":12
     },
     {
-      "id":23,
+      "id":25,
       "color":"red",
       "start":12,
       "start_dir":-1,
