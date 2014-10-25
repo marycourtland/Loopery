@@ -3,6 +3,11 @@ html {
   color: #fff;
 }
 
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
 #game_canvas {
   position: absolute;
   left:0; top:0;
@@ -39,9 +44,7 @@ html {
 
 #level_menu a {
   display: block;
-  color: #fff;
   margin-bottom: 1em;
-  text-decoration: none;
 }
 
 #level_loader {

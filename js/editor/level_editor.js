@@ -1,9 +1,9 @@
 // When you enter the level editor:
-// - a new, empty level is created and game.custom_level is set to it
-// - it's added to game.custom_levels
-// - game.editor is enabled (via game.enableEditor())
-// - game.editor is a GameObject, but all of its methods should return if the editor isn't enabled
-//   (i.e. game.editor.enabled is true)
+// - a new, empty level is created and loopery.custom_level is set to it
+// - it's added to loopery.custom_levels
+// - loopery.editor is enabled (via loopery.enableEditor())
+// - loopery.editor is a GameObject, but all of its methods should return if the editor isn't enabled
+//   (i.e. loopery.editor.enabled is true)
 
 // Tools:
 // - Tool to create new circular track (lets you click twice to position the center and edge)
@@ -23,36 +23,36 @@
 // - Let the designer try out the game
 // - Let the designer choose starting and ending tracks
 
-game.editor = new GameObject(game);
+loopery.editor = new GameObject(loopery);
 
-game.editor.enabled = false;
-game.enableEditor = function() {
-  if (game.editor.enabled) {
-    game.editor.setTool(game.editor.current_tool);
+loopery.editor.enabled = false;
+loopery.enableEditor = function() {
+  if (loopery.editor.enabled) {
+    loopery.editor.setTool(loopery.editor.current_tool);
   }
   else {
-    game.editor.enabled = true;
-    game.editor.setTool(game.editor.circle_tool);
+    loopery.editor.enabled = true;
+    loopery.editor.setTool(loopery.editor.circle_tool);
   }
-  game.editor.custom_level = makeLevel(game, game.levels.length);
-  game.current_level = game.editor.custom_level.id;
-  game.disable_gameplay = true;
+  loopery.editor.custom_level = makeLevel(game, loopery.levels.length);
+  loopery.current_level = loopery.editor.custom_level.id;
+  loopery.disable_gameplay = true;
 }
 
-game.disableEditor = function() {
+loopery.disableEditor = function() {
   if (this.editor.current_tool) this.editor.current_tool.end();
   this.editor.enabled = false;
-  game.disable_gameplay = false;
+  loopery.disable_gameplay = false;
 }
 
-game.editor.setTool = function(tool) {
+loopery.editor.setTool = function(tool) {
   if (this.current_tool) this.current_tool.end();
   this.current_tool = tool;
   this.current_tool.start();
   this.current_tool.states[this.current_tool.current_state].onenter();
 }
 
-game.editor.draw = function() {
+loopery.editor.draw = function() {
   if (!this.enabled) return;
   this.drawGrid();
   this.current_tool.states[this.current_tool.current_state].draw();
@@ -63,14 +63,14 @@ game.editor.draw = function() {
   draw.text(this.ctx, "Tools", xy(15, 200), "nw");
 }
 
-game.editor.tick = function() {
+loopery.editor.tick = function() {
 }
 
 // Clicks will make a tool transition to the next state.
-game.onclick(function() {
-  if (!game.editor.enabled) return;
-  if (game.menu.contains(mouse.pos)) return;
-  tool = game.editor.current_tool;
+loopery.onclick(function() {
+  if (!loopery.editor.enabled) return;
+  if (loopery.menu.contains(mouse.pos)) return;
+  tool = loopery.editor.current_tool;
   tool.states[tool.current_state].onleave();
   tool.current_state = tool.states[tool.current_state].next_state;
   tool.states[tool.current_state].onenter();

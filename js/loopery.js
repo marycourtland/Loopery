@@ -3,11 +3,15 @@ var loopery = new Game();
 loopery.setTitle("Loopery");
 loopery.setSize(xy(800, 600));
 loopery.center = xy(400, 300);
-loopery.hud = $("#hud")[0];
 
 window.onload = function() {
   loopery.start();
 }
+
+// the sole purpose of having loopery.objects is for the mouse to access them
+// TODO: refactor that
+// also the level editor uses the GameObject stuff which uses this
+loopery.objects = [];
 
 // TODO: hopefully do a better way of detecting clicked tracks
 // (necessary for level editor)
@@ -46,7 +50,20 @@ loopery.stages.gameplay = {
     loopery.gameplay.tick();
     loopery.gameplay.draw();
     loopery.next();
-  }
+  },
+  stageStart: function() { $("#hud").show(); },
+  stageEnd: function() { $("#hud").hide(); }
+}
+
+loopery.stages.editor = {
+  tick: function() {
+    clear(loopery.ctx);
+    loopery.gameplay.tick();
+    loopery.gameplay.draw();
+    loopery.next();
+  },
+  stageStart: function() { $("#hud").show(); },
+  stageEnd: function() { $("#hud").hide(); }
 }
 
 

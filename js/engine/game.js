@@ -42,6 +42,8 @@ function Game(params) {
   }
   this.canvas.style.backgroundColor = this.display.bg_color;
 
+  this.hud = window.document.getElementById('hud')
+
   // Initialize canvas context
   this.ctx = this.canvas.getContext("2d");
   
@@ -105,13 +107,13 @@ function Game(params) {
   // this.currentStage = this.stages.gameplay; // default stages
   
   // GAME EVENTS
-  // this.onclick = function(callback) {
-  //   this.ctx.canvas.addEventListener("click", callback);
-  // }
+  this.onclick = function(callback) {
+    this.ctx.canvas.addEventListener("click", callback);
+  }
   
-  // this.onmousedown = function(callback) {
-  //   this.ctx.canvas.addEventListener("mousedown", callback);
-  // }
+  this.onmousedown = function(callback) {
+    this.ctx.canvas.addEventListener("mousedown", callback);
+  }
   
   // this.onclick(function() { console.log("Clicked at " + mouse.pos); })
 }

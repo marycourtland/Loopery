@@ -3,6 +3,7 @@ function GameObject(game, params) {
   if (params == null) params = {};
   
   this.id = params.id? params.id : 'obj' + (num_canvas_objects-1).toString();
+  num_canvas_objects+=1;
   this.kind ="object";
   this.reset = function() {};
   
@@ -101,7 +102,6 @@ function GameObject(game, params) {
     // Also, set this flag
     this.destroyed = true;
   }
-
   game.objects.push(this);
   
   if (!game.ctx.canvas.objects) game.ctx.canvas.objects = [];

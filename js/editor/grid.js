@@ -1,19 +1,19 @@
 // *********************************************************************
 // Grid
-game.editor.gridsize = xy(20, 20);
-game.editor.snap_to_grid = false;
+loopery.editor.gridsize = xy(20, 20);
+loopery.editor.snap_to_grid = false;
 
-game.editor.drawGrid = function() {
+loopery.editor.drawGrid = function() {
   if (!this.snap_to_grid) return;
   var pos = xy(0, 0);
-  game.ctx.globalAlpha = 0.7;
-  while (pos.y < game.size.y) {
-    while (pos.x < game.size.x) {
-      if (!game.menu.contains(pos)) draw.circle(game.ctx, pos, 1, 'black');
+  loopery.ctx.globalAlpha = 0.7;
+  while (pos.y < loopery.size.y) {
+    while (pos.x < loopery.size.x) {
+      if (!loopery.menu.contains(pos)) draw.circle(loopery.ctx, pos, 1, 'black');
       pos.xshift(this.gridsize.x);
     }
     pos.x = 0;
     pos.yshift(this.gridsize.y);
   }
-  game.ctx.globalAlpha = 1;
+  loopery.ctx.globalAlpha = 1;
 }

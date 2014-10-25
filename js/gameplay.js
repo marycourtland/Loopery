@@ -26,13 +26,8 @@ loopery.gameplay = {
 
     this.clear();
 
-    // the sole purpose of having loopery.objects is for the mouse to access them
-    // TODO: refactor that
-    loopery.objects = []
-
     // Create objects
     loopery.objectTypes.forEach(function(obj) {
-      console.log(level_data)
       level_data[obj.group].forEach(function(object_data) {
         var id = object_data["id"];
         var ObjectType = loopery[obj.type];

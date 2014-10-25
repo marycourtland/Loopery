@@ -1,9 +1,9 @@
 // *********************************************************************
 // Tool to create linear tracks
-game.editor.linear_tool = {};
+loopery.editor.linear_tool = {};
 
 // Params needed to create a tangent track
-game.editor.linear_tool.params = {
+loopery.editor.linear_tool.params = {
   circle1: null,
   circle2: null,
   type: null,
@@ -11,7 +11,7 @@ game.editor.linear_tool.params = {
 }
 
 // Creates a linear track (tangent to two circles) based on the input params
-game.editor.linear_tool.complete = function() {
+loopery.editor.linear_tool.complete = function() {
   if (this.params.circle1 === null
       || this.params.circle2 === null
       || this.params.type === null
@@ -20,7 +20,7 @@ game.editor.linear_tool.complete = function() {
   var makeTrackFunc = (this.params.type === "outer") ? makeOuterTangentTrack : makeInnerTangentTrack; 
   
   // Make the track
-  var track = makeTrackFunc(game.editor.custom_level, this.params.circle1, this.params.circle2, this.params.which);
+  var track = makeTrackFunc(loopery.editor.custom_level, this.params.circle1, this.params.circle2, this.params.which);
   
   // Reset the params
   this.params.circle1 = null;
@@ -37,12 +37,12 @@ game.editor.linear_tool.complete = function() {
 //   type = "inner", which = 0
 //   type = "inner", which = 1
 // They are created during the "choose_type_and_which" state.
-game.editor.linear_tool.makeSampleTrack = function(type, which) {
-  var track = new GameObject(game);
+loopery.editor.linear_tool.makeSampleTrack = function(type, which) {
+  var track = new GameObject(loopery);
   track.type = "linear"; // for ordering purposes
   
-  var circle1 = game.editor.linear_tool.params.circle1;
-  var circle2 = game.editor.linear_tool.params.circle2;
+  var circle1 = loopery.editor.linear_tool.params.circle1;
+  var circle2 = loopery.editor.linear_tool.params.circle2;
   
   // Calculate track endpoints
   var pts = (type === "outer") ?
@@ -60,36 +60,36 @@ game.editor.linear_tool.makeSampleTrack = function(type, which) {
   track.type = type;
   track.which = which;
   
-  track.contains = function(pos) { return isOnLineSegment(pos, this.pos1, this.pos2, game.display.track_width); }
+  track.contains = function(pos) { return isOnLineSegment(pos, this.pos1, this.pos2, loopery.display.track_width); }
   track.drawActions.push(function() {
     // Draw the line
     var color = 'white';
-    if (!this.contains(game.mouse.pos)) {
-      game.ctx.globalAlpha = 0.3;
+    if (!this.contains(loopery.mouse.pos)) {
+      loopery.ctx.globalAlpha = 0.3;
       color = 'black';
     }
-    draw.line(game.ctx, this.pos1, this.pos2, {
+    draw.line(loopery.ctx, this.pos1, this.pos2, {
       stroke: color,
-      linewidth: game.display.track_width
+      linewidth: loopery.display.track_width
     })
-    game.ctx.globalAlpha = 1;
+    loopery.ctx.globalAlpha = 1;
   });
   track.onclick = function(pos) {
     // The purpose of this is to enable the level editor to know which track
     // has been selected.
     // Splice is used instead of push because we want the most recently
-    // clicked track (i.e. the one later in game.objects) to be at position 0.
-    game.clicked_tracks.splice(0, 0, this);
+    // clicked track (i.e. the one later in loopery.objects) to be at position 0.
+    loopery.clicked_tracks.splice(0, 0, this);
   }
   return track;
 }
 
-game.editor.linear_tool.sample_tracks = [];
+loopery.editor.linear_tool.sample_tracks = [];
 
-game.editor.linear_tool.do_sample_tracks_exist = false;
+loopery.editor.linear_tool.do_sample_tracks_exist = false;
 
 // Resets the tool (called when player chooses the tool)
-game.editor.linear_tool.start = function() {
+loopery.editor.linear_tool.start = function() {
   this.current_state = "choose_circle1";
   this.params.circle1 = null;
   this.params.circle2 = null;
@@ -97,17 +97,17 @@ game.editor.linear_tool.start = function() {
   this.params.which = null;
 }
 
-game.editor.linear_tool.end = function() {
+loopery.editor.linear_tool.end = function() {
   this.params.circle1 = null;
   this.params.circle2 = null;
   this.params.type = null;
   this.params.which = null;
-  game.display.shade_hovered_circle_track = false;
+  loopery.display.shade_hovered_circle_track = false;
   // Make sure the sample tracks are cleaned up
-  game.editor.linear_tool.destroy_sample_tracks();
+  loopery.editor.linear_tool.destroy_sample_tracks();
 }
 
-game.editor.linear_tool.destroy_sample_tracks = function() {
+loopery.editor.linear_tool.destroy_sample_tracks = function() {
   for (var i = 0; i < this.sample_tracks.length; i++) {
     this.sample_tracks[i].destroy();
   }
@@ -115,23 +115,23 @@ game.editor.linear_tool.destroy_sample_tracks = function() {
 }
 
 // Tool states
-game.editor.linear_tool.states = {
+loopery.editor.linear_tool.states = {
   choose_circle1: {
     onenter: function() {
-      game.display.shade_hovered_circle_track = true;
+      loopery.display.shade_hovered_circle_track = true;
     },
     
     draw: function() {},
     
     onleave: function() {
-      if (game.clicked_tracks.length > 0) {
+      if (loopery.clicked_tracks.length > 0) {
         // Set params.circle1
-        game.editor.linear_tool.params.circle1 = game.clicked_tracks[0];
-        game.editor.linear_tool.states.choose_circle1.next_state = "choose_circle2";
+        loopery.editor.linear_tool.params.circle1 = loopery.clicked_tracks[0];
+        loopery.editor.linear_tool.states.choose_circle1.next_state = "choose_circle2";
       }
       else {
         // Repeat this state if a circle track hasn't been clicked
-        game.editor.linear_tool.states.choose_circle1.next_state = "choose_circle1";
+        loopery.editor.linear_tool.states.choose_circle1.next_state = "choose_circle1";
       }
     },
     
@@ -145,26 +145,26 @@ game.editor.linear_tool.states = {
     
     draw: function() {
       // Shade the first circle
-      game.editor.linear_tool.params.circle1.shade();
+      loopery.editor.linear_tool.params.circle1.shade();
     },
     
     onleave: function() {
-      if (game.clicked_tracks.length > 0 && game.clicked_tracks[0] !== game.editor.linear_tool.params.circle1) {
+      if (loopery.clicked_tracks.length > 0 && loopery.clicked_tracks[0] !== loopery.editor.linear_tool.params.circle1) {
         // Set params.circle2
         // Ensure that params.circle1 has the larger radius (because of the bug in the tangent calculations)
-        if (game.clicked_tracks[0].radius > game.editor.linear_tool.params.circle1.radius) {
-          game.editor.linear_tool.params.circle2 = game.editor.linear_tool.params.circle1;
-          game.editor.linear_tool.params.circle1 = game.clicked_tracks[0];
+        if (loopery.clicked_tracks[0].radius > loopery.editor.linear_tool.params.circle1.radius) {
+          loopery.editor.linear_tool.params.circle2 = loopery.editor.linear_tool.params.circle1;
+          loopery.editor.linear_tool.params.circle1 = loopery.clicked_tracks[0];
         }
         else {
-          game.editor.linear_tool.params.circle2 = game.clicked_tracks[0];
+          loopery.editor.linear_tool.params.circle2 = loopery.clicked_tracks[0];
         }
-        game.editor.linear_tool.states.choose_circle2.next_state = "choose_type_and_which";
-        game.display.shade_hovered_circle_track = false;
+        loopery.editor.linear_tool.states.choose_circle2.next_state = "choose_type_and_which";
+        loopery.display.shade_hovered_circle_track = false;
       }
       else {
         // If a circle wasn't clicked, repeat this state
-        game.editor.linear_tool.states.choose_circle2.next_state = "choose_circle2";
+        loopery.editor.linear_tool.states.choose_circle2.next_state = "choose_circle2";
       }
     },
     
@@ -175,41 +175,41 @@ game.editor.linear_tool.states = {
     
     onenter: function() {
       // Create four "sample" tracks 
-      if (!game.editor.linear_tool.do_sample_tracks_exist) {
-        game.editor.linear_tool.sample_tracks.push(game.editor.linear_tool.makeSampleTrack("outer", 0));
-        game.editor.linear_tool.sample_tracks.push(game.editor.linear_tool.makeSampleTrack("outer", 1));
-        game.editor.linear_tool.sample_tracks.push(game.editor.linear_tool.makeSampleTrack("inner", 0));
-        game.editor.linear_tool.sample_tracks.push(game.editor.linear_tool.makeSampleTrack("inner", 1));
-        game.editor.linear_tool.do_sample_tracks_exist = true;
-        game.orderObjects();
+      if (!loopery.editor.linear_tool.do_sample_tracks_exist) {
+        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack("outer", 0));
+        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack("outer", 1));
+        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack("inner", 0));
+        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack("inner", 1));
+        loopery.editor.linear_tool.do_sample_tracks_exist = true;
+        loopery.orderObjects();
       }
       
     },
     
     draw: function() {
       // Shade the first two circles
-      game.editor.linear_tool.params.circle1.shade();
-      game.editor.linear_tool.params.circle2.shade();
+      loopery.editor.linear_tool.params.circle1.shade();
+      loopery.editor.linear_tool.params.circle2.shade();
     },
     
     onleave: function() {
-      if (game.clicked_tracks.length > 0 ) {
+      if (loopery.clicked_tracks.length > 0 ) {
         // Find which sample track the designer clicked
-        game.editor.linear_tool.params.type = game.clicked_tracks[0].type;
-        game.editor.linear_tool.params.which = game.clicked_tracks[0].which;
+        loopery.editor.linear_tool.params.type = loopery.clicked_tracks[0].type;
+        loopery.editor.linear_tool.params.which = loopery.clicked_tracks[0].which;
         
         // Create the track
-        game.editor.linear_tool.complete();
-        game.orderObjects();
+        loopery.editor.linear_tool.complete();
+        loopery.orderObjects();
         
         // Destroy the sample tracks
-        game.editor.linear_tool.destroy_sample_tracks();
+        loopery.editor.linear_tool.destroy_sample_tracks();
         
-        game.editor.linear_tool.states.choose_type_and_which.next_state = "choose_circle1";
+        loopery.editor.linear_tool.states.choose_type_and_which.next_state = "choose_circle1";
       }
       else {
         // If no linear track was clicked, repeat this state
-        game.editor.linear_tool.states.choose_type_and_which.next_state = "choose_type_and_which";
+        loopery.editor.linear_tool.states.choose_type_and_which.next_state = "choose_type_and_which";
       }
       
     },

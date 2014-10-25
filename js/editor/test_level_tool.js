@@ -1,24 +1,24 @@
 // *********************************************************************
 // Tool to test the level
-game.editor.test_level_tool = {};
+loopery.editor.test_level_tool = {};
 
 // Resets the tool (called when player chooses the tool)
-game.editor.test_level_tool.start = function() {
+loopery.editor.test_level_tool.start = function() {
   this.current_state = "start";
-  game.display.shade_hovered_circle_track = true;
-  game.display.shade_start_end_tracks = true;
-  game.disable_gameplay = false;
-  game.startCurrentLevel();
+  loopery.display.shade_hovered_circle_track = true;
+  loopery.display.shade_start_end_tracks = true;
+  loopery.disable_gameplay = false;
+  loopery.startCurrentLevel();
 }
 
-game.editor.test_level_tool.end = function() {
-  game.display.shade_hovered_circle_track = false;
-  game.display.shade_start_end_tracks = false;
-  game.disable_gameplay = true;
+loopery.editor.test_level_tool.end = function() {
+  loopery.display.shade_hovered_circle_track = false;
+  loopery.display.shade_start_end_tracks = false;
+  loopery.disable_gameplay = true;
 }
 
 // Tool states
-game.editor.test_level_tool.states = {
+loopery.editor.test_level_tool.states = {
   start: {
     onenter: function() {},
     draw: function() {},
