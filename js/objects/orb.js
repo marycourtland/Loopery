@@ -33,6 +33,13 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
     this.move();
 
+    for (var evt_name in this.events) {
+      var evt = this.events[evt_name];
+      if (evt.hasOccurred.call(this)) {
+        evt.onOccur.call(this);
+      }
+    }
+
     // check to see whether the orb is bumping into another orb
 
     
@@ -50,5 +57,45 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
       fill: this.color,
       stroke: this.color
     });
+  }
+
+  this.getLoc = function() {
+    return this.track.getPosCoords(this.pos);
+  }
+
+  this.isCollidingWith = function(orb) {
+    if (orb.id === this.id) { return false; }
+    //if (loopery.state.frame %100 === 0) console.debug(vround(this.getLoc())+'', vround(orb.getLoc())+'', distance(this.getLoc(), orb.getLoc()));
+    return distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
+  }
+
+  // EVENTS DURING GAMEPLAY
+  // the functions should be called with this bound to the orb obj
+  this.events = {
+    collision: {
+      hasOccurred: function() {
+        var orbs = this.lookup({group: 'orbs'});
+        for (var id in orbs) {
+          //if (loopery.state.frame % 100 === 0) { console.log(id, this.id)}
+          if (this.isCollidingWith(orbs[id])) { return true; }
+        }
+        return false;
+      },
+      onOccur: function() {
+        // reverse direction!
+        this.dir *= -1;
+      }
+    },
+
+    levelcomplete: {
+      hasOccurred: function() {
+        // todo
+        return false
+      },
+      onOccur: function() {
+        // todo
+        console.debug('woohoo, you finished a level')
+      }
+    }
   }
 }

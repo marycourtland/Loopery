@@ -39,13 +39,13 @@ var mouse = {
 
   calcCanvasPos: function(event) {
     if (navigator.userAgent.match(/Firefox/i)) {
-      return xy(event.layerX - canvas.offsetLeft, event.layerY - canvas.offsetTop);
+      return xy(event.layerX - this.canvas.offsetLeft, event.layerY - this.canvas.offsetTop);
     }
     else if (navigator.userAgent.match(/Chrome/i)) {
       return xy(event.layerX, event.layerY);
     }
     else if (navigator.userAgent.match(/MSIE/i)) {
-      return xy(event.x - canvas.offsetLeft, event.y - canvas.offsetTop);
+      return xy(event.x - this.canvas.offsetLeft, event.y - this.canvas.offsetTop);
     }
     else {
       // This is the same as the Chrome code
