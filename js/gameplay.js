@@ -21,6 +21,7 @@ loopery.gameplay = {
   },
 
   loadLevel: function(level_data) {
+    console.debug('Loading level data:', level_data)
     var lookup = this.getLookupMethod();
     var _this = this;
 
@@ -28,6 +29,8 @@ loopery.gameplay = {
 
     // Create objects
     loopery.objectTypes.forEach(function(obj) {
+      console.debug('Doing obj:', obj)
+      console.debug(level_data[obj.group])
       level_data[obj.group].forEach(function(object_data) {
         var id = object_data["id"];
         var ObjectType = loopery[obj.type];
@@ -74,8 +77,8 @@ loopery.gameplay = {
         throw 'Error... why did you not call lookup() with a params object???';
       }
 
-      console.debug(params.group, _this.levelObjects, (params.group in _this.levelObjects))
-      console.debug(params.id, params.id === null)
+      // console.debug(params.group, _this.levelObjects, (params.group in _this.levelObjects))
+      // console.debug(params.id, params.id === null)
       if (params.group in _this.levelObjects) {
         if (params.id === null || params.id === undefined) {
           return _this.levelObjects[params.group]
