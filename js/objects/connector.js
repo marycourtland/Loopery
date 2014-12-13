@@ -99,7 +99,7 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
     var wind1 = this.joints[0].winding;
     var wind2 = this.joints[1].winding;
 
-    var which = (wind1 === 1) ? 0 : 1;
+    var which = (wind1 === 1) ? 1 : 0;
 
     window.l1 = loop1;
     window.l2 = loop2;

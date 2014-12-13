@@ -615,7 +615,7 @@
       "id":0,
       "color":"blue",
       "start":51,
-      "start_dir":1,
+      "start_dir":-1,
       "end":52
     }
   ],

@@ -2,13 +2,7 @@
   "info":{  
     "name":"Nice and Easy"
   },
-  "loops":[  
-    {  
-      "id":16,
-      "x":50,
-      "y":300,
-      "r":40
-    },
+  "loops":[
     {  
       "id":17,
       "x":300,
@@ -29,23 +23,12 @@
     },
     {  
       "id":20,
-      "x":523,
-      "y":337,
+      "x":500,
+      "y":330,
       "r":70
-    },
-    {  
-      "id":21,
-      "x":750,
-      "y":300,
-      "r":40
     }
   ],
-  "connectors":[  
-    {  
-      "id":22,
-      "joint1":10022,
-      "joint2":20022
-    },
+  "connectors":[
     {  
       "id":23,
       "joint1":10023,
@@ -65,28 +48,9 @@
       "id":26,
       "joint1":10026,
       "joint2":20026
-    },
-    {  
-      "id":27,
-      "joint1":10027,
-      "joint2":20027
     }
   ],
-  "joints":[  
-    {  
-      "id":10022,
-      "loop":16,
-      "connector":22,
-      "winding":1,
-      "state":true
-    },
-    {  
-      "id":20022,
-      "loop":17,
-      "connector":22,
-      "winding":-1,
-      "state":true
-    },
+  "joints":[
     {  
       "id":10023,
       "loop":17,
@@ -105,28 +69,28 @@
       "id":10024,
       "loop":17,
       "connector":24,
-      "winding":-1,
+      "winding":1,
       "state":false
     },
     {  
       "id":20024,
       "loop":19,
       "connector":24,
-      "winding":-1,
+      "winding":1,
       "state":true
     },
     {  
       "id":10025,
       "loop":18,
       "connector":25,
-      "winding":-1,
+      "winding":1,
       "state":false
     },
     {  
       "id":20025,
       "loop":20,
       "connector":25,
-      "winding":-1,
+      "winding":1,
       "state":true
     },
     {  
@@ -142,29 +106,15 @@
       "connector":26,
       "winding":-1,
       "state":true
-    },
-    {  
-      "id":10027,
-      "loop":20,
-      "connector":27,
-      "winding":1,
-      "state":false
-    },
-    {  
-      "id":20027,
-      "loop":21,
-      "connector":27,
-      "winding":-1,
-      "state":true
     }
   ],
   "orbs":[  
     {  
       "id":0,
       "color":"blue",
-      "start":16,
-      "start_dir":1,
-      "end":21
+      "start":17,
+      "start_dir":-1,
+      "end":20
     }
   ],
   "decorations": []
