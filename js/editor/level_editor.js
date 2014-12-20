@@ -34,9 +34,14 @@ loopery.enableEditor = function() {
     loopery.editor.enabled = true;
     loopery.editor.setTool(loopery.editor.circle_tool);
   }
-  loopery.editor.custom_level = makeLevel(game, loopery.levels.length);
-  loopery.current_level = loopery.editor.custom_level.id;
-  loopery.disable_gameplay = true;
+
+  loopery.editor.next_id = 0;
+
+  // Piggyback on the loopery.gameplay object to render everything
+  // Start out with the blank_level.json level
+  loopery.loadLevelData('levels/blank_level.json', function(level_data) {
+    loopery.gameplay.loadLevel(level_data);
+  });
 }
 
 loopery.disableEditor = function() {
@@ -46,6 +51,7 @@ loopery.disableEditor = function() {
 }
 
 loopery.editor.setTool = function(tool) {
+  console.log('Setting tool to:', tool)
   if (this.current_tool) this.current_tool.end();
   this.current_tool = tool;
   this.current_tool.start();
@@ -53,6 +59,7 @@ loopery.editor.setTool = function(tool) {
 }
 
 loopery.editor.draw = function() {
+  // console.log('editor draw');
   if (!this.enabled) return;
   this.drawGrid();
   this.current_tool.states[this.current_tool.current_state].draw();
@@ -68,9 +75,8 @@ loopery.editor.tick = function() {
 
 // Clicks will make a tool transition to the next state.
 loopery.onclick(function() {
-  if (!loopery.editor.enabled) return;
-  if (loopery.menu.contains(mouse.pos)) return;
-  tool = loopery.editor.current_tool;
+  if (!loopery.editor.enabled) { return; }
+  var tool = loopery.editor.current_tool;
   tool.states[tool.current_state].onleave();
   tool.current_state = tool.states[tool.current_state].next_state;
   tool.states[tool.current_state].onenter();

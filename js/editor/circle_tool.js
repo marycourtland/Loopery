@@ -13,8 +13,14 @@ loopery.editor.circle_tool.complete = function() {
   if (this.params.center_pos === null || this.params.radius === null) return;
   
   // Make the track
-  var track = makeCircleTrack(loopery.editor.custom_level, this.params.center_pos, this.params.radius); 
-  loopery.orderObjects();
+  var track_data = {  
+    id: loopery.editor.next_id,
+    x: this.params.center_pos.x,
+    y: this.params.center_pos.y,
+    r: this.params.radius
+  }
+  loopery.gameplay.loadAndInitObject('loops', 'Loop', track_data);
+  loopery.editor.next_id += 1;
   
   // Reset the params
   this.params.center_pos = null;
@@ -36,16 +42,17 @@ loopery.editor.circle_tool.end = function() {
 // Tool states
 loopery.editor.circle_tool.states = {
   choose_center: {
-    onenter: function() {},
+    onenter: function() {
+    },
     
     draw: function() {
-      var pos = mouse.pos.copy();
+      var pos = loopery.mouse.pos.copy();
       if (loopery.editor.snap_to_grid) { snapToGrid(pos, loopery.editor.gridsize); }
       draw.circle(loopery.ctx, pos, loopery.display.track_width/2, loopery.display.track_color);
     },
     
     onleave: function() {
-      var pos = mouse.pos.copy();
+      var pos = loopery.mouse.pos.copy();
       if (loopery.editor.snap_to_grid) { snapToGrid(pos, loopery.editor.gridsize); }
       loopery.editor.circle_tool.params.center_pos = pos;
     },
@@ -56,19 +63,21 @@ loopery.editor.circle_tool.states = {
     onenter: function() {},
     
     draw: function() {
-      var pos = mouse.pos.copy();
+      var pos = loopery.mouse.pos.copy();
       if (loopery.editor.snap_to_grid) { snapToGrid(pos, loopery.editor.gridsize); }
       
-      emptyCircle(loopery.ctx,
+      draw.circle(loopery.ctx,
         loopery.editor.circle_tool.params.center_pos,
         distance(pos, loopery.editor.circle_tool.params.center_pos),
-        loopery.display.track_color,
-        loopery.display.track_width
-      );
+        {
+          fill: 'transparent',
+          stroke: loopery.display.track_color,
+          lineWidth: loopery.display.track_width
+        });
     },
     
     onleave: function() {
-      var pos = mouse.pos.copy();
+      var pos = loopery.mouse.pos.copy();
       if (loopery.editor.snap_to_grid) { snapToGrid(pos, loopery.editor.gridsize); }
       loopery.editor.circle_tool.params.radius = distance(pos, loopery.editor.circle_tool.params.center_pos);
       loopery.editor.circle_tool.complete();

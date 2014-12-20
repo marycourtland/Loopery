@@ -5,6 +5,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
   this.lookup = lookup_func;
 
   this.init = function(data) {
+    console.debug('INIT');
     this.color = data.color || 'white';
     this.start = data.start;
     this.start_dir = data.start_dir;
@@ -13,7 +14,9 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     // dynamic things
     this.oldpos = null;
     this.pos = 0.5; // should the orb have an initial starting pos?
+    console.debug('this.lookup:', this.lookup);
     this.track = this.lookup({id: data.start});
+    console.debug('this.track:', this.track);
     this.dir = this.start_dir; 
   }
 

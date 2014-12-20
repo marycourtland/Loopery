@@ -20,6 +20,28 @@ loopery.gameplay = {
     })
   },
 
+  loadAndInitObject: function(obj_group, obj_type, obj_data) {
+    // todo: call both loadObject and initObject
+    this.loadObject(obj_group, obj_type, obj_data);
+    this.initObject(obj_group, obj_data);
+  },
+
+  loadObject: function(obj_group, obj_type, obj_data) {
+    var id = obj_data["id"];
+    var ObjectType = loopery[obj_type];
+    var lookup = this.getLookupMethod();
+    this.levelObjects[obj_group][id] = new ObjectType(id, loopery.ctx, lookup);
+  },
+
+  initObject: function(obj_group, obj_data) {
+    var id = obj_data.id;
+    this.levelObjects[obj_group][id].init(obj_data);
+
+    loopery.objects.push(this.levelObjects[obj_group][id]);
+    this.configObjectEvents(this.levelObjects[obj_group][id]);
+
+  },
+
   loadLevel: function(level_data) {
     console.debug('Loading level data:', level_data)
     var lookup = this.getLookupMethod();
@@ -29,12 +51,8 @@ loopery.gameplay = {
 
     // Create objects
     loopery.objectTypes.forEach(function(obj) {
-      console.debug('Doing obj:', obj)
-      console.debug(level_data[obj.group])
       level_data[obj.group].forEach(function(object_data) {
-        var id = object_data["id"];
-        var ObjectType = loopery[obj.type];
-        _this.levelObjects[obj.group][id] = new ObjectType(id, loopery.ctx, lookup);
+        _this.loadObject(obj.group, obj.type, object_data)
       })
     })
 
@@ -43,17 +61,13 @@ loopery.gameplay = {
     // needs to be totally separate from the object creation
     loopery.objectTypes.forEach(function(obj) {
       level_data[obj.group].forEach(function(object_data) {
-        var id = object_data["id"];
-        _this.levelObjects[obj.group][id].init(object_data);
-
-        loopery.objects.push(_this.levelObjects[obj.group][id]);
-        _this.configObjectEvents(_this.levelObjects[obj.group][id]);
+        _this.initObject(obj.group, object_data);
       })
     })
   },
 
-  tick: function() { this.applyToObjectGroups('tick') },
-  draw: function() { this.applyToObjectGroups('draw', {ordering: 'renderOrder'}) },
+  tick: function() { this.applyToObjectGroups('tick'); },
+  draw: function() { this.applyToObjectGroups('draw', {ordering: 'renderOrder'}); },
 
   applyToObjectGroups: function(func_name, params) {
     params = params || {};

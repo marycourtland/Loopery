@@ -1,4 +1,3 @@
-// map group name to object name
 loopery.objectTypes = [
   {group: 'loops',       type: 'Loop',       renderOrder: 1},
   {group: 'joints',      type: 'Joint',      renderOrder: 2},

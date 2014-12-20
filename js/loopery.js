@@ -56,14 +56,18 @@ loopery.stages.gameplay = {
 }
 
 loopery.stages.editor = {
+  // piggyback on the gameplay stage
   tick: function() {
     clear(loopery.ctx);
     loopery.gameplay.tick();
+    loopery.editor.tick();
+
     loopery.gameplay.draw();
+    loopery.editor.draw();
     loopery.next();
   },
-  stageStart: function() { $("#hud").show(); },
-  stageEnd: function() { $("#hud").hide(); }
+  stageStart: function() { loopery.enableEditor(); },
+  stageEnd: function() { }
 }
 
 
@@ -104,6 +108,7 @@ $(document).ready(function() {
   $("#level_loader").hide();  
 
   // Initial stage
-  loopery.setStage('titlescreen')
+  // loopery.setStage('titlescreen')
+  loopery.setStage('editor')
 })
 
