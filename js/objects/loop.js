@@ -87,7 +87,9 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   }
   
   this.draw = function() {
-    if (this.show_shade) { this.shade(); }
+    if (this.show_shade || (loopery.display.shade_hovered_circle_track && this.contains(loopery.mouse.pos))) {
+      this.shade();
+    }
     draw.circle(this.ctx, this.loc, this.radius, {
       fill: 'transparent',
       stroke: loopery.display.track_color,
