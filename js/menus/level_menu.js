@@ -16,7 +16,6 @@ loopery.levelMenu.makeLink = function() {
 
 
 loopery.levelMenu.attachLevelToLink = function(link, level_data) {
-  console.debug('Making level link with level data:', level_data)
   link
     .text(level_data.info.name)
     .bind('click', function() { loopery.startGameplay(level_data); });

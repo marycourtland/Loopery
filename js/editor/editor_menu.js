@@ -4,7 +4,7 @@
 loopery.editor.menu = $("<div></div>").appendTo(document.body);
 
 function makeEditorButton(pos, id, label, callback) {
-  var button = $("<a href='#'></a>")
+  var button = $("<a href='#' class='editor-button'></a>")
     .attr('id', id)
     .css('display', 'inline-block')
     .css('position', 'absolute')
@@ -28,6 +28,7 @@ function makeEditorButton(pos, id, label, callback) {
 
   button.highlight = function() {
     //emptyRect(this.ctx, this.pos, add(this.pos, this.size), 'white');
+    $('.editor-button').css('border', '0px');
     this.css('border', '1px solid white');
   }
   return button;

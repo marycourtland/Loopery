@@ -71,10 +71,16 @@ loopery.editor.draw = function() {
 }
 
 loopery.editor.tick = function() {
+  if ('tick' in this.current_tool.states[this.current_tool.current_state]) {
+    this.current_tool.states[this.current_tool.current_state].tick();
+  }
 }
+
+loopery.editor.last_click = null;
 
 // Clicks will make a tool transition to the next state.
 loopery.onclick(function() {
+  loopery.editor.last_click = loopery.mouse.pos;
   if (!loopery.editor.enabled) { return; }
   var tool = loopery.editor.current_tool;
   tool.states[tool.current_state].onleave();

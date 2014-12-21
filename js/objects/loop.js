@@ -3,6 +3,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   this.id = id;
   this.ctx = canvas_context;
   this.lookup = lookup_func;
+  this.show_shade = false;
 
   this.init = function(data) {
     this.old_loc = xy(-1, -1);
@@ -73,8 +74,20 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   this.contains = function(loc) {
     return distance(loc, this.loc) < (this.radius - loopery.display.track_width/2);
   }
+
+  this.shade = function(color) {
+    if (!color) { color = 'black'; }
+    draw.circle(this.ctx, this.loc, this.radius - loopery.display.track_width/2,
+      {
+        fill: color,
+        alpha: 0.5
+      }
+    );
+    this.show_shade = false;
+  }
   
   this.draw = function() {
+    if (this.show_shade) { this.shade(); }
     draw.circle(this.ctx, this.loc, this.radius, {
       fill: 'transparent',
       stroke: loopery.display.track_color,

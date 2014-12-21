@@ -80,6 +80,13 @@ loopery.gameplay = {
     }
   },
 
+  forAllObjectsInGroup: function(group, func) {
+    console.debug('Attaching function to:', this.levelObjects[group]);
+    for (var loop_id in this.levelObjects[group]) {
+      func(this.levelObjects[group][loop_id]);
+    }
+  },
+
   getLookupMethod: function() {
     // This method will be given to child objects so that they can lookup junk
     // Possible params:
@@ -118,10 +125,10 @@ loopery.gameplay = {
 
     obj.boundEvents = {}
 
-    obj.do = function(evt, pos) {
+    obj.do = function(evt, pos, vel) {
       if (evt in obj.boundEvents) {
         if (!obj.contains(pos)) { return; }
-        obj.boundEvents[evt].forEach(function(func) { func.call(obj, pos); })
+        obj.boundEvents[evt].forEach(function(func) { func.call(obj, pos, vel); })
       }
     }
 
