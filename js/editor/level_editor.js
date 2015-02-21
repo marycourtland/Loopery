@@ -35,6 +35,8 @@ loopery.enableEditor = function() {
     loopery.editor.setTool(loopery.editor.circle_tool);
   }
 
+  loopery.editor.menu.show();
+
   loopery.editor.next_id = 0;
 
   // Piggyback on the loopery.gameplay object to render everything
@@ -48,6 +50,7 @@ loopery.disableEditor = function() {
   if (this.editor.current_tool) this.editor.current_tool.end();
   this.editor.enabled = false;
   loopery.disable_gameplay = false;
+  loopery.editor.menu.hide();
 }
 
 loopery.editor.setTool = function(tool) {

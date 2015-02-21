@@ -7,7 +7,7 @@
       "id":1,
       "x":200,
       "y":300,
-      "r":70
+      "r":140
     },
     {  
       "id":2,
@@ -28,7 +28,7 @@
       "id":31,
       "loop":1,
       "connector":3,
-      "winding":1,
+      "winding":-1,
       "state":false
     },
     {  
@@ -44,7 +44,7 @@
       "id":0,
       "color":"blue",
       "start":1,
-      "start_dir":-1,
+      "start_dir":1,
       "end":2
     }
   ],

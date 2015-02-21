@@ -40,6 +40,11 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     return add(this.loc, rth(this.radius, angle));
   }
 
+  // Given an orb's loc (xy coords), return position on loop
+  this.getPosFromLoc = function(loc) {
+    return subtract(loc, this.loc).th / (2 * Math.PI);
+  }
+
   // This looks to see if an orb going from oldpos to newpos has
   // switched onto a connector.
   // Returns the connector that the train goes onto; or false is there is none

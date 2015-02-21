@@ -108,7 +108,7 @@ $(document).ready(function() {
   $("#level_loader").hide();  
 
   // Initial stage
-  // loopery.setStage('titlescreen')
-  loopery.setStage('editor')
+  loopery.setStage('titlescreen')
+  // loopery.setStage('editor')
 })
 

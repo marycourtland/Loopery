@@ -69,28 +69,28 @@
       "id":10024,
       "loop":17,
       "connector":24,
-      "winding":1,
+      "winding":-1,
       "state":false
     },
     {  
       "id":20024,
       "loop":19,
       "connector":24,
-      "winding":1,
+      "winding":-1,
       "state":true
     },
     {  
       "id":10025,
       "loop":18,
       "connector":25,
-      "winding":1,
+      "winding":-1,
       "state":false
     },
     {  
       "id":20025,
       "loop":20,
       "connector":25,
-      "winding":1,
+      "winding":-1,
       "state":true
     },
     {  

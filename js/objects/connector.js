@@ -91,36 +91,20 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
   }
 
 
-  this.recomputePlacement = function() {
-    // TODO: refactor this, along with the getOuterTangents and getInnerTangents methods
+  this.recomputePlacement = function() {\
     var loop1 = this.joints[0].loop;
     var loop2 = this.joints[1].loop;
 
     var wind1 = this.joints[0].winding;
     var wind2 = this.joints[1].winding;
 
-    var which = (wind1 === 1) ? 1 : 0;
+    var tangentData = loopery.getTangent(loop1, loop2, wind1, wind2);
 
-    window.l1 = loop1;
-    window.l2 = loop2;
+    var p1 = tangentData.origin;
+    var p2 = add(tangentData.origin, tangentData.vector);
 
-    // Compute endpoints (currently, the computations outputs the endpoints
-    // as loop-based position)
-    if (wind1 === wind2) {
-      // If this track was generated as an outer tangent, then regenerate it
-      var pts = loopery.getInnerTangents(loop1, loop2);
-      this.joints[0].pos = pts[which][0];
-      this.joints[1].pos = pts[which][1];
-    }
-    else {
-      var pts = loopery.getOuterTangents(loop1, loop2);
-      this.joints[0].pos = pts[which][0];
-      this.joints[1].pos = pts[which][1];
-    }
-    
-    // Grab the absolute coordinates of the endpoints
-    var p1 = loop1.getPosCoords(this.joints[0].pos);
-    var p2 = loop2.getPosCoords(this.joints[1].pos);
+    this.joints[0].pos = this.joints[0].loop.getPosFromLoc(p1);
+    this.joints[1].pos = this.joints[1].loop.getPosFromLoc(p2);
 
     // Compute this connector's length/angle from the absolute positions
     this.geometry.angle = subtract(p2, p1).th;

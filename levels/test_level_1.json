@@ -97,14 +97,14 @@
       "id":22,
       "loop":10,
       "connector":23,
-      "winding":-1,
+      "winding":1,
       "state": false
     },
     {
       "id":24,
       "loop":12,
       "connector":23,
-      "winding":1,
+      "winding":-1,
       "state": false
     }
   ],

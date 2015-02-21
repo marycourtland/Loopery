@@ -1,7 +1,7 @@
 // *********************************************************************
 // Menu buttons
 
-loopery.editor.menu = $("<div></div>").appendTo(document.body);
+loopery.editor.menu = $("<div id='editor_menu'></div>").appendTo(document.body).hide();
 
 function makeEditorButton(pos, id, label, callback) {
   var button = $("<a href='#' class='editor-button'></a>")
