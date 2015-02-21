@@ -91,7 +91,7 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
   }
 
 
-  this.recomputePlacement = function() {\
+  this.recomputePlacement = function() {
     var loop1 = this.joints[0].loop;
     var loop2 = this.joints[1].loop;
 
