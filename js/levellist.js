@@ -1,4 +1,5 @@
 loopery.levels = [
+  'levels/test_level_3.json',
   'levels/tester.json',
   'levels/ld_level_1.json',
   'levels/ld_level_2.json',
