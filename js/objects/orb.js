@@ -5,7 +5,6 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
   this.lookup = lookup_func;
 
   this.init = function(data) {
-    console.debug('INIT');
     this.color = data.color || 'white';
     this.start = data.start;
     this.start_dir = data.start_dir;
@@ -14,9 +13,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     // dynamic things
     this.oldpos = null;
     this.pos = 0.5; // should the orb have an initial starting pos?
-    console.debug('this.lookup:', this.lookup);
     this.track = this.lookup({id: data.start});
-    console.debug('this.track:', this.track);
     this.dir = this.start_dir; 
   }
 
@@ -30,36 +27,9 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     }
   }
 
-  this.tick = function() {
-    // if (game.disable_gameplay) return;
-    // if (this.disabled) return;
-
-    this.move();
-
-    for (var evt_name in this.events) {
-      var evt = this.events[evt_name];
-      if (evt.hasOccurred.call(this)) {
-        evt.onOccur.call(this);
-      }
-    }
-
-    // check to see whether the orb is bumping into another orb
-
-    
-    // check to see whether the orb is on its ending track
-    // (TODO)
-  }
-
   this.move = function() {
     this.oldpos = this.pos; // it's just a number so no need to deepcopy it
     this.pos = this.track.getNextPos(this.pos, this.dir, loopery.orb_speed);
-  }
-
-  this.draw = function() {
-    draw.circle(this.ctx, this.track.getPosCoords(this.pos), loopery.display.orb_radius, {
-      fill: this.color,
-      stroke: this.color
-    });
   }
 
   this.getLoc = function() {
@@ -72,33 +42,41 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     return distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
   }
 
-  // EVENTS DURING GAMEPLAY
-  // the functions should be called with this bound to the orb obj
-  this.events = {
-    collision: {
-      hasOccurred: function() {
-        var orbs = this.lookup({group: 'orbs'});
-        for (var id in orbs) {
-          //if (loopery.state.frame % 100 === 0) { console.log(id, this.id)}
-          if (this.isCollidingWith(orbs[id])) { return true; }
-        }
-        return false;
-      },
-      onOccur: function() {
-        // reverse direction!
-        this.dir *= -1;
-      }
-    },
+  $(this).on('draw', function() {
+    draw.circle(this.ctx, this.track.getPosCoords(this.pos), loopery.display.orb_radius, {
+      fill: this.color,
+      stroke: this.color
+    });
+  });
 
-    levelcomplete: {
-      hasOccurred: function() {
-        // todo
-        return false
-      },
-      onOccur: function() {
-        // todo
-        console.debug('woohoo, you finished a level')
-      }
+  $(this).on('tick', function() {
+    // if (game.disable_gameplay) return;
+    // if (this.disabled) return;
+
+    this.move();
+
+    // Detect collision
+    var orbs = this.lookup({group: 'orbs'});
+    for (var id in orbs) {
+      if (this.isCollidingWith(orbs[id])) { $(this.trigger('collision', {orb: orbs[id]})) }
     }
-  }
+
+    // detect levelcomplete
+    if (this.track.id === this.end) { $(this).trigger('levelcomplete'); }
+  });
+
+
+  // EVENTS DURING GAMEPLAY
+
+  $(this).on('collision', function(evt, data) {
+    // this should be overridden by subtypes (like enemies)
+    // reverse direction!
+    this.dir *= -1;
+  })
+
+  $(this).on('levelcomplete', function(evt, data) {
+    // todo
+    console.debug('woohoo, you finished a level')
+  })
+
 }

@@ -25,7 +25,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     }
   }
 
-  this.tick = function() {
+  $(this).on('tick', function() {
     // Transfer any orb which is on this joint
     // TODO: maybe there's an easier way for this joint to have access to orbs
     // or, even better, to know which orbs are on its relevant tracks
@@ -34,7 +34,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
       var orb = loopery.gameplay.levelObjects.orbs[orb_id];
       this.attemptTransfer(orb);
     }
-  }
+  });
 
   this.bindEvents = function() {
     this.on('click', function(pos) {
@@ -99,9 +99,9 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     return add(this.loop.getPosCoords(this.pos), offset);
   }
 
-  this.draw = function() {
+  $(this).on('draw', function() {
     this.drawClicker();
-  }
+  });
 
   this.drawClicker = function() {
     var loc = this.getLoc();

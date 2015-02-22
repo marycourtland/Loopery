@@ -22,12 +22,12 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     // todo: shading
   }
 
-  this.tick = function() {
+  $(this).on('tick', function() {
     // See if the loop has moved placement (e.g. in level editor)
     if (equals(this.loc, this.old_loc)) return;
     this.old_loc = this.loc.copy();
     // todo: tell the attached connectors to move
-  }
+  });
 
   // Determine an orb's next position on the loop (as it's moving)
   this.getNextPos = function(old_pos, dir, speed) {
@@ -91,7 +91,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     this.show_shade = false;
   }
   
-  this.draw = function() {
+  $(this).on('draw', function() {
     if (this.show_shade || (loopery.display.shade_hovered_circle_track && this.contains(loopery.mouse.pos))) {
       this.shade();
     }
@@ -100,5 +100,5 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
       stroke: loopery.display.track_color,
       lineWidth: loopery.display.track_width
     });
-  }
+  });
 }

@@ -10,7 +10,7 @@ loopery.Decoration = function(id, canvas_context, lookup_func) {
     return {}
   }
   
-  this.tick = function() {}
-  this.draw = function() {}
+  $(this).on('tick', function() {});
+  $(this).on('draw', function() {});
   
 }

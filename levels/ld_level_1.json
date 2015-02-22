@@ -108,7 +108,7 @@
       "state":true
     }
   ],
-  "orbs":[  
+  "orbs":[
     {  
       "id":0,
       "color":"blue",
@@ -117,5 +117,6 @@
       "end":20
     }
   ],
+  "enemies": [],
   "decorations": []
 }

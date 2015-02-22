@@ -32,8 +32,9 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
   }
 
   this.tick = function() {}
+  $(this).on('tick', function() {})
 
-  this.draw = function() {
+  $(this).on('draw', function() {
     var color = loopery.display.track_color;
     var p1 = this.getPosCoords(0);
     var p2a = this.getPosCoords(loopery.display.darkened_track_extent);
@@ -76,7 +77,7 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
     if (loopery.display.shade_hovered_line_track && this.contains(game.mouse.pos)) {
       this.shade();
     }
-  }
+  });
 
 
   this.getPosCoords = function(pos) {

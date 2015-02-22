@@ -7,6 +7,7 @@ loopery.gameplay = {
   //   connectors: {},
   //   loops: {},
   //   orbs: {},
+  //   enemies: {},
   //   decorations: {},
   //   joints: {}
   // },
@@ -43,7 +44,6 @@ loopery.gameplay = {
   },
 
   loadLevel: function(level_data) {
-    console.debug('Loading level data:', level_data)
     var lookup = this.getLookupMethod();
     var _this = this;
 
@@ -51,6 +51,8 @@ loopery.gameplay = {
 
     // Create objects
     loopery.objectTypes.forEach(function(obj) {
+      console.debug('obj:', obj, obj.group, level_data[obj.group]);
+      console.debug(level_data)
       level_data[obj.group].forEach(function(object_data) {
         _this.loadObject(obj.group, obj.type, object_data)
       })
@@ -66,8 +68,23 @@ loopery.gameplay = {
     })
   },
 
-  tick: function() { this.applyToObjectGroups('tick'); },
-  draw: function() { this.applyToObjectGroups('draw', {ordering: 'renderOrder'}); },
+  // tick: function() { this.applyToObjectGroups('tick'); },
+  // draw: function() { this.applyToObjectGroups('draw', {ordering: 'renderOrder'}); },
+
+  tick: function() { this.triggerForAllObjectGroups('tick'); },
+  draw: function() { this.triggerForAllObjectGroups('draw', {}, {ordering: 'renderOrder'}); },
+
+  triggerForAllObjectGroups: function(trigger, data, params) {
+    if (!data) { data = {}; }
+    if (!params) { params = {}; }
+    obj_types = !params.ordering ? loopery.objectTypes : _.sortBy(loopery.objectTypes, function(obj_type) { return obj_type[params.ordering]; })
+    for (var i = 0; i < obj_types.length; i++) {
+      object_group = obj_types[i].group;
+      for (var id in this.levelObjects[object_group]) {
+        $(this.levelObjects[object_group][id]).trigger(trigger, data);
+      }
+    }
+  },
 
   applyToObjectGroups: function(func_name, params) {
     params = params || {};
@@ -141,4 +158,5 @@ loopery.gameplay = {
       obj.bindEvents();
     }
   }
+
 }
