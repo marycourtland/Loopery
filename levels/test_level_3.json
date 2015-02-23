@@ -1,0 +1,184 @@
+{
+  "info": {
+    "name": "Phase tests"
+  },
+  "loops": [
+    {
+      "id": 95,
+      "x": 100,
+      "y": 300,
+      "r": 40
+    },
+    {
+      "id": 96,
+      "x": 225.7,
+      "y": 300,
+      "r": 40
+    },
+    {
+      "id": 97,
+      "x": 393.2,
+      "y": 300,
+      "r": 40
+    },
+    {
+      "id": 98,
+      "x": 560.8,
+      "y": 300,
+      "r": 40
+    }
+  ],
+  "connectors": [
+    {
+      "id": 99,
+      "joint1": 10099,
+      "joint2": 20099
+    },
+    {
+      "id": 100,
+      "joint1": 10100,
+      "joint2": 20100
+    },
+    {
+      "id": 101,
+      "joint1": 10101,
+      "joint2": 20101
+    },
+
+    {
+      "id": 599,
+      "joint1": 510099,
+      "joint2": 520099
+    },
+    {
+      "id": 5100,
+      "joint1": 510100,
+      "joint2": 520100
+    },
+    {
+      "id": 5101,
+      "joint1": 510101,
+      "joint2": 520101
+    }
+  ],
+  "joints": [
+    {
+      "id": 10099,
+      "loop": 95,
+      "connector": 99,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 20099,
+      "loop": 96,
+      "connector": 99,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 10100,
+      "loop": 96,
+      "connector": 100,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 20100,
+      "loop": 97,
+      "connector": 100,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 10101,
+      "loop": 97,
+      "connector": 101,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 20101,
+      "loop": 98,
+      "connector": 101,
+      "winding": -1,
+      "state": false
+    },
+
+
+    {
+      "id": 520099,
+      "loop": 96,
+      "connector": 599,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 510099,
+      "loop": 95,
+      "connector": 599,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 520100,
+      "loop": 97,
+      "connector": 5100,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 510100,
+      "loop": 96,
+      "connector": 5100,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 520101,
+      "loop": 98,
+      "connector": 5101,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 510101,
+      "loop": 97,
+      "connector": 5101,
+      "winding": -1,
+      "state": false
+    }
+  ],
+  "orbs": [
+    {
+      "id": 0,
+      "color": "blue",
+      "start": 95,
+      "start_dir": 1,
+      "end": 100
+    },
+    {
+      "id": 1,
+      "color": "green",
+      "start": 96,
+      "start_dir": 1,
+      "end": 100
+    },
+    {
+      "id": 2,
+      "color": "yellow",
+      "start": 97,
+      "start_dir": 1,
+      "end": 100
+    },
+    {
+      "id": 3,
+      "color": "purple",
+      "start": 98,
+      "start_dir": 1,
+      "end": 100
+    }
+  ],
+  "enemies": [],
+  "decorations": []
+}

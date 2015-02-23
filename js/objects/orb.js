@@ -42,6 +42,16 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     return distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
   }
 
+
+  this.blowup = function() {
+    if (this.destroyed) { return; } // can't blow up multiple times!
+
+    this.destroyed = true;
+    $(this).unbind('tick');
+    $(this).unbind('draw');
+  }
+
+
   $(this).on('draw', function() {
     draw.circle(this.ctx, this.track.getPosCoords(this.pos), loopery.display.orb_radius, {
       fill: this.color,
@@ -58,7 +68,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     // Detect collision
     var orbs = this.lookup({group: 'orbs'});
     for (var id in orbs) {
-      if (this.isCollidingWith(orbs[id])) { $(this.trigger('collision', {orb: orbs[id]})) }
+      if (this.isCollidingWith(orbs[id])) { $(this).trigger('collision', {orb: orbs[id]}) }
     }
 
     // detect levelcomplete
