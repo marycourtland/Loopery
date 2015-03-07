@@ -1,0 +1,133 @@
+{
+    "info": {
+        "name": "No danger"
+    },
+    "loops": [
+        {
+            "id": 95,
+            "x": 311,
+            "y": 349,
+            "r": 40
+        },
+        {
+            "id": 96,
+            "x": 434,
+            "y": 128,
+            "r": 72.11102550927978
+        },
+        {
+            "id": 97,
+            "x": 557,
+            "y": 348,
+            "r": 40
+        },
+        {
+            "id": 98,
+            "x": 206,
+            "y": 142,
+            "r": 67.23094525588644
+        },
+        {
+            "id": 99,
+            "x": 696,
+            "y": 162,
+            "r": 74.41102068914255
+        }
+    ],
+    "connectors": [
+        {
+            "id": 100,
+            "joint1": 10100,
+            "joint2": 20100
+        },
+        {
+            "id": 101,
+            "joint1": 10101,
+            "joint2": 20101
+        },
+        {
+            "id": 102,
+            "joint1": 10102,
+            "joint2": 20102
+        },
+        {
+            "id": 103,
+            "joint1": 10103,
+            "joint2": 20103
+        }
+    ],
+    "joints": [
+        {
+            "id": 10100,
+            "loop": 98,
+            "connector": 100,
+            "winding": -1,
+            "state": false
+        },
+        {
+            "id": 20100,
+            "loop": 95,
+            "connector": 100,
+            "winding": 1,
+            "state": false
+        },
+        {
+            "id": 10101,
+            "loop": 95,
+            "connector": 101,
+            "winding": -1,
+            "state": false
+        },
+        {
+            "id": 20101,
+            "loop": 96,
+            "connector": 101,
+            "winding": 1,
+            "state": false
+        },
+        {
+            "id": 10102,
+            "loop": 96,
+            "connector": 102,
+            "winding": -1,
+            "state": false
+        },
+        {
+            "id": 20102,
+            "loop": 97,
+            "connector": 102,
+            "winding": 1,
+            "state": false
+        },
+        {
+            "id": 10103,
+            "loop": 97,
+            "connector": 103,
+            "winding": -1,
+            "state": false
+        },
+        {
+            "id": 20103,
+            "loop": 99,
+            "connector": 103,
+            "winding": 1,
+            "state": false
+        }
+    ],
+    "orbs": [
+        {
+            "id": 0,
+            "color": "blue",
+            "start": 95,
+            "start_dir": 1,
+            "end": 999
+        },
+        {
+            "id":999,
+            "start":99,
+            "start_dir":-1,
+            "color": "black"
+        }
+    ],
+    "decorations": []
+}
