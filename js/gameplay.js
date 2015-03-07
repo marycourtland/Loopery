@@ -7,7 +7,6 @@ loopery.gameplay = {
   //   connectors: {},
   //   loops: {},
   //   orbs: {},
-  //   enemies: {},
   //   decorations: {},
   //   joints: {}
   // },

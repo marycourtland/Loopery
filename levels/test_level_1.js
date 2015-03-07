@@ -131,14 +131,13 @@ var test_level = {
       "start":12,
       "start_dir":-1,
       "end":12
-    }
-  ],
-  "enemies":[
+    },
     {
       "id":26,
       "start":11,
-      "start_dir":1
-    }  
+      "start_dir":1,
+      "color": "black"
+    }
   ],
   "decorations":[
   ]

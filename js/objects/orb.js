@@ -79,7 +79,8 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
   // EVENTS DURING GAMEPLAY
 
   $(this).on('collision', function(evt, data) {
-    // this should be overridden by subtypes (like enemies)
+    // TODO: move this to an onCollide function
+    // this should be overridden by different roles of orbs
     // reverse direction!
     this.dir *= -1;
   })
