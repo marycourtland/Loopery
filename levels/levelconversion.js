@@ -5,7 +5,7 @@ function getLevelData() {
   data.loops = [];
   data.connectors = [];
   data.joints = [];
-  data.orbs = [{id:0, color: 'blue', start: 1, start_dir: 1, end: 100}];
+  data.orbs = [{id:0, color: 'blue', start: 1, start_dir: 1, end: 100, roles:[]}];
   data.decorations = [];
 
   // LOOPS

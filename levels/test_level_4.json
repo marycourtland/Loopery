@@ -152,7 +152,8 @@
             "color": "blue",
             "start": 113,
             "start_dir": 1,
-            "end": 116
+            "end": 116,
+            "roles": []
         }
     ],
     "decorations": [

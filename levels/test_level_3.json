@@ -155,28 +155,32 @@
       "color": "blue",
       "start": 95,
       "start_dir": 1,
-      "end": 100
+      "end": 100,
+      "roles": []
     },
     {
       "id": 1,
       "color": "green",
       "start": 96,
       "start_dir": 1,
-      "end": 100
+      "end": 100,
+      "roles": []
     },
     {
       "id": 2,
       "color": "yellow",
       "start": 97,
       "start_dir": 1,
-      "end": 100
+      "end": 100,
+      "roles": []
     },
     {
       "id": 3,
       "color": "purple",
       "start": 98,
       "start_dir": 1,
-      "end": 100
+      "end": 100,
+      "roles": []
     }
   ],
   "decorations": []

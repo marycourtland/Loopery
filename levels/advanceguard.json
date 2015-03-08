@@ -121,32 +121,47 @@
             "start": 104,
             "start_dir": -1,
             "start_pos": 0.01,
-            "end": 111
+            "end": 111,
+            "roles": [
+                "player"
+            ]
         },
         {
             "id":999,
             "start":104,
             "start_dir":-1,
             "start_pos": 0.5,
-            "color": "black"
+            "color": "black",
+            "roles": [
+                "enemy"
+            ]
         },
         {
             "id":998,
             "start":105,
             "start_dir":-1,
-            "color": "black"
+            "color": "black",
+            "roles": [
+                "enemy"
+            ]
         },
         {
             "id":996,
             "start":107,
             "start_dir":-1,
-            "color": "black"
+            "color": "black",
+            "roles": [
+                "enemy"
+            ]
         },
         {
             "id":995,
             "start":111,
             "start_dir":-1,
-            "color": "black"
+            "color": "black",
+            "roles": [
+                "enemy"
+            ]
         }
     ],
     "decorations": []

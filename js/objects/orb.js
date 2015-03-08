@@ -9,12 +9,19 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     this.start = data.start;
     this.start_dir = data.start_dir;
     this.end = data.end;
+    this.roles = data.roles;
 
     // dynamic things
     this.oldpos = null;
     this.pos = data.start_pos || 0.5;
     this.track = this.lookup({id: data.start});
-    this.dir = this.start_dir; 
+    this.dir = this.start_dir;
+
+    // apply roles
+    for (var i = 0; i < this.roles.length; i++) {
+      console.debug(this.roles[i]);
+      loopery.Orb.Roles[this.roles[i]].init(this);
+    }
   }
 
   this.getData = function() {
@@ -23,7 +30,8 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
       color: this.color,
       start: this.start,
       start_dir: this.start_dir,
-      end: this.end
+      end: this.end,
+      roles: this.roles
     }
   }
 
@@ -74,19 +82,32 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     if (this.track.id === this.end) { $(this).trigger('levelcomplete'); }
   });
 
+}
 
-  // EVENTS DURING GAMEPLAY
+// ORB ROLES
 
-  $(this).on('collision', function(evt, data) {
-    // TODO: move this to an onCollide function
-    // this should be overridden by different roles of orbs
-    // reverse direction!
-    this.dir *= -1;
-  })
+loopery.Orb.Roles = {};
 
-  $(this).on('levelcomplete', function(evt, data) {
-    // todo
-    console.debug('woohoo, you finished a level')
-  })
+loopery.Orb.Roles.player = {
+  init: function(orb) {
+    $(orb).on('levelcomplete', function(evt, data) {
+      // todo
+      console.debug('woohoo, you finished a level')
+    })
 
+    $(orb).on('collision', function(evt, data) {
+      // TODO: move this to an onCollide function
+      // this should be overridden by different roles of orbs
+      // reverse direction!
+      this.dir *= -1;
+    })
+  }
+}
+
+loopery.Orb.Roles.enemy = {
+  init: function(orb) {
+    $(orb).on('collision', function(evt, data) {
+      console.debug("Enemy orb collided with:", data)
+    })
+  }
 }

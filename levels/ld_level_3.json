@@ -616,7 +616,8 @@
       "color":"blue",
       "start":51,
       "start_dir":-1,
-      "end":52
+      "end":52,
+      "roles": []
     }
   ],
   "decorations":[  
