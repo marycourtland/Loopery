@@ -12,7 +12,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
     // dynamic things
     this.oldpos = null;
-    this.pos = 0.5; // should the orb have an initial starting pos?
+    this.pos = data.start_pos || 0.5;
     this.track = this.lookup({id: data.start});
     this.dir = this.start_dir; 
   }
@@ -38,7 +38,6 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
   this.isCollidingWith = function(orb) {
     if (orb.id === this.id) { return false; }
-    //if (loopery.state.frame %100 === 0) console.debug(vround(this.getLoc())+'', vround(orb.getLoc())+'', distance(this.getLoc(), orb.getLoc()));
     return distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
   }
 

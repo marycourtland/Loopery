@@ -50,8 +50,6 @@ loopery.gameplay = {
 
     // Create objects
     loopery.objectTypes.forEach(function(obj) {
-      console.debug('obj:', obj, obj.group, level_data[obj.group]);
-      console.debug(level_data)
       level_data[obj.group].forEach(function(object_data) {
         _this.loadObject(obj.group, obj.type, object_data)
       })
@@ -97,7 +95,6 @@ loopery.gameplay = {
   },
 
   forAllObjectsInGroup: function(group, func) {
-    console.debug('Attaching function to:', this.levelObjects[group]);
     for (var loop_id in this.levelObjects[group]) {
       func(this.levelObjects[group][loop_id]);
     }
@@ -113,9 +110,6 @@ loopery.gameplay = {
       if (typeof params !== 'object') {
         throw 'Error... why did you not call lookup() with a params object???';
       }
-
-      // console.debug(params.group, _this.levelObjects, (params.group in _this.levelObjects))
-      // console.debug(params.id, params.id === null)
       if (params.group in _this.levelObjects) {
         if (params.id === null || params.id === undefined) {
           return _this.levelObjects[params.group]

@@ -19,7 +19,6 @@ loopery.getTangent = function(loop1, loop2, wind1, wind2) {
 
     // get vector from center of loop1 to origin of tangent vector
     var loop1_to_tangent_origin = rth(rad1, theta);
-    console.debug("loop1_to_tangent_origin: " + loop1_to_tangent_origin);
 
     // get origin of tangent vector (absolute)
     var tangent_origin = add(p1, loop1_to_tangent_origin);
@@ -29,8 +28,6 @@ loopery.getTangent = function(loop1, loop2, wind1, wind2) {
 
     // construct tangent vector
     var tangent = rth(tangent_r, tangent_th);
-
-    console.debug('Returning tangent_origin:', tangent_origin);
 
     return {origin: tangent_origin, vector:tangent};
   }
