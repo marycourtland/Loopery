@@ -148,7 +148,7 @@
         {
             "id":996,
             "start":107,
-            "start_dir":-1,
+            "start_dir":1,
             "color": "black",
             "roles": [
                 "enemy"

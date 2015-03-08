@@ -1,5 +1,5 @@
 loopery.Orb = function(id, canvas_context, lookup_func) {
-  this.obj_type = 'orb';
+  this.group = 'orbs';
   this.id = id;
   this.ctx = canvas_context;
   this.lookup = lookup_func;
@@ -50,10 +50,10 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
   }
 
 
-  this.blowup = function() {
-    if (this.destroyed) { return; } // can't blow up multiple times!
-
+  this.destroy = function() {
     this.destroyed = true;
+    $(this).trigger('tick');
+    $(this).trigger('draw');
     $(this).unbind('tick');
     $(this).unbind('draw');
   }
@@ -96,8 +96,6 @@ loopery.Orb.Roles.player = {
     })
 
     $(orb).on('collision', function(evt, data) {
-      // TODO: move this to an onCollide function
-      // this should be overridden by different roles of orbs
       // reverse direction!
       this.dir *= -1;
     })
@@ -108,6 +106,7 @@ loopery.Orb.Roles.enemy = {
   init: function(orb) {
     $(orb).on('collision', function(evt, data) {
       console.debug("Enemy orb collided with:", data)
+      data.orb.destroy();
     })
   }
 }

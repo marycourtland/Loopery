@@ -1,5 +1,5 @@
 loopery.Connector = function(id, canvas_context, lookup_func) {
-  this.obj_type = 'connector';
+  this.group = 'connectors';
   this.id = id;
   this.ctx = canvas_context;
   this.lookup = lookup_func;

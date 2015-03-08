@@ -42,6 +42,11 @@ loopery.gameplay = {
 
   },
 
+  removeObject: function(obj) {
+    console.debug("Destroying:", obj);
+    delete this.levelObjects[obj.group][obj.id];
+  },
+
   loadLevel: function(level_data) {
     var lookup = this.getLookupMethod();
     var _this = this;
@@ -68,8 +73,19 @@ loopery.gameplay = {
   // tick: function() { this.applyToObjectGroups('tick'); },
   // draw: function() { this.applyToObjectGroups('draw', {ordering: 'renderOrder'}); },
 
-  tick: function() { this.triggerForAllObjectGroups('tick'); },
-  draw: function() { this.triggerForAllObjectGroups('draw', {}, {ordering: 'renderOrder'}); },
+  tick: function() {
+    // check for destroyed objects
+    this.forAllObjects(function(obj) {
+      if (obj.destroyed) loopery.gameplay.removeObject(obj);
+    })
+
+    // trigger tick
+    this.triggerForAllObjectGroups('tick');
+  },
+
+  draw: function() {
+    this.triggerForAllObjectGroups('draw', {}, {ordering: 'renderOrder'});
+  },
 
   triggerForAllObjectGroups: function(trigger, data, params) {
     if (!data) { data = {}; }
@@ -97,6 +113,12 @@ loopery.gameplay = {
   forAllObjectsInGroup: function(group, func) {
     for (var loop_id in this.levelObjects[group]) {
       func(this.levelObjects[group][loop_id]);
+    }
+  },
+
+  forAllObjects: function(func) {
+    for (var i = 0; i < loopery.objectTypes.length; i++) {
+      this.forAllObjectsInGroup(loopery.objectTypes[i].group, func);
     }
   },
 

@@ -1,5 +1,5 @@
 loopery.Joint = function(id, canvas_context, lookup_func) {
-  this.obj_type = 'joint';
+  this.group = 'joints';
   this.id = id;
   this.ctx = canvas_context;
   this.lookup = lookup_func;

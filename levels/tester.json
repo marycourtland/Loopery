@@ -7,7 +7,7 @@
       "id":1,
       "x":200,
       "y":300,
-      "r":140
+      "r":70
     },
     {  
       "id":2,
@@ -21,6 +21,11 @@
       "id":3,
       "joint1":31,
       "joint2":32
+    },
+    {  
+      "id":4,
+      "joint1":41,
+      "joint2":42
     }
   ],
   "joints":[
@@ -37,6 +42,20 @@
       "connector":3,
       "winding":1,
       "state":false
+    },
+    {  
+      "id":41,
+      "loop":1,
+      "connector":3,
+      "winding":1,
+      "state":false
+    },
+    {  
+      "id":42,
+      "loop":2,
+      "connector":3,
+      "winding":-1,
+      "state":false
     }
   ],
   "orbs":[  
@@ -47,6 +66,15 @@
       "start_dir":1,
       "end":-1,
       "roles": []
+    },
+    {  
+      "id":5,
+      "color":"black",
+      "start":2,
+      "start_dir":-1,
+      "roles": [
+        "enemy"
+      ]
     }
   ],
   "decorations": []

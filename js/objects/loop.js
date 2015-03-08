@@ -1,5 +1,5 @@
 loopery.Loop = function(id, canvas_context, lookup_func) {
-  this.obj_type = 'loop';
+  this.group = 'loops';
   this.id = id;
   this.ctx = canvas_context;
   this.lookup = lookup_func;
