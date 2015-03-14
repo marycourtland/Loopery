@@ -13,11 +13,6 @@ window.onload = function() {
 // also the level editor uses the GameObject stuff which uses this
 loopery.objects = [];
 
-// TODO: hopefully do a better way of detecting clicked tracks
-// (necessary for level editor)
-loopery.clicked_tracks = [];
-loopery.tickActions.push(function() { this.clicked_tracks = []; });
-
 loopery.disable_gameplay = false;
 
 // ========== GAME STAGES

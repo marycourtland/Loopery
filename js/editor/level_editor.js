@@ -77,7 +77,10 @@ loopery.editor.tick = function() {
   if ('tick' in this.current_tool.states[this.current_tool.current_state]) {
     this.current_tool.states[this.current_tool.current_state].tick();
   }
+  this.clicked_tracks = [];
 }
+
+loopery.editor.clicked_tracks = [];
 
 loopery.editor.last_click = null;
 

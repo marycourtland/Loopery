@@ -91,6 +91,11 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
     return old_pos + dir * speed / this.geometry.length;
   }
 
+  this.contains = function(loc) {
+    return isOnLineSegment(loc, this.getPosCoords(0), this.getPosCoords(1), loopery.display.track_width);
+  }
+
+
 
   this.recomputePlacement = function() {
     var loop1 = this.joints[0].loop;

@@ -20,9 +20,9 @@ loopery.editor.select_start_tool.states = {
     onenter: function() {},
     draw: function() {},
     onleave: function() {
-      if (loopery.clicked_tracks.length > 0) {
+      if (loopery.editor.clicked_tracks.length > 0) {
         // A track has been selected
-        loopery.editor.custom_level.setStart(loopery.clicked_tracks[0]);
+        loopery.editor.custom_level.setStart(loopery.editor.clicked_tracks[0]);
       }
     },
     next_state: "start"

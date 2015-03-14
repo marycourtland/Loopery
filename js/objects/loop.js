@@ -28,7 +28,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     this.old_loc = this.loc.copy();
     // todo: tell the attached connectors to move
   });
-
+  
   // Determine an orb's next position on the loop (as it's moving)
   this.getNextPos = function(old_pos, dir, speed) {
     return mod(old_pos + dir * speed / (2 * Math.PI * this.radius), 1);

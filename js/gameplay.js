@@ -21,9 +21,9 @@ loopery.gameplay = {
   },
 
   loadAndInitObject: function(obj_group, obj_type, obj_data) {
-    // todo: call both loadObject and initObject
-    this.loadObject(obj_group, obj_type, obj_data);
+    var obj = this.loadObject(obj_group, obj_type, obj_data);
     this.initObject(obj_group, obj_data);
+    return obj;
   },
 
   loadObject: function(obj_group, obj_type, obj_data) {
@@ -31,6 +31,7 @@ loopery.gameplay = {
     var ObjectType = loopery[obj_type];
     var lookup = this.getLookupMethod();
     this.levelObjects[obj_group][id] = new ObjectType(id, loopery.ctx, lookup);
+    return this.levelObjects[obj_group][id];
   },
 
   initObject: function(obj_group, obj_data) {

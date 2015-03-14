@@ -38,9 +38,9 @@ loopery.editor.delete_tool.states = {
     },
     onleave: function() {
       // If a track was clicked, then delete it
-      if (loopery.clicked_tracks.length > 0) {
-        delete loopery.editor.custom_level.tracks[loopery.clicked_tracks[0].id]
-        loopery.clicked_tracks[0].delete();
+      if (loopery.editor.clicked_tracks.length > 0) {
+        delete loopery.editor.custom_level.tracks[loopery.editor.clicked_tracks[0].id]
+        loopery.editor.clicked_tracks[0].delete();
       }
     },
     next_state: "start"
