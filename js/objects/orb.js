@@ -8,7 +8,6 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     this.color = data.color || 'white';
     this.start = data.start;
     this.start_dir = data.start_dir;
-    this.end = data.end;
     this.roles = data.roles;
 
     // dynamic things
@@ -18,9 +17,8 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     this.dir = this.start_dir;
 
     // apply roles
-    for (var i = 0; i < this.roles.length; i++) {
-      console.debug(this.roles[i]);
-      loopery.Orb.Roles[this.roles[i]].init(this);
+    for (var role in this.roles) {
+      loopery.Orb.Roles[role].init(this);
     }
   }
 
@@ -30,7 +28,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
       color: this.color,
       start: this.start,
       start_dir: this.start_dir,
-      end: this.end,
+      start_pos: this.start_pos,
       roles: this.roles
     }
   }
@@ -78,8 +76,6 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
       if (this.isCollidingWith(orbs[id])) { $(this).trigger('collision', {orb: orbs[id]}) }
     }
 
-    // detect levelcomplete
-    if (this.track.id === this.end) { $(this).trigger('levelcomplete'); }
   });
 
 }
@@ -88,8 +84,14 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
 loopery.Orb.Roles = {};
 
+
 loopery.Orb.Roles.player = {
   init: function(orb) {
+    // detect levelcomplete
+    $(orb).on('tick', function() {
+      if (this.track.id === this.roles.player.end) { $(this).trigger('levelcomplete'); }
+    })
+
     $(orb).on('levelcomplete', function(evt, data) {
       // todo
       console.debug('woohoo, you finished a level')
@@ -101,6 +103,7 @@ loopery.Orb.Roles.player = {
     })
   }
 }
+
 
 loopery.Orb.Roles.enemy = {
   init: function(orb) {

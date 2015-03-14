@@ -121,10 +121,11 @@
             "start": 104,
             "start_dir": -1,
             "start_pos": 0.01,
-            "end": 111,
-            "roles": [
-                "player"
-            ]
+            "roles": {
+                "player": {
+                    "end": 111
+                }
+            }
         },
         {
             "id":999,
@@ -132,36 +133,37 @@
             "start_dir":-1,
             "start_pos": 0.5,
             "color": "black",
-            "roles": [
-                "enemy"
-            ]
+            "roles": {
+                "enemy": {}
+            }
         },
         {
             "id":998,
             "start":105,
             "start_dir":-1,
             "color": "black",
-            "roles": [
-                "enemy"
-            ]
+            "roles": {
+                "enemy": {}
+            }
         },
         {
             "id":996,
             "start":107,
             "start_dir":1,
             "color": "black",
-            "roles": [
-                "enemy"
-            ]
+            "roles": {
+                "enemy": {}
+            }
         },
         {
             "id":995,
             "start":111,
-            "start_dir":-1,
+            "start_dir":1,
+            "start_pos":0.5,
             "color": "black",
-            "roles": [
-                "enemy"
-            ]
+            "roles": {
+                "enemy": {}
+            }
         }
     ],
     "decorations": []

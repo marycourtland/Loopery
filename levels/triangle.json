@@ -74,8 +74,11 @@
       "color":"blue",
       "start":1,
       "start_dir":-1,
-      "end":2,
-      "roles": []
+      "roles": {
+        "player": {
+          "end": 2
+        }
+      }
     }
   ],
   "decorations": []

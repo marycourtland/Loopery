@@ -120,17 +120,20 @@
             "color": "blue",
             "start": 95,
             "start_dir": 1,
-            "end": 999,
-            "roles": []
+            "roles": {
+                "player": {
+                    "end": 999
+                }
+            }
         },
         {
             "id":999,
             "start":99,
             "start_dir":-1,
             "color": "black",
-            "roles": [
-                "enemy"
-            ]
+            "roles": {
+                "enemy": {}
+            }
         }
     ],
     "decorations": []
