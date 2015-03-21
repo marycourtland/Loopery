@@ -19,15 +19,24 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
       angle: null
     }
 
+    this.initJoints(data);
+
     this.recomputePlacement();
   }
 
+  this.initJoints = function(data) {
+    // todo: think about a way to auto-generate joint ids (not terribly important)
+    this.joints = [
+      loopery.gameplay.loadAndInitObject('joints', 'Joint', data.joint1, this),
+      loopery.gameplay.loadAndInitObject('joints', 'Joint', data.joint2, this)
+    ]
+  }
 
   this.getData = function() {
     return {
       id: this.id,
-      joint1: this.joints[0].id,
-      joint2: this.joints[1].id
+      joint1: this.joints[0].getData(),
+      joint2: this.joints[1].getData()
     }
   }
 

@@ -1,3 +1,5 @@
+// TODO: Really rewrite this thing.
+
 var mouse = {
 
   STATE_DOWN: "mouse down",
@@ -95,11 +97,13 @@ var mouse = {
     // determine which game object has been clicked
     // (i.e. the frontmost handle-able object)
     var _this = this;
-    this.game.objects.forEach(function(obj) {
+
+    loopery.gameplay.forAllObjects(function(obj) {
       if (obj.contains && obj.contains(_this.pos)) {
+        console.log("Clicked obj:", obj);
         _this.clicked_object = obj;
       }
-    })
+    }, {ordering: 'clickPriority'});
 
     // pass the event to the object
     if (this.clicked_object) {

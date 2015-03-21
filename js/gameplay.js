@@ -20,9 +20,9 @@ loopery.gameplay = {
     })
   },
 
-  loadAndInitObject: function(obj_group, obj_type, obj_data) {
+  loadAndInitObject: function(obj_group, obj_type, obj_data, parent) {
     var obj = this.loadObject(obj_group, obj_type, obj_data);
-    this.initObject(obj_group, obj_data);
+    this.initObject(obj_group, obj_data, parent);
     return obj;
   },
 
@@ -34,9 +34,9 @@ loopery.gameplay = {
     return this.levelObjects[obj_group][id];
   },
 
-  initObject: function(obj_group, obj_data) {
+  initObject: function(obj_group, obj_data, parent) {
     var id = obj_data.id;
-    this.levelObjects[obj_group][id].init(obj_data);
+    this.levelObjects[obj_group][id].init(obj_data, parent);
 
     loopery.objects.push(this.levelObjects[obj_group][id]);
     this.configObjectEvents(this.levelObjects[obj_group][id]);
@@ -56,6 +56,9 @@ loopery.gameplay = {
 
     // Create objects
     loopery.objectTypes.forEach(function(obj) {
+      // Only create top-level object types. Child objects will be created by their parents
+      if (obj.parent) { return; }
+
       level_data[obj.group].forEach(function(object_data) {
         _this.loadObject(obj.group, obj.type, object_data)
       })
@@ -65,6 +68,8 @@ loopery.gameplay = {
     // *** Since the different object types refer to each other (during initializing), this
     // needs to be totally separate from the object creation
     loopery.objectTypes.forEach(function(obj) {
+      if (obj.parent) { return; }
+
       level_data[obj.group].forEach(function(object_data) {
         _this.initObject(obj.group, object_data);
       })
@@ -81,7 +86,7 @@ loopery.gameplay = {
     })
 
     // trigger tick
-    this.triggerForAllObjectGroups('tick');
+    this.triggerForAllObjectGroups('tick', {}, {ordering: 'renderOrder'});
   },
 
   draw: function() {
@@ -91,7 +96,7 @@ loopery.gameplay = {
   triggerForAllObjectGroups: function(trigger, data, params) {
     if (!data) { data = {}; }
     if (!params) { params = {}; }
-    obj_types = !params.ordering ? loopery.objectTypes : _.sortBy(loopery.objectTypes, function(obj_type) { return obj_type[params.ordering]; })
+    obj_types = !params.ordering ? loopery.objectTypes : loopery.objectTypes.sortBy(params.ordering);
     for (var i = 0; i < obj_types.length; i++) {
       object_group = obj_types[i].group;
       for (var id in this.levelObjects[object_group]) {
@@ -117,9 +122,12 @@ loopery.gameplay = {
     }
   },
 
-  forAllObjects: function(func) {
-    for (var i = 0; i < loopery.objectTypes.length; i++) {
-      this.forAllObjectsInGroup(loopery.objectTypes[i].group, func);
+  forAllObjects: function(func, params) {
+    if (!params) { params = {}; }
+    obj_types = !params.ordering ? loopery.objectTypes : loopery.objectTypes.sortBy(params.ordering);
+
+    for (var i = 0; i < obj_types.length; i++) {
+      this.forAllObjectsInGroup(obj_types[i].group, func);
     }
   },
 

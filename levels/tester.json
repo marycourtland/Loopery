@@ -19,44 +19,34 @@
   "connectors":[
     {  
       "id":3,
-      "joint1":31,
-      "joint2":32
+      "joint1": {  
+        "id":31,
+        "loop":1,
+        "winding":-1,
+        "state":false
+      },
+      "joint2": {  
+        "id":32,
+        "loop":2,
+        "winding":1,
+        "state":false
+      }
     },
     {  
       "id":4,
-      "joint1":41,
-      "joint2":42
-    }
-  ],
-  "joints":[
-    {  
-      "id":31,
-      "loop":1,
-      "connector":3,
-      "winding":-1,
-      "state":false
-    },
-    {  
-      "id":32,
-      "loop":2,
-      "connector":3,
-      "winding":1,
-      "state":false
-    },
-    {  
-      "id":41,
-      "loop":1,
-      "connector":4,
-      "winding":1,
-      "state":false
-    },
-    {  
-      "id":42,
-      "loop":2,
-      "connector":4,
-      "winding":-1,
-      "state":false
-    }
+      "joint1":{  
+        "id":41,
+        "loop":1,
+        "winding":1,
+        "state":false
+      },
+      "joint2":{  
+        "id":42,
+        "loop":2,
+        "winding":-1,
+        "state":false
+      }
+    }  
   ],
   "orbs":[  
     {  
