@@ -42,6 +42,10 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     return this.track.getPosCoords(this.pos);
   }
 
+  this.getLocFromPos = function(pos) {
+    return this.track.getPosCoords(pos);
+  }
+
   this.isCollidingWith = function(orb) {
     if (orb.id === this.id) { return false; }
     return distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
@@ -101,6 +105,58 @@ loopery.Orb.Roles.player = {
       // reverse direction!
       this.dir *= -1;
     })
+  }
+}
+
+loopery.Orb.Roles.arm = {
+  init: function(orb) {
+
+    orb.track_angle = 0;  // the angle that the orb is moving (from the track)
+    orb.arm_angle = 0;        // the angle of the arm relative to the track angle
+    orb.arm_spin_rate = 0.05; // rad/tick
+
+    $(orb).on('tick', function() {
+      // Calculate angles
+      var loc1 = this.getLocFromPos(this.oldpos);
+      var loc2 = this.getLocFromPos(this.pos);
+
+      this.track_angle = subtract(loc2, loc1).th;
+      this.arm_angle += this.arm_spin_rate;
+    });
+
+    $(orb).on('draw', function() {
+      this.drawArm();
+      if (this.roles.arm.connect_to_center) { this.drawLineToCenter(); }
+    });
+
+    orb.drawArm = function() {
+      var length_scale = this.roles.arm.length_scale || 1;
+      var loc = this.getLoc();
+      var arm_angle = this.track_angle + this.arm_angle + Math.PI/2;
+      var arm_loc = add(loc, rth(loopery.display.orb_radius * length_scale, arm_angle));
+
+      draw.line(this.ctx, loc, arm_loc, {
+        stroke: this.roles.arm.color,
+        lineWidth: 2
+      });
+    };
+
+    orb.drawLineToCenter = function() {
+      var arm_angle = this.track_angle + this.arm_angle + Math.PI/2;
+      // The line gets more visible when the arm is pointing towards the loop center
+      var loc = this.getLoc();
+      var orb_to_loop = subtract(this.track.loc, loc);
+      var arm = rth(orb_to_loop.r, arm_angle);
+      var diff = subtract(orb_to_loop, arm);
+      var visibility = 1 - diff.r / (2 * orb_to_loop.r); // normalize it from 0 to 1
+
+      draw.line(this.ctx, loc, this.track.loc, {
+        stroke: 'white',
+        alpha: visibility,
+        lineWidth:10
+      })
+    };
+
   }
 }
 

@@ -10,7 +10,7 @@ loopery.getTangent = function(loop1, loop2, wind1, wind2) {
   var dd = subtract(p2, p1);
 
 
-  var  getInnerTangent = function() {
+  var getInnerTangent = function() {
     // get length of tangent vector
     var tangent_r = Math.sqrt(dd.r*dd.r - (rad1 + rad2) * (rad1 + rad2));
 
@@ -32,7 +32,7 @@ loopery.getTangent = function(loop1, loop2, wind1, wind2) {
     return {origin: tangent_origin, vector:tangent};
   }
 
-  var  getOuterTangent = function() {
+  var getOuterTangent = function() {
     // get angle between dd and tangent vector (90 degrees with offset that depends on difference of radii)
     var theta_offset = Math.asin(-(rad1 - rad2)/dd.r);
     var theta = (wind1 === 1) ? dd.th - (Math.PI/2 + theta_offset) :  dd.th + (Math.PI/2 + theta_offset);

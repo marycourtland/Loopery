@@ -55,7 +55,13 @@
       "start":1,
       "start_dir":1,
       "roles": {
-        "player": { "end": 2 }
+        "player": {
+          "end": 2
+        },
+        "arm": {
+         "color": "white",
+         "connect_to_center": true
+        }
       }
     },
     {  
@@ -64,7 +70,11 @@
       "start":2,
       "start_dir":1,
       "roles": {
-        "enemy": {}
+        "enemy": {},
+        "arm": {
+          "length_scale" : 2,
+          "color": "black"
+        }
       }
     }
   ],

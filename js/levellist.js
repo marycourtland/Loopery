@@ -1,4 +1,5 @@
 loopery.levels = [
+  'levels/onebigloop.json',
   'levels/test_level_3.json',
   'levels/tester.json',
   'levels/ld_level_1.json',
@@ -16,7 +17,8 @@ loopery.loadLevelData = function(level_url, onSuccess, onError) {
     url: level_url,
     success: function(data) {
       console.log("Loaded level from", level_url);
-      if (typeof onSuccess === 'function') { onSuccess(JSON.parse(data)); }
+      data = (typeof data === 'object') ? data : JSON.parse(data);
+      if (typeof onSuccess === 'function') { onSuccess(data); }
     },
     error: function(response) {
       console.error("Couldn't load level from", level_url);
@@ -37,5 +39,7 @@ $(document).ready(function() {
         link.remove();
       }
     )
-  })
+  });
 })
+
+

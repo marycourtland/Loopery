@@ -1,0 +1,27 @@
+{  
+  "info":{  
+    "name":"One Big Loop"
+  },
+  "loops":[
+    {  
+      "id":1,
+      "x":400,
+      "y":300,
+      "r":200
+    }
+  ],
+  "connectors":[
+  ],
+  "orbs":[  
+    {  
+      "id":0,
+      "color":"blue",
+      "start":1,
+      "start_dir":1,
+      "roles": {
+        "player": { "end": 2 }
+      }
+    }
+  ],
+  "decorations": []
+}
