@@ -12,14 +12,34 @@
   ],
   "connectors":[
   ],
-  "orbs":[  
+  "orbs":[
     {  
       "id":0,
-      "color":"blue",
+      "color":"white",
       "start":1,
-      "start_dir":1,
+      "start_dir":-1,
+      "start_pos": 0,
       "roles": {
-        "player": { "end": 2 }
+        "player": { "end": 2 },
+        "arm": {
+         "color": "white",
+         "tie_to_center": false,
+         "length_scale": 3,
+         "tied_orbs": [1]
+        }
+      }
+    },
+    {  
+      "id":1,
+      "color":"white",
+      "start":1,
+      "start_dir":-1,
+      "start_pos": 0.1667,
+      "roles": {
+        "arm": {
+         "color": "white",
+         "tie_to_center": true
+        }
       }
     }
   ],

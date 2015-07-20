@@ -60,7 +60,7 @@
         },
         "arm": {
          "color": "white",
-         "connect_to_center": true
+         "tie_to_center": true
         }
       }
     },

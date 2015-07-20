@@ -12,7 +12,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
     // dynamic things
     this.oldpos = null;
-    this.pos = data.start_pos || 0.5;
+    this.pos = (typeof data.start_pos === 'number') ? data.start_pos : 0.5;
     this.track = this.lookup({id: data.start});
     this.dir = this.start_dir;
 
@@ -110,7 +110,6 @@ loopery.Orb.Roles.player = {
 
 loopery.Orb.Roles.arm = {
   init: function(orb) {
-
     orb.track_angle = 0;  // the angle that the orb is moving (from the track)
     orb.arm_angle = 0;        // the angle of the arm relative to the track angle
     orb.arm_spin_rate = 0.05; // rad/tick
@@ -126,10 +125,18 @@ loopery.Orb.Roles.arm = {
 
     $(orb).on('draw', function() {
       this.drawArm();
-      if (this.roles.arm.connect_to_center) { this.drawLineToCenter(); }
+
+      if (this.roles.arm.tie_to_center) { this.drawTieLineTo(this.track.loc); }
+
+      if (this.roles.arm.tied_orbs) {
+        var _this = this;
+        this.roles.arm.tied_orbs.forEach(function(orb_id) {
+          _this.drawTieLineTo(_this.lookup({group: 'orbs', id: orb_id}).getLoc());
+        });
+      }
     });
 
-    orb.drawArm = function() {
+    orb.drawArm = function(target_pos) {
       var length_scale = this.roles.arm.length_scale || 1;
       var loc = this.getLoc();
       var arm_angle = this.track_angle + this.arm_angle + Math.PI/2;
@@ -141,16 +148,16 @@ loopery.Orb.Roles.arm = {
       });
     };
 
-    orb.drawLineToCenter = function() {
-      var arm_angle = this.track_angle + this.arm_angle + Math.PI/2;
+    orb.drawTieLineTo = function(target_loc) {
       // The line gets more visible when the arm is pointing towards the loop center
-      var loc = this.getLoc();
-      var orb_to_loop = subtract(this.track.loc, loc);
+      var arm_angle = this.track_angle + this.arm_angle + Math.PI/2;
+      var this_loc = this.getLoc();
+      var orb_to_loop = subtract(target_loc, this_loc);
       var arm = rth(orb_to_loop.r, arm_angle);
-      var diff = subtract(orb_to_loop, arm);
-      var visibility = 1 - diff.r / (2 * orb_to_loop.r); // normalize it from 0 to 1
+      var visibility = 1 - subtract(orb_to_loop, arm).r / (2 * orb_to_loop.r); // normalize it from 0 to 1
+      visibility = visibility * visibility;
 
-      draw.line(this.ctx, loc, this.track.loc, {
+      draw.line(this.ctx, this_loc, target_loc, {
         stroke: 'white',
         alpha: visibility,
         lineWidth:10
