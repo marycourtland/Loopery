@@ -34,6 +34,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
       var orb = loopery.gameplay.levelObjects.orbs[orb_id];
       this.attemptTransfer(orb);
     }
+
   });
 
   this.bindEvents = function() {

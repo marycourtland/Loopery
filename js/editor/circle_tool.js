@@ -14,13 +14,12 @@ loopery.editor.circle_tool.complete = function() {
   
   // Make the track
   var track_data = {  
-    id: loopery.editor.next_id,
+    id: loopery.editor.getNextId(),
     x: this.params.center_pos.x,
     y: this.params.center_pos.y,
     r: this.params.radius
   }
   var loop = loopery.gameplay.loadAndInitObject('loops', 'Loop', track_data);
-  loopery.editor.next_id += 1;
 
   loop.on("click", function(loc) {
     loopery.editor.clicked_tracks.push(this);

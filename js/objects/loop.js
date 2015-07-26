@@ -22,12 +22,12 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     // todo: shading
   }
 
-  $(this).on('tick', function() {
-    // See if the loop has moved placement (e.g. in level editor)
-    if (equals(this.loc, this.old_loc)) return;
-    this.old_loc = this.loc.copy();
-    // todo: tell the attached connectors to move
-  });
+  $(this).on('tick', function() {});
+
+  // See if the loop has moved placement (e.g. in level editor)
+  this.hasMoved = function() {
+    return !equals(this.loc, this.old_loc);
+  }
   
   // Determine an orb's next position on the loop (as it's moving)
   this.getNextPos = function(old_pos, dir, speed) {
@@ -45,20 +45,6 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     return subtract(loc, this.loc).th / (2 * Math.PI);
   }
 
-  // This looks to see if an orb going from oldpos to newpos has
-  // switched onto a connector.
-  // Returns the connector that the train goes onto; or false is there is none
-  this.checkForConnections = function(oldpos, newpos) {
-    for (connector_id in this.connections) {
-      if (!this.connections[connector_id]) continue; // skip joints that aren't turned on
-      var connector = this.lookup({id:id, group:'connectors'});
-      var p = connector.parent_track_pos[this.id];
-      if (isBetweenOnCircle(p, oldpos, newpos, 1)) { return connector; }
-    }
-    return false;
-    // TODO: fix this method (with new way of accessing a loop's connectors)
-  }
-
   this.getPosFromOldTrack = function(connector) {
     // TODO: fix this method
     return connector.parent_track_pos[this.id];
@@ -67,13 +53,6 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   this.getDirFromOldTrack = function(connector) {
     return -1 * connector.parent_track_winding[this.id];
     // TODO: fix this method
-  }
-
-  this.toggleJoint = function(connector_id) {
-    // TODO: fix this method
-    if (!(connector_id in this.connections)) return;
-    this.connections[connector_id] = !this.connections[connector_id];
-    
   }
 
   this.contains = function(loc) {

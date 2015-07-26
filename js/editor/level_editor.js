@@ -53,6 +53,11 @@ loopery.disableEditor = function() {
   loopery.editor.menu.hide();
 }
 
+loopery.editor.getNextId = function() {
+  this.next_id += 1;
+  return this.next_id;
+}
+
 loopery.editor.setTool = function(tool) {
   console.log('Setting tool to:', tool)
   if (this.current_tool) this.current_tool.end();
@@ -67,10 +72,6 @@ loopery.editor.draw = function() {
   this.drawGrid();
   this.current_tool.states[this.current_tool.current_state].draw();
   this.current_tool.button.highlight();
-  
-  // Menu labels
-  draw.text(this.ctx, "LEVEL EDITOR", xy(15, 20), "nw");
-  draw.text(this.ctx, "Tools", xy(15, 200), "nw");
 }
 
 loopery.editor.tick = function() {

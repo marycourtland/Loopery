@@ -40,8 +40,12 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
     }
   }
 
+
+
   this.tick = function() {}
-  $(this).on('tick', function() {})
+  $(this).on('tick', function() {
+    this.checkPlacement();
+  })
 
   $(this).on('draw', function() {
     var color = loopery.display.track_color;
@@ -105,6 +109,11 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
   }
 
 
+  this.checkPlacement = function() {
+    if (this.joints[0].loop.hasMoved() || this.joints[1].loop.hasMoved()) {
+      this.recomputePlacement();
+    }
+  }
 
   this.recomputePlacement = function() {
     var loop1 = this.joints[0].loop;

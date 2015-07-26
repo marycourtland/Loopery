@@ -2,66 +2,73 @@
 // Tool to create linear tracks
 loopery.editor.linear_tool = {};
 
+
 // Params needed to create a tangent track
 loopery.editor.linear_tool.params = {
   circle1: null,
-  circle2: null,
-  // type: null,
-  // which: null
+  circle2: null
 }
 
 // Creates a linear track (tangent to two circles) based on the input params
-loopery.editor.linear_tool.complete = function() {
-  if (this.params.circle1 === null
-      || this.params.circle2 === null
-      || this.params.type === null
-      || this.params.which === null) return;
-  
-  var makeTrackFunc = (this.params.type === "outer") ? makeOuterTangentTrack : makeInnerTangentTrack; 
-  
+loopery.editor.linear_tool.complete = function(sample_track) {
+  if (!sample_track) { return; }
+
   // Make the track
-  var track = makeTrackFunc(loopery.editor.custom_level, this.params.circle1, this.params.circle2, this.params.which);
-  
+  var track_data = {
+    id: loopery.editor.getNextId(),
+    "joint1":{
+      "id": loopery.editor.getNextId(),
+      "loop": sample_track.circle1.id,
+      "winding": sample_track.wind1,
+      "state":false
+    },
+    "joint2":{
+      "id": loopery.editor.getNextId(),
+      "loop": sample_track.circle2.id,
+      "winding": sample_track.wind2,
+      "state":false
+    }
+  };
+
+  var connector = loopery.gameplay.loadAndInitObject('connectors', 'Connector', track_data);
+
+  connector.on("click", function(loc) {
+    loopery.editor.clicked_tracks.push(this);
+  })
+
   // Reset the params
   this.params.circle1 = null;
   this.params.circle2 = null;
-  this.params.type = null;
-  this.params.which = null;
+  this.params.wind1 = null;
+  this.params.wind2 = null;
 }
 
 // Objects that function simply as sample tracks for the designer to choose from
 // (once the designer has chosen two circular tracks).
-// Four of these will be made, corresponding to these four combinations:
-//   type = "outer", which = 0
-//   type = "outer", which = 1
-//   type = "inner", which = 0
-//   type = "inner", which = 1
-// They are created during the "choose_type" state.
-loopery.editor.linear_tool.makeSampleTrack = function(type, which) {
+// Four of these will be made
+loopery.editor.linear_tool.makeSampleTrack = function(wind1, wind2) {
   var track = new GameObject(loopery);
   track.type = "linear"; // for ordering purposes
   
   var circle1 = loopery.editor.linear_tool.params.circle1;
   var circle2 = loopery.editor.linear_tool.params.circle2;
-  
-  // Calculate track endpoints
-  var pts = (type === "outer") ?
-        getOuterTangents(circle1, circle2)[which]
-      : getInnerTangents(circle1, circle2)[which];
-  
-  pts[0] = circle1.getPosCoords(pts[0]); // Convert from track position to XY coord position
-  pts[1] = circle2.getPosCoords(pts[1]);
+
+
+  var tangentData = loopery.getTangent(circle1, circle2, wind1, wind2);
+
+  track.pos1 = tangentData.origin; // Convert from track position to XY coord position
+  track.pos2 = add(tangentData.origin, tangentData.vector);
   
   // NB: assume none of the calculated points were NaNs
   
-  track.pos1 = pts[0];
-  track.pos2 = pts[1];
-  
-  track.type = type;
-  track.which = which;
+  track.circle1 = circle1;
+  track.circle2 = circle2;
+
+  track.wind1 = wind1;
+  track.wind2 = wind2;
   
   track.contains = function(pos) { return isOnLineSegment(pos, this.pos1, this.pos2, loopery.display.track_width); }
-  track.drawActions.push(function() {
+  track.draw = function() {
     // Draw the line
     var color = 'white';
     if (!this.contains(loopery.mouse.pos)) {
@@ -70,10 +77,10 @@ loopery.editor.linear_tool.makeSampleTrack = function(type, which) {
     }
     draw.line(loopery.ctx, this.pos1, this.pos2, {
       stroke: color,
-      linewidth: loopery.display.track_width
+      lineWidth: loopery.display.track_width
     })
     loopery.ctx.globalAlpha = 1;
-  });
+  };
   track.onclick = function(pos) {
     // The purpose of this is to enable the level editor to know which track
     // has been selected.
@@ -111,6 +118,7 @@ loopery.editor.linear_tool.destroy_sample_tracks = function() {
   for (var i = 0; i < this.sample_tracks.length; i++) {
     this.sample_tracks[i].destroy();
   }
+  this.sample_tracks = [];
   this.do_sample_tracks_exist = false;
 }
 
@@ -126,7 +134,6 @@ loopery.editor.linear_tool.states = {
     onleave: function() {
       if (loopery.editor.clicked_tracks.length > 0) {
         // Set params.circle1
-        console.debug('Setting params.circle1');
         loopery.editor.linear_tool.params.circle1 = loopery.editor.clicked_tracks[0];
         loopery.editor.linear_tool.states.choose_circle1.next_state = "choose_circle2";
       }
@@ -152,7 +159,6 @@ loopery.editor.linear_tool.states = {
     onleave: function() {
       if (loopery.editor.clicked_tracks.length > 0 && loopery.editor.clicked_tracks[0] !== loopery.editor.linear_tool.params.circle1) {
         // Set params.circle2
-        console.debug('Setting params.circle2');
         loopery.editor.linear_tool.params.circle2 = loopery.editor.clicked_tracks[0];  
         loopery.editor.linear_tool.states.choose_circle2.next_state = "choose_type";
         loopery.display.shade_hovered_circle_track = false;
@@ -171,12 +177,11 @@ loopery.editor.linear_tool.states = {
     onenter: function() {
       // Create four "sample" tracks 
       if (!loopery.editor.linear_tool.do_sample_tracks_exist) {
-        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack("outer", 0));
-        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack("outer", 1));
-        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack("inner", 0));
-        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack("inner", 1));
+        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack(1, 1));
+        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack(1, -1));
+        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack(-1, -1));
+        loopery.editor.linear_tool.sample_tracks.push(loopery.editor.linear_tool.makeSampleTrack(-1, 1));
         loopery.editor.linear_tool.do_sample_tracks_exist = true;
-        loopery.orderObjects();
       }
       
     },
@@ -185,31 +190,30 @@ loopery.editor.linear_tool.states = {
       // Shade the first two circles
       loopery.editor.linear_tool.params.circle1.shade();
       loopery.editor.linear_tool.params.circle2.shade();
+      loopery.editor.linear_tool.sample_tracks.forEach(function(track) {
+        track.draw();
+      })
     },
     
     onleave: function() {
-      if (loopery.editor.clicked_tracks.length > 0 ) {
-        // Find which sample track the designer clicked
-        loopery.editor.linear_tool.params.type = loopery.editor.clicked_tracks[0].type;
-        loopery.editor.linear_tool.params.which = loopery.editor.clicked_tracks[0].which;
-        
-        // Create the track
-        loopery.editor.linear_tool.complete();
-        loopery.orderObjects();
-        
-        // Destroy the sample tracks
-        loopery.editor.linear_tool.destroy_sample_tracks();
-        
-        loopery.editor.linear_tool.states.choose_type.next_state = "choose_circle1";
-      }
-      else {
-        // If no linear track was clicked, repeat this state
         loopery.editor.linear_tool.states.choose_type.next_state = "choose_type";
-      }
+
+        // Find which sample track the designer clicked
+        loopery.editor.linear_tool.sample_tracks.forEach(function(track) {
+
+          if (track.contains(loopery.mouse.pos)) {
+
+            // Create the track
+            loopery.editor.linear_tool.complete(track);
+
+            loopery.editor.linear_tool.destroy_sample_tracks();
+        
+            loopery.editor.linear_tool.states.choose_type.next_state = "choose_circle1";
+          }
+        });
       
     },
     
     next_state: "choose_circle1"
-      
   }
 }

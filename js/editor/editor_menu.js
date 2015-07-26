@@ -1,20 +1,28 @@
 // *********************************************************************
 // Menu buttons
 
-loopery.editor.menu = $("<div id='editor_menu'></div>").appendTo(document.body).hide();
+loopery.editor.menu = $("<div id='editor_menu'></div>")
+  .css({
+    position: 'absolute',
+    left: (loopery.size.x + 10) + 'px'
+  })
+  .appendTo(document.body)
+  .hide();
 
 function makeEditorButton(pos, id, label, callback) {
   var button = $("<a href='#' class='editor-button'></a>")
     .attr('id', id)
-    .css('display', 'inline-block')
-    .css('position', 'absolute')
-    .css('left', pos.x)
-    .css('top', pos.y)
-    .css('background-color', 'rgba(0, 0, 0, 0.3)')
-    .css('padding', 5)
-    .css('width', 120)
-    .css('font-size', 12)
-    .css('text-align', 'center')
+    .css({
+      'display': 'inline-block',
+      'position': 'absolute',
+      'left': pos.x,
+      'top': pos.y,
+      'background-color': '#222222',
+      'padding': 5,
+      'width': 120,
+      'font-size': 12,
+      'text-align': 'center'
+    })
     .text(label)
     .on('click', callback)
     .appendTo(loopery.editor.menu);
@@ -33,6 +41,15 @@ function makeEditorButton(pos, id, label, callback) {
   }
   return button;
 }
+
+// loopery.editor.save_level_button = makeEditorButton(
+//   xy(15, 40),
+//   'editor-save',
+//   'Save level',
+//   function() {
+    
+//   }
+// )
 
 loopery.editor.test_level_tool.button = makeEditorButton(
   xy(15, 40),
@@ -105,4 +122,11 @@ loopery.editor.delete_tool.button = makeEditorButton(
   "editor-delete",
   "Delete",
   function() { loopery.editor.setTool(loopery.editor.delete_tool); }
+);
+
+loopery.editor.orb_tool.button = makeEditorButton(
+  xy(15, 340),
+  "editor-orb",
+  "New Orb",
+  function() { loopery.editor.setTool(loopery.editor.orb_tool); }
 );
