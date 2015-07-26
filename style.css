@@ -12,7 +12,7 @@ a {
   position: absolute;
   left:0; top:0;
   border:1px solid black;
-  background-image:url('background.png');
+  /*background-image:url('background.png');*/
 }
 
 .game-overlay {
