@@ -10,7 +10,7 @@ function enableLevels(game) {
 
   game.endLevel = function() {
     this.levels[this.current_level].onleave();
-    if (this.editor.enabled) {
+    if (this.editor && this.editor.enabled) {
       // switch to a different editor tool
       this.editor.setTool(this.editor.select_tool);
     }
