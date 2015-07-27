@@ -11,6 +11,8 @@ loopery.gameplay = {
   //   joints: {}
   // },
 
+  paused: false,
+
   levelObjects: {},
 
   clear: function() {
@@ -79,7 +81,16 @@ loopery.gameplay = {
   // tick: function() { this.applyToObjectGroups('tick'); },
   // draw: function() { this.applyToObjectGroups('draw', {ordering: 'renderOrder'}); },
 
+  pause: function() {
+    this.paused = true;
+  },
+
+  resume: function() {
+    this.paused = false;
+  },
+
   tick: function() {
+    if (this.paused) { return; }
     // check for destroyed objects
     this.forAllObjects(function(obj) {
       if (obj.destroyed) loopery.gameplay.removeObject(obj);

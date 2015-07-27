@@ -132,14 +132,12 @@ loopery.editor.linear_tool.states = {
     draw: function() {},
     
     onleave: function() {
+      loopery.editor.linear_tool.states.choose_circle1.next_state = "choose_circle1";
+
       if (loopery.editor.clicked_tracks.length > 0) {
         // Set params.circle1
         loopery.editor.linear_tool.params.circle1 = loopery.editor.clicked_tracks[0];
         loopery.editor.linear_tool.states.choose_circle1.next_state = "choose_circle2";
-      }
-      else {
-        // Repeat this state if a circle track hasn't been clicked
-        loopery.editor.linear_tool.states.choose_circle1.next_state = "choose_circle1";
       }
     },
     

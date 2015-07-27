@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script type="text/javascript" src = "js/lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src = "js/lib/underscore-min.js"></script>
+    <script type="text/javascript" src = "js/engine/game.js"></script>
+    <script type="text/javascript" src = "js/engine/math2D.js"></script>
+    <script type="text/javascript" src = "js/engine/drawing.js"></script>
+    <script type="text/javascript" src = "js/engine/colors.js"></script>
+    <script type="text/javascript" src = "js/engine/utility.js"></script>
+    <script type="text/javascript" src = "js/engine/mouse.js"></script>
+    <script type="text/javascript" src = "js/engine/keyboard.js"></script>
+    <script type="text/javascript" src = "js/engine/gameobject.js"></script>
+    <title>Loopery - level editor</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  
+  <body>
+    <div id="game">
+      <canvas id="game_canvas"></canvas>
+
+      <div id="hud" class="game-overlay">
+        <a href="#" onclick="loopery.setStage('editor');">Level Editor</a>
+      </div>
+      
+      <div id="level_loader" style="display:none;">
+        <h3>SAVE LEVEL</h3>
+        Copy this text and save it somewhere safe.
+        <textarea id="level_output">test1</textarea>
+        <h3>LOAD LEVEL</h3>
+        Paste the text from another level here.
+        <textarea id="level_input"></textarea>
+        <button onclick="loopery.exitLoader()">Go back</button>
+        <button onclick="loopery.loadInputLevel()">Load it!</button>
+      </div>
+    </div>
+  </body>
+  
+  <!--<script type="text/javascript" src="levels/test_level_1.js"></script>
+  <script type="text/javascript" src="levels/test_level_2.js"></script>-->
+  <script type="text/javascript" src="js/loopery.js"></script>
+  <script type="text/javascript" src="js/levellist.js"></script>
+  <script type="text/javascript" src="js/computations.js"></script>
+  
+  <script type="text/javascript" src="js/objects.js"></script>
+  <script type="text/javascript" src="js/objects/loop.js"></script>
+  <script type="text/javascript" src="js/objects/connector.js"></script>
+  <script type="text/javascript" src="js/objects/joint.js"></script>
+  <script type="text/javascript" src="js/objects/orb.js"></script>
+  <script type="text/javascript" src="js/objects/decoration.js"></script>
+
+  <script type="text/javascript" src="js/features.js"></script>
+  <script type="text/javascript" src="js/settings.js"></script>
+  <script type="text/javascript" src="js/menus/level_menu.js"></script>
+  <script type="text/javascript" src="js/gameplay.js"></script>
+
+  <!-- Level editor -->
+  <script type="text/javascript" src="js/editor/level_editor.js"></script>
+  <script type="text/javascript" src="js/editor/select_tool.js"></script>
+  <script type="text/javascript" src="js/editor/circle_tool.js"></script>
+  <script type="text/javascript" src="js/editor/linear_tool.js"></script>
+  <script type="text/javascript" src="js/editor/delete_tool.js"></script>
+  <script type="text/javascript" src="js/editor/orb_tool.js"></script>
+  <script type="text/javascript" src="js/editor/select_start_tool.js"></script>
+  <script type="text/javascript" src="js/editor/select_end_tool.js"></script>
+  <script type="text/javascript" src="js/editor/grid.js"></script>
+  <script type="text/javascript" src="js/editor/editor_menu.js"></script>
+
+  
+  <script type="text/javascript">
+    $("#clicker-radius").on('input', function(e) {
+      loopery.joint_click_radius = e.target.value;
+    })
+    $("#clicker-distance").on('input', function(e) {
+      loopery.joint_click_distance = e.target.value;
+    })
+
+    $(document).ready(function() {
+      loopery.setStage('editor');
+    });
+  </script>
+
+</html>
