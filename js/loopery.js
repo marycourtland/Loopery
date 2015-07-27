@@ -50,6 +50,21 @@ loopery.stages.gameplay = {
   stageEnd: function() { $("#hud").hide(); }
 }
 
+loopery.stages.editor = {
+  // piggyback on the gameplay stage
+  tick: function() {
+    clear(loopery.ctx);
+    loopery.gameplay.tick();
+    loopery.editor.tick();
+
+    loopery.gameplay.draw();
+    loopery.editor.draw();
+    loopery.next();
+  },
+  stageStart: function() { loopery.enableEditor(); },
+  stageEnd: function() { }
+}
+
 
 // ========== Stage-switching methods
 loopery.setStage = function(stage_name) {
