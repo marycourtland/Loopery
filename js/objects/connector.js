@@ -87,10 +87,15 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
       draw.lineGradient(this.ctx, p4, p3a, 'black', color, {lineWidth: loopery.display.track_width});
     }
     
-    if (loopery.display.shade_hovered_line_track && this.contains(game.mouse.pos)) {
+    if (loopery.display.shade_hovered_line_track && this.contains(loopery.mouse.pos)) {
       this.shade();
     }
   });
+
+  this.shade = function(color) {
+    color = color || 'black';
+    draw.line(this.ctx, this.getPosCoords(0), this.getPosCoords(1), {stroke: color, alpha: 0.7, lineWidth: loopery.display.track_width});
+  }
 
 
   this.getPosCoords = function(pos) {

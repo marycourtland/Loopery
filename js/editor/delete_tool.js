@@ -39,8 +39,7 @@ loopery.editor.delete_tool.states = {
     onleave: function() {
       // If a track was clicked, then delete it
       if (loopery.editor.clicked_tracks.length > 0) {
-        delete loopery.editor.custom_level.tracks[loopery.editor.clicked_tracks[0].id]
-        loopery.editor.clicked_tracks[0].delete();
+        loopery.gameplay.removeObject(loopery.editor.clicked_tracks[0]);
       }
     },
     next_state: "start"

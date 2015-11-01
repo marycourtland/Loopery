@@ -31,8 +31,7 @@ loopery.gameplay = {
   loadObject: function(obj_group, obj_type, obj_data) {
     var id = obj_data["id"];
     var ObjectType = loopery[obj_type];
-    var lookup = this.getLookupMethod();
-    this.levelObjects[obj_group][id] = new ObjectType(id, loopery.ctx, lookup);
+    this.levelObjects[obj_group][id] = new ObjectType(id, loopery.ctx, loopery.gameplay.lookup);
     return this.levelObjects[obj_group][id];
   },
 
@@ -47,11 +46,34 @@ loopery.gameplay = {
 
   removeObject: function(obj) {
     console.debug("Destroying:", obj);
+    if (!(obj.id in this.levelObjects[obj.group])) {
+      console.warn('Tried to remove an object not in this level:', obj.group, obj.id);
+      return;
+    }
     delete this.levelObjects[obj.group][obj.id];
+
+    // Also delete attached stuff...
+
+    var lookupAndRemove = function(params) {
+      var objs = loopery.gameplay.lookup(params);
+      for (var id in objs) { loopery.gameplay.removeObject(objs[id]); }
+    };
+
+    if (obj.group === 'loops') {
+      lookupAndRemove({loop_id: obj.id, group: 'connectors'});
+      lookupAndRemove({loop_id: obj.id, group: 'orbs'});
+    }
+
+    if (obj.group === 'connectors') {
+      lookupAndRemove({loop_id: obj.id, group: 'joints'});
+      lookupAndRemove({loop_id: obj.id, group: 'orbs'});
+    }
+
+    obj = null; // release memory
   },
 
   loadLevel: function(level_data) {
-    var lookup = this.getLookupMethod();
+    var lookup = loopery.gameplay.lookup;
     var _this = this;
 
     this.clear();
@@ -142,34 +164,91 @@ loopery.gameplay = {
     }
   },
 
-  getLookupMethod: function() {
-    // This method will be given to child objects so that they can lookup junk
-    // Possible params:
-    // id, group
-    // Call lookup(group:"groupname") to get all objs in that group
-    var _this = this;
-    return function(params) {
-      if (typeof params !== 'object') {
-        throw 'Error... why did you not call lookup() with a params object???';
+  getAllObjects: function() {
+    var objs = {};
+    loopery.objectTypes.forEach(function(type) {
+      for (var id in loopery.gameplay.levelObjects[type.group]) {
+        objs[id] =  loopery.gameplay.levelObjects[type.group][id];
       }
-      if (params.group in _this.levelObjects) {
-        if (params.id === null || params.id === undefined) {
-          return _this.levelObjects[params.group]
-        }
-        else {
-          return _this.levelObjects[params.group][params.id] || null;
-        }
-      }
+    })
+    return objs;
+  },
 
-      if (params.id !== null || params.id === undefined) {
-        for (var group in _this.levelObjects) {
-          if (params.id in _this.levelObjects[group]) {
-            return _this.levelObjects[group][params.id];
-          }
-        }
-      } 
-      return null;
+  getConnectorsForLoop: function(loop) {
+    for (var id in this.levelObjects.connectors) {
+      this.levelObjects.connectors[id].joints[0]
     }
+  },
+
+
+  lookup: function(params) {
+    // `CRUNCH: this could be condensed - see all the join blocks
+
+    if (typeof params !== 'object') {
+      throw 'Error... why did you not call lookup() with a params object???';
+    }
+
+    var results = ('group' in params) ? loopery.gameplay.levelObjects[params.group] : loopery.gameplay.getAllObjects();
+
+    if ('id' in params) {
+      return results[params.id];
+    }
+
+    // 
+    var joins = [
+      // Loop > all connectors attached to it
+      {
+        source: 'loop',
+        target: 'connector',
+        matchTarget: function(loop_id, connector) {
+          var joints = connector.joints;
+          if (joints[0].loop.id === params.loop_id) { return true; }
+          if (joints[1].loop.id === params.loop_id) { return true; }
+          return false;
+        }
+      },
+
+      // Loop > all joints on it
+      {
+        source: 'loop',
+        target: 'joint',
+        matchTarget: function(loop_id, joint) {
+          return joint.loop.id === loop_id;
+        }
+      },
+
+      // Loop > all orbs on it
+      {
+        source: 'loop',
+        target: 'orb',
+        matchTarget: function(track_id, orb) {
+          return orb.track.id === track_id;
+        }
+      },
+
+      // Connector > all orbs on it
+      {
+        source: 'connector',
+        target: 'orb',
+        matchTarget: function(track_id, orb) {
+          return orb.track_id === track_id;
+        }
+      }
+    ]
+
+    joins.forEach(function(join) {
+      var id_name = join.source + '_id';
+      if ('group' in params && params.group.match(join.target) && id_name in params) {
+        var target_results = [];
+        for (var id in results) {
+          var target = results[id];
+          if (join.matchTarget(params[id_name], target)) { target_results.push(target); }
+        }
+        results = target_results;
+      }
+    })
+
+    return results;
   },
 
   configObjectEvents: function(obj) {
