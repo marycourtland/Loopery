@@ -22,7 +22,7 @@ loopery.editor.select_tool.resizer.tick = function() {
 
   if (this.dragging) {
     this.pos = loopery.mouse.pos.copy();
-    if (loopery.editor.snap_to_grid) { snapToGrid(this.pos, loopery.editor.gridsize); }
+    if (loopery.editor.snap_to_grid) { snapToGrid(this.pos, loopery.editor.grids.rectangular.gridsize); }
     loopery.editor.select_tool.params.selected_track.radius = distance(this.pos, track_center);
   }
   else {

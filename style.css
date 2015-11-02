@@ -8,7 +8,7 @@ a {
   text-decoration: none;
 }
 
-#game_canvas {
+.main_canvas {
   position: absolute;
   left:0; top:0;
   border:1px solid black;

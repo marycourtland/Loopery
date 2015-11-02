@@ -24,8 +24,11 @@ function makeEditorButton(id, label, callback) {
       'text-align': 'center'
     })
     .text(label)
-    .on('click', callback)
     .appendTo(loopery.editor.menu);
+
+  if (typeof callback === 'function')  {
+    button.on('click', callback)
+  }
 
   button.tick = function() {};
   button.draw = function() {};
@@ -43,20 +46,19 @@ function makeEditorButton(id, label, callback) {
 
 // utility: binary toggle buttons
 $.fn.togglebutton = function(callbacks) {
-  // Assume initial state is off
-  if (typeof callbacks.off === 'function') { callbacks.off.call(this); }
-  
-  this.data('on', false).on('click', function() {
+  // Assume initial state is the first one
+  var current_state = 0;
+  var states = Object.keys(callbacks);
+  callbacks[states[current_state]].call(this);
+
+  this.data('togglebutton-state', states[current_state]).on('click', function() {
     $togglebutton = $(this);
-    if ($togglebutton.data('on')) {
-      $togglebutton.data('on', false);
-      if (typeof callbacks.off === 'function') { callbacks.off.call($togglebutton); }
-    }
-    else {
-      $togglebutton.data('on', true);
-      if (typeof callbacks.on === 'function') { callbacks.on.call($togglebutton); }
-    }
-  });
+    current_state += 1;
+    current_state %= states.length;
+    $togglebutton.data('togglebutton-state');
+    callbacks[states[current_state]].call(this);
+  })
+
   return this;
 };
 
@@ -71,12 +73,13 @@ $.fn.togglebutton = function(callbacks) {
       'color': 'white',
     })
     .togglebutton({
-      on: function() { loopery.gameplay.resume(); this.html("&#9612;&#9612;"); },
-      off: function() { loopery.gameplay.pause(); this.html("&#9654;"); }
+      off: function() { loopery.gameplay.pause(); this.html("&#9654;"); },
+      on: function() { loopery.gameplay.resume(); this.html("&#9612;&#9612;"); }
     })
     .appendTo(loopery.editor.menu);
 })()
 
+// `TODO
 // loopery.editor.save_level_button = makeEditorButton(
 //   xy(15, 40),
 //   'editor-save',
@@ -87,20 +90,24 @@ $.fn.togglebutton = function(callbacks) {
 // )
 
 
-loopery.editor.toggle_grid_button = makeEditorButton(
-  "editor-grid",
-  "Toggle grid on",
-  function() {
-    if (loopery.editor.snap_to_grid) {
-      loopery.editor.snap_to_grid = false;
-      loopery.editor.toggle_grid_button.setLabel("Toggle grid on");
-    }
-    else {
-      loopery.editor.snap_to_grid = true;
-      loopery.editor.toggle_grid_button.setLabel("Toggle grid off");
-    }
+loopery.editor.toggle_grid_button = makeEditorButton("editor-grid", "Grid: off");
+
+loopery.editor.toggle_grid_button.togglebutton({
+  off: function() {
+    loopery.editor.toggle_grid_button.setLabel("Grid: off");
+    loopery.editor.disableGrid();
+  },
+
+  rectangular: function() {
+    loopery.editor.toggle_grid_button.setLabel("Grid: rectangular");
+    loopery.editor.enableGrid(loopery.editor.grids.rectangular);
+  },
+
+  radial: function() {
+    loopery.editor.toggle_grid_button.setLabel("Grid: radial");
+    loopery.editor.enableGrid(loopery.editor.grids.radial);
   }
-);
+})
 
 loopery.editor.clear_all_button = makeEditorButton(
   "editor-clear",
@@ -161,8 +168,8 @@ loopery.editor.orb_tool.button = makeEditorButton(
       .val('Direction: CW').data('dir', 1)
       .appendTo(orb_params)
       .togglebutton({
-        on: function() { this.data('dir', 1).val("Direction: CW"); },
-        off: function() { this.data('dir', -1).val("Direction: CCW"); }
+        cw: function() { this.data('dir', 1).val("Direction: CW"); },
+        ccw: function() { this.data('dir', -1).val("Direction: CCW"); }
       });
 
     // Give the new orb various roles
@@ -171,8 +178,8 @@ loopery.editor.orb_tool.button = makeEditorButton(
       .data('new-orb-role', 'player')
       .appendTo(orb_params)
       .togglebutton({
-        on: function() { this.val('Player role: ON'); },
-        off: function() { this.val('Player role: OFF'); }
+        off: function() { this.val('Player role: OFF'); },
+        on: function() { this.val('Player role: ON'); }
       })
 
     $("<input type='button'>")
@@ -180,8 +187,8 @@ loopery.editor.orb_tool.button = makeEditorButton(
       .data('new-orb-role', 'arm')
       .appendTo(orb_params)
       .togglebutton({
-        on: function() { this.val('Arm role: ON'); },
-        off: function() { this.val('Arm role: OFF'); }
+        off: function() { this.val('Arm role: OFF'); },
+        on: function() { this.val('Arm role: ON'); }
       })
 
     $("<input type='button'>")
@@ -189,8 +196,8 @@ loopery.editor.orb_tool.button = makeEditorButton(
       .data('new-orb-role', 'enemy')
       .appendTo(orb_params)
       .togglebutton({
-        on: function() { this.val('Enemy role: ON'); },
-        off: function() { this.val('Enemy role: OFF'); }
+        off: function() { this.val('Enemy role: OFF'); },
+        on: function() { this.val('Enemy role: ON'); }
       })
 
     function getOrbRoles() {

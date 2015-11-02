@@ -21,6 +21,8 @@ var mouse = {
 
   inputElements: [],
 
+  snapToGridFunction: null,
+
   init: function(game) {
     this.game = game;
     this.canvas = game.ctx.canvas;
@@ -69,6 +71,9 @@ var mouse = {
   },
 
   set_pos: function(new_pos) {
+    if (typeof this.snapToGridFunction === 'function') {
+      new_pos = this.snapToGridFunction(new_pos);
+    }
     this.pos = new_pos;
     this.has_new_pos = true;
   },
@@ -149,6 +154,19 @@ var mouse = {
       }
       this.clicked_object = null;
     })
+  },
+
+  // Snapping to a grid. Usage:
+  //   mouse.snap(function(pos) { return posAlignedToWhateverGrid(); })
+  //   mouse.snap(false); // no snapping
+  snap: function(snapToGridFunction) {
+    if (typeof snapToGridFunction === 'function') {
+      this.snapToGridFunction = snapToGridFunction;
+    }
+    else {
+      this.snapToGridFunction = null;
+    }
   }
+
 
 }

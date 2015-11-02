@@ -50,13 +50,11 @@ loopery.editor.circle_tool.states = {
     
     draw: function() {
       var pos = loopery.mouse.pos.copy();
-      if (loopery.editor.snap_to_grid) { snapToGrid(pos, loopery.editor.gridsize); }
       draw.circle(loopery.ctx, pos, loopery.display.track_width/2, loopery.display.track_color);
     },
     
     onleave: function() {
       var pos = loopery.mouse.pos.copy();
-      if (loopery.editor.snap_to_grid) { snapToGrid(pos, loopery.editor.gridsize); }
       loopery.editor.circle_tool.params.center_pos = pos;
     },
     next_state: "choose_edge"
@@ -67,7 +65,6 @@ loopery.editor.circle_tool.states = {
     
     draw: function() {
       var pos = loopery.mouse.pos.copy();
-      if (loopery.editor.snap_to_grid) { snapToGrid(pos, loopery.editor.gridsize); }
       
       draw.circle(loopery.ctx,
         loopery.editor.circle_tool.params.center_pos,
@@ -81,7 +78,6 @@ loopery.editor.circle_tool.states = {
     
     onleave: function() {
       var pos = loopery.mouse.pos.copy();
-      if (loopery.editor.snap_to_grid) { snapToGrid(pos, loopery.editor.gridsize); }
       loopery.editor.circle_tool.params.radius = distance(pos, loopery.editor.circle_tool.params.center_pos);
       loopery.editor.circle_tool.complete();
     },

@@ -51,6 +51,7 @@ loopery.disableEditor = function() {
   this.editor.enabled = false;
   loopery.disable_gameplay = false;
   loopery.editor.menu.hide();
+  loopery.mouse.snap(false);
 }
 
 loopery.editor.getNextId = function() {
@@ -69,7 +70,6 @@ loopery.editor.setTool = function(tool) {
 loopery.editor.draw = function() {
   // console.log('editor draw');
   if (!this.enabled) return;
-  this.drawGrid();
   this.current_tool.states[this.current_tool.current_state].draw();
   this.current_tool.button.highlight();
 }

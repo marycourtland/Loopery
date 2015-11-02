@@ -49,75 +49,97 @@ function Vector(vec_params, mode) {
   this.r = vec_params.r;
   this.th = vec_params.th;
   
-  
   this._set_rth = function(r, th, override_constant) {
     if (this.constant && !override_constant) return;
     this.r = r;
     this.th = mod(th, 2*Math.PI);
     this._update_xy(override_constant);
+    return this;
   }
+
   this._set_xy = function(x, y, override_constant) {
     if (this.constant && !override_constant) return;
     this.x = x;
     this.y = y;
     this._update_rth(override_constant);
+    return this;
   }
+
   this._update_rth = function(override_constant) {
     if (this.constant && !override_constant) return;
     this.r = Math.sqrt(this.x*this.x + this.y*this.y);
     this.th = mod(Math.atan2(this.y, this.x), 2*Math.PI);
+    return this;
   }
+
   this._update_xy = function(override_constant) {
     if (this.constant && !override_constant) return;
     this.x = this.r * Math.cos(this.th);
     this.y = this.r * Math.sin(this.th);
+    return this;
   }
-  
+
   this.add = function(v) {
     this._set_xy(this.x + v.x, this.y + v.y);
     return this;
   }
+
   this.subtract = function(v) {
     this._set_xy(this.x - v.x, this.y - v.y);
     return this;
   }
+
   this.neg = function() {
     this._set_rth(-this.r, this.th);
     return this;
   }
+
   this.xshift = function(dx) {
     this._set_xy(this.x + dx, this.y);
     return this;
   }
+
   this.yshift = function(dy) {
     this._set_xy(this.x, this.y + dy);
     return this;
   }
+
   this.normalize = function(r) {
     if (r == null) r = 1;
     this._set_rth(r, this.th);
   }
+
   this.scale = function(c) {
     this._set_rth(this.r * c, this.th);
     return this;
   }
+
   this.rotate = function(radians) {
     this._set_rth(this.r, this.th + radians);
     return this;
   }
+
   this.xreflect = function() {
     this._set_xy(this.x * -1, this.y);
     return this;
   }
+
   this.yreflect = function() {
     this._set_xy(this.x, this.y * -1);
     return this;
   }
+
   this.reflect = function(v) { // reflect about this axis
     var dtheta = v.th - this.th;
     this._set_rth(this.r, mod360_symmetric(v.th + dtheta));
+    return this;
   }
-  this._transform = function(args) { this.transform.apply(this, arguments); }
+
+  this._transform = function(args) {
+    this.transform.apply(this, arguments);
+    return this;
+  }
+
   this.transform = function(args) { // affine transform
     var matrix = getTransformationMatrix(arguments);
     if (isIdentMatrix(matrix)) return this;
@@ -131,15 +153,20 @@ function Vector(vec_params, mode) {
     //console.log("Output: " + this + "\n");
     return this;
   }
+
   this.round = function(decimals) {
     this._set_xy(round(this.x, decimals), round(this.y, decimals), true);
+    return this;
   }
+
   this.toString = function() {
     return this.mode[0] + "(" + this[this.mode[1]] + "," + this[this.mode[2]] + ")";
   }
+
   this.marker = function(ctx) {
     marker(ctx, this)
   }
+
   this.arrowOn = function(ctx, center, color) {
     if (!color) { color = 'black' };
     ctx.fillStyle = color;
@@ -164,6 +191,24 @@ function Vector(vec_params, mode) {
   }
   this.copy = function() {
     return xy(this.x, this.y);
+  }
+
+  this.snapToGrid = function(gridsize) {
+    var origin = origin || xy(0, 0);
+    this._set_xy(
+      round(this.x / gridsize.x) * gridsize.x,
+      round(this.y / gridsize.y) * gridsize.y
+    ).add(origin);
+    return this;
+  }
+
+  this.snapToGridRadial = function(gridsize, origin) {
+    var origin = origin || rth(0, 0);
+    this.subtract(origin)._set_rth(
+      round(this.r / gridsize.r) * gridsize.r,
+      round(this.th / gridsize.th) * gridsize.th
+    ).add(origin);
+    return this;
   }
   
   if (mode && !this.mode) { this.mode = mode; }
@@ -361,12 +406,14 @@ function vround(v, decimals) {
 
 // "Snap" the vector to a grid
 // i.e round its components to multiples of the gridsize's components
-function snapToGrid(v, gridsize) {
-  // NB: this changes the vector itself
-  v._set_xy(
-    round(v.x / gridsize.x) * gridsize.x,
-    round(v.y / gridsize.y) * gridsize.y
-  )
+// `todo `crunch: could use the vector's coordinate mode instead of having
+// two different functions for rectangular and radial
+function snapToGrid(v, gridsize, origin) {
+  return v.copy().snapToGrid(gridsize, origin);
+}
+
+function snapToGridRadial(v, gridsize, origin) {
+  return v.copy().snapToGridRadial(gridsize, origin);
 }
 
 
