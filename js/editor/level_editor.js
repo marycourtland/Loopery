@@ -46,6 +46,26 @@ loopery.enableEditor = function() {
   });
 }
 
+loopery.editor.saveLevel = function() {
+  var level_output = loopery.gameplay.getLevelData();
+  var download_data = "text/json;charset=utf-8," + encodeURIComponent(level_output);
+  $("#level_output").text(level_output);
+  $("#level_download")
+    .attr('href', 'data:' + download_data)
+    .attr('download', "level.json");
+  $("#level_save").show();
+}
+
+loopery.editor.hideSaver = function() {
+  $("#level_save").hide();
+}
+
+loopery.editor.clearAll = function() {
+  loopery.gameplay.forAllObjects(function(obj) {
+    loopery.gameplay.removeObject(obj)
+  })
+}
+
 loopery.disableEditor = function() {
   if (this.editor.current_tool) this.editor.current_tool.end();
   this.editor.enabled = false;

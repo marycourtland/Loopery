@@ -20,6 +20,7 @@ function makeEditorButton(id, label, callback) {
       'background-color': '#222222',
       'padding': 5,
       'width': 120,
+      'height': '1rem',
       'font-size': 12,
       'text-align': 'center'
     })
@@ -42,6 +43,13 @@ function makeEditorButton(id, label, callback) {
     this.css('border', '1px solid white');
   }
   return button;
+}
+
+function addMenuSpacer(height) {
+  height = height || '1rem';
+  var spacer = $("<div>")
+  .css({'height': height})
+  .appendTo(loopery.editor.menu);
 }
 
 // utility: binary toggle buttons
@@ -73,22 +81,27 @@ $.fn.togglebutton = function(callbacks) {
       'color': 'white',
     })
     .togglebutton({
-      off: function() { loopery.gameplay.pause(); this.html("&#9654;"); },
-      on: function() { loopery.gameplay.resume(); this.html("&#9612;&#9612;"); }
+      off: function() { loopery.gameplay.pause(); $(this).html("&#9654;"); },
+      on: function() { loopery.gameplay.resume(); $(this).html("&#9612;&#9612;"); }
     })
     .appendTo(loopery.editor.menu);
 })()
 
-// `TODO
-// loopery.editor.save_level_button = makeEditorButton(
-//   xy(15, 40),
-//   'editor-save',
-//   'Save level',
-//   function() {
-    
-//   }
-// )
+loopery.editor.save_button = makeEditorButton(
+  "editor-save",
+  "Save level",
+  function() {
+    loopery.editor.saveLevel();
+  }
+);
 
+loopery.editor.clear_all_button = makeEditorButton(
+  "editor-clear",
+  "Clear level",
+  function() {
+    loopery.editor.clearAll();
+  }
+);
 
 loopery.editor.toggle_grid_button = makeEditorButton("editor-grid", "Grid: off");
 
@@ -109,21 +122,18 @@ loopery.editor.toggle_grid_button.togglebutton({
   }
 })
 
-loopery.editor.clear_all_button = makeEditorButton(
-  "editor-clear",
-  "Clear all tracks (NYI)",
-  function() {  } // TODO: level editor's "clear all" method
-);
+
+addMenuSpacer();
 
 loopery.editor.circle_tool.button = makeEditorButton(
   "editor-circular",
-  "Circular tracks",
+  "Add Loop",
   function() { loopery.editor.setTool(loopery.editor.circle_tool); }
 );
 
 loopery.editor.linear_tool.button = makeEditorButton(
   "editor-linear",
-  "Linear tracks",
+  "Add Connector",
   function() { loopery.editor.setTool(loopery.editor.linear_tool); }
 );
 
@@ -168,8 +178,8 @@ loopery.editor.orb_tool.button = makeEditorButton(
       .val('Direction: CW').data('dir', 1)
       .appendTo(orb_params)
       .togglebutton({
-        cw: function() { this.data('dir', 1).val("Direction: CW"); },
-        ccw: function() { this.data('dir', -1).val("Direction: CCW"); }
+        cw: function() { $(this).data('dir', 1).val("Direction: CW"); },
+        ccw: function() { $(this).data('dir', -1).val("Direction: CCW"); }
       });
 
     // Give the new orb various roles
@@ -178,8 +188,8 @@ loopery.editor.orb_tool.button = makeEditorButton(
       .data('new-orb-role', 'player')
       .appendTo(orb_params)
       .togglebutton({
-        off: function() { this.val('Player role: OFF'); },
-        on: function() { this.val('Player role: ON'); }
+        off: function() { $(this).val('Player role: OFF'); },
+        on: function() { $(this).val('Player role: ON'); }
       })
 
     $("<input type='button'>")
@@ -187,8 +197,8 @@ loopery.editor.orb_tool.button = makeEditorButton(
       .data('new-orb-role', 'arm')
       .appendTo(orb_params)
       .togglebutton({
-        off: function() { this.val('Arm role: OFF'); },
-        on: function() { this.val('Arm role: ON'); }
+        off: function() { $(this).val('Arm role: OFF'); },
+        on: function() { $(this).val('Arm role: ON'); }
       })
 
     $("<input type='button'>")
@@ -196,8 +206,8 @@ loopery.editor.orb_tool.button = makeEditorButton(
       .data('new-orb-role', 'enemy')
       .appendTo(orb_params)
       .togglebutton({
-        off: function() { this.val('Enemy role: OFF'); },
-        on: function() { this.val('Enemy role: ON'); }
+        off: function() { $(this).val('Enemy role: OFF'); },
+        on: function() { $(this).val('Enemy role: ON'); }
       })
 
     function getOrbRoles() {

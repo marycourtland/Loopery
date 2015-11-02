@@ -22,11 +22,16 @@
       <div id="hud" class="game-overlay">
         <a href="#" onclick="loopery.setStage('editor');">Level Editor</a>
       </div>
+
+      <div id="level_save" style="display:none">
+        <h3>SAVE LEVEL</h3>
+        <textarea id="level_output"></textarea>
+        <a id='level_download' href=''>Download</a>
+        <br /><br />
+        <a href="javascript: loopery.editor.hideSaver();">Done</a>
+      </div>
       
       <div id="level_loader" style="display:none;">
-        <h3>SAVE LEVEL</h3>
-        Copy this text and save it somewhere safe.
-        <textarea id="level_output">test1</textarea>
         <h3>LOAD LEVEL</h3>
         Paste the text from another level here.
         <textarea id="level_input"></textarea>

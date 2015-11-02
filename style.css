@@ -47,33 +47,36 @@ a {
   margin-bottom: 1em;
 }
 
-#level_loader {
+#level_loader, #level_save {
   position: absolute;
   left: 100px; top:60px;
   width: 580px;
-  height: 460px;
-  padding:10px 20px;
+  padding: 1rem 1rem 2rem 1rem;
   background-color: rgb(157, 189, 116);
   border:1px solid black;
   text-align: center;
 }
 
-#level_output, #level_input {
-  display: block;
-  background-color: white;
-  margin: 1em 20px;
-  padding: 5px;
-  border: 1px solid black;
-  height: 100px;
-  width: 528px;
-  text-align: left;
-  white-space: pre-wrap;       /* css-3 */
-  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;      /* Opera 4-6 */
-  white-space: -o-pre-wrap;    /* Opera 7 */
-  word-wrap: break-word;       /* Internet Explorer 5.5+ */
-}
+  #level_output, #level_input {
+    display: block;
+    background-color: white;
+    margin: 1em 20px;
+    padding: 5px;
+    border: 1px solid black;
+    height: 100px;
+    width: 528px;
+    text-align: left;
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  }
 
+  #level_download {
+    font-size: larger;
+    text-decoration: underline;
+  }
 
 #settings {
   position: absolute;

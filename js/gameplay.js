@@ -100,6 +100,19 @@ loopery.gameplay = {
     })
   },
 
+  getLevelData: function() {
+    var data = {
+      info: { name: 'TODO: save evel name...' }
+    };
+    loopery.gameplay.forAllGroups(function(group) {
+      data[group] = [];
+      loopery.gameplay.forAllObjectsInGroup(group, function(obj) {
+        data[group].push(obj.getData());
+      })
+    })
+    return JSON.stringify(data);
+  },
+
   // tick: function() { this.applyToObjectGroups('tick'); },
   // draw: function() { this.applyToObjectGroups('draw', {ordering: 'renderOrder'}); },
 
@@ -147,6 +160,12 @@ loopery.gameplay = {
         this.levelObjects[object_group][id][func_name]();
       }
     }
+  },
+
+  forAllGroups: function(func) {
+    loopery.objectTypes.forEach(function(type) {
+      func(type.group);
+    })
   },
 
   forAllObjectsInGroup: function(group, func) {
