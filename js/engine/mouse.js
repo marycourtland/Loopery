@@ -87,9 +87,10 @@ var mouse = {
     if (this.state == this.STATE_DOWN) {
       this.state = this.STATE_DRAG;
     }
-
+    //console.log('this.clicked obj:', this.state, this.clicked_object)
     // Pass drag event to the object which was clicked on the previous mousedown
     if (this.state == this.STATE_DRAG && this.clicked_object) {
+      //console.log('  doing!')
       this.clicked_object.do('drag', this.pos, this.velocity);
     }
   },

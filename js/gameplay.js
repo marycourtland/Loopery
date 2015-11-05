@@ -273,11 +273,11 @@ loopery.gameplay = {
   configObjectEvents: function(obj) {
     // TODO: redo this. I wrote this method just to make mouse.js happy. But that doesn't have to be the case.
 
-    obj.boundEvents = {}
+    obj.boundEvents = {};
 
     obj.do = function(evt, pos, vel) {
       if (evt in obj.boundEvents) {
-        if (!obj.contains(pos)) { return; }
+        if (!obj.contains(pos) && evt !== 'drag') { return; }
         obj.boundEvents[evt].forEach(function(func) { func.call(obj, pos, vel); })
       }
     }
