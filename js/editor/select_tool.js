@@ -3,7 +3,16 @@
 loopery.editor.select_tool = {};
 
 loopery.editor.select_tool.params = {
-  selected_track: null
+  selected_object: null
+}
+
+loopery.editor.select_tool.select = function(obj) {
+  this.params.selected_object = obj;
+
+  if (obj.group === 'loops') {
+    $("#editor-loop-params").show();
+    loopery.editor.menu.updateLoopInfo({loop: obj});
+  }
 }
 
 
@@ -20,14 +29,14 @@ loopery.editor.select_tool.resizer.contains = function(pos) {
 }
 
 loopery.editor.select_tool.resizer.tick = function() {
-  if (!loopery.editor.select_tool.params.selected_track) { return; }
-  var track = loopery.editor.select_tool.params.selected_track;
+  if (!loopery.editor.select_tool.params.selected_object) { return; }
+  var track = loopery.editor.select_tool.params.selected_object;
   var track_center = track.loc;
 
   if (this.dragging) {
     this.pos = loopery.mouse.pos.copy();
     track.radius = distance(this.pos, track_center);
-
+    loopery.editor.menu.updateLoopInfo({loop: track});
   }
   else {
     // Put the handle on the relevant circle track, but in the spot closest to the mouse
@@ -41,9 +50,9 @@ loopery.editor.select_tool.resizer.tick = function() {
 
 
 loopery.editor.select_tool.resizer.draw = function() {
-  if (!loopery.editor.select_tool.params.selected_track) { return; }
+  if (!loopery.editor.select_tool.params.selected_object) { return; }
 
-  var track_pos = loopery.editor.select_tool.params.selected_track.getPosFromLoc(this.pos);
+  var track_pos = loopery.editor.select_tool.params.selected_object.getPosFromLoc(this.pos);
   var th1 = (track_pos - 0.25) * 2*Math.PI;
   var th2 = (track_pos + 0.25) * 2*Math.PI;
 
@@ -53,7 +62,7 @@ loopery.editor.select_tool.resizer.draw = function() {
     stroke:'white'
   })
 };
-
+loopery.editor.select_tool.params.selected_object
 
 loopery.gameplay.configObjectEvents(loopery.editor.select_tool.resizer);
 
@@ -68,7 +77,7 @@ loopery.editor.select_tool.resizer.on('drag', function() { this.dragging = true;
 loopery.editor.select_tool.start = function() {
   this.current_state = "default_state";
   loopery.display.shade_hovered_circle_track = true;
-  loopery.editor.select_tool.params.selected_track = null;
+  loopery.editor.select_tool.params.selected_object = null;
   loopery.gameplay.forAllObjectsInGroup('loops', loopery.editor.select_tool.configLoopEvents);
 
 
@@ -80,20 +89,22 @@ loopery.editor.select_tool.start = function() {
 
 loopery.editor.select_tool.end = function() {
   loopery.display.shade_hovered_circle_track = false;
-  loopery.editor.select_tool.params.selected_track = null;
+  loopery.editor.select_tool.params.selected_object = null;
   loopery.gameplay.forAllObjectsInGroup(loopery.editor.select_tool.removeLoopEvents);
 
   // clean up resizer object
   loopery.gameplay.removeObject(loopery.editor.select_tool.resizer);
+
+  $("#editor-loop-params").hide();
 }
 
 loopery.editor.select_tool.configLoopEvents = function(loop) {
   // meh
   loop.on('mousedown', function() {
-    loopery.editor.select_tool.params.selected_track = this;
+    loopery.editor.select_tool.select(this);
   })
   loop.on('drag', function(pos, vel) {
-    loopery.editor.select_tool.params.selected_track = this;
+    loopery.editor.select_tool.select(this);
     loop.loc.add(vel);
   })
 }
@@ -110,9 +121,9 @@ loopery.editor.select_tool.states = {
       loopery.editor.select_tool.resizer.tick();
     },
     draw: function() {
-      if (loopery.editor.select_tool.params.selected_track) {
+      if (loopery.editor.select_tool.params.selected_object) {
         loopery.editor.select_tool.resizer.draw();
-        loopery.editor.select_tool.params.selected_track.show_shade = true;
+        loopery.editor.select_tool.params.selected_object.show_shade = true;
       }
     },
     onleave: function() {

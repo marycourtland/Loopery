@@ -35,11 +35,13 @@ loopery.editor.circle_tool.start = function() {
   this.current_state = "choose_center";
   this.params.center_pos = null;
   this.params.radius = null;
+  $("#editor-loop-params").show();
 }
 
 loopery.editor.circle_tool.end = function() {
   this.params.center_pos = null;
   this.params.radius = null;
+  $("#editor-loop-params").hide();
 }
 
 // Tool states
@@ -47,9 +49,17 @@ loopery.editor.circle_tool.states = {
   choose_center: {
     onenter: function() {
     },
+
+    tick: function() {
+      loopery.editor.circle_tool.params.center_pos = loopery.mouse.pos.copy();
+      loopery.editor.menu.updateLoopInfo({
+        pos: loopery.editor.circle_tool.params.center_pos,
+        radius: loopery.editor.circle_tool.params.radius,
+      });
+    },
     
     draw: function() {
-      var pos = loopery.mouse.pos.copy();
+      var pos = loopery.editor.circle_tool.params.center_pos;
       draw.circle(loopery.ctx, pos, loopery.display.track_width/2, loopery.display.track_color);
     },
     
@@ -62,13 +72,20 @@ loopery.editor.circle_tool.states = {
   
   choose_edge: {
     onenter: function() {},
+
+    tick: function() {
+      var pos = loopery.mouse.pos.copy();
+      loopery.editor.circle_tool.params.radius = distance(pos, loopery.editor.circle_tool.params.center_pos);
+      loopery.editor.menu.updateLoopInfo({
+        pos: loopery.editor.circle_tool.params.center_pos,
+        radius: loopery.editor.circle_tool.params.radius,
+      });
+    },
     
     draw: function() {
-      var pos = loopery.mouse.pos.copy();
-      
       draw.circle(loopery.ctx,
         loopery.editor.circle_tool.params.center_pos,
-        distance(pos, loopery.editor.circle_tool.params.center_pos),
+        loopery.editor.circle_tool.params.radius,
         {
           fill: 'transparent',
           stroke: loopery.display.track_color,

@@ -155,23 +155,34 @@ loopery.editor.orb_tool.button = makeEditorButton(
   function() { loopery.editor.setTool(loopery.editor.orb_tool); }
 );
 
+
+// PARAM BOXES
+var param_box_style = {
+  'position': 'absolute',
+  'left': 5,
+  'top': 370,
+  'width': 150,
+  'font-size': 14,
+  'color': 'black',
+};
+
+var param_box_property_style = {
+  'float': 'right'
+};
+
+// ------------------------------------------------------------------
 // Some orb parameters
 
 (function() {
-  var orb_params = $("<div id='editor-orb-params'>Params</div>")
-    .css({
-      'position': 'absolute',
-      'left': 15,
-      'top': 370,
-      'font-size': 14,
-      'color': 'black'
-    })
-    .text("Orb properties:")
+  var orb_params = $("<div id='editor-orb-params'></div>")
+    .css(param_box_style)
+    .append("<div>Orb properties:</div>")
     .hide()
     .appendTo(loopery.editor.menu);
 
     $("<input type='color'>").attr('id', 'new-orb-color')
       .val("#0000ff")
+      .css({display: 'block'})
       .appendTo(orb_params);
 
     $("<input type='button'>").attr('id', 'new-orb-dir')
@@ -220,4 +231,39 @@ loopery.editor.orb_tool.button = makeEditorButton(
 
 function showOrbRoleParams() {
   console.log('add new role');
+}
+
+
+// ------------------------------------------------------------------
+// Loop parameters
+
+(function() {
+  var loop_params = $("<div id='editor-loop-params'></div>")
+    .css(param_box_style)
+    .append("<div>Loop properties:</div>")
+    .hide()
+    .appendTo(loopery.editor.menu);
+
+    var propert
+
+    $("<div>")
+      .text("Position: ")
+      .append($("<span>").attr('id', 'new-loop-position').css(param_box_property_style))
+      .appendTo(loop_params);
+
+    $("<div>")
+      .text("Radius: ")
+      .append($("<span>").attr('id', 'new-loop-radius').css(param_box_property_style))
+      .appendTo(loop_params);
+  })();
+
+
+loopery.editor.menu.updateLoopInfo = function(params) {
+  if (!params) { return; }
+  if (params.loop) {
+    params.pos = params.loop.loc;
+    params.radius = params.loop.radius;
+  }
+  $("#new-loop-position").text(params.pos.x + ", " + params.pos.y);
+  $("#new-loop-radius").text(Math.round(params.radius))
 }
