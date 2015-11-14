@@ -1,15 +1,6 @@
 loopery.levels = [
-  'levels/onebigloop.json',
-  'levels/test_level_3.json',
-  'levels/tester.json',
-  'levels/ld_level_1.json',
-  'levels/ld_level_2.json',
-  'levels/ld_level_3.json',
-  'levels/test_level_1.json',
-  'levels/triangle.json',
-  'levels/test_level_4.json',
-  'levels/nodanger.json',
   'levels/advanceguard.json',
+  'levels/ld_level_3.json',
 ]
 
 loopery.loadLevelData = function(level_url, onSuccess, onError) {

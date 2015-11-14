@@ -36,7 +36,9 @@
       <div id="game_fadeout" class="game-overlay"></div>
 
       <div id="level_menu">
-        <h2>Pick a level!</h2>
+        <h2>Loopery will be released on: <span style="font-size:larger; display:block; margin-bottom:3rem;">December 1!</span></h2>
+        <h3>In the mean time, here are a couple sample levels.</h3>
+        <h3 style="margin-bottom:3rem;">Or, try out the <a href="editor.htm" style="text-decoration:underline; display:inline;">level editor</a>.</h3>
       </div>
       
       <div id="level_loader" style="display:none;">
@@ -48,22 +50,6 @@
         <textarea id="level_input"></textarea>
         <button onclick="loopery.exitLoader()">Go back</button>
         <button onclick="loopery.loadInputLevel()">Load it!</button>
-      </div>
-      <div id="settings">
-        Clicker display:
-        <form>
-        <input type="radio" name="clickerdisplay" onclick="loopery.features.clickerDisplay = 'pulse-all'">Pulse<br />
-        <input type="radio" name="clickerdisplay" onclick="loopery.features.clickerDisplay = 'show-when-mouse-is-near'">Show when mouse is near<br />
-        <input type="radio" name="clickerdisplay" onclick="loopery.features.clickerDisplay = 'show-all'">Show all of them, all of the time
-        </form>
-        <br />
-        Clicker size (diameter): <br />
-        10px<input id="clicker-radius" type="range" min="5" max= "20">40px
-        <br /><br />
-        Clicker distance from intersection: <br />
-        0px<input id="clicker-distance" type="range" min="0" max= "30" value="0">30px
-        <br /><br />
-        <iframe src="https://docs.google.com/forms/d/11cXRs-th22foWAW9nxN7Wd5O9hGyOGUQioXUURhUw68/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
       </div>
     </div>
   </body>
