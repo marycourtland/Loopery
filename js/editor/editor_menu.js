@@ -119,6 +119,11 @@ loopery.editor.toggle_grid_button.togglebutton({
   radial: function() {
     loopery.editor.toggle_grid_button.setLabel("Grid: radial");
     loopery.editor.enableGrid(loopery.editor.grids.radial);
+  },
+
+  triangular: function() {
+    loopery.editor.toggle_grid_button.setLabel("Grid: triangular");
+    loopery.editor.enableGrid(loopery.editor.grids.triangular);
   }
 })
 

@@ -90,3 +90,40 @@ loopery.editor.grids.radial = {
     return snapToGridRadial(pos, loopery.editor.grids.radial.size, loopery.editor.grids.radial.origin);
   }
 }
+
+
+loopery.editor.grids.triangular = {
+  origin: loopery.size.copy().scale(0.5),
+  size: rth(20, Math.PI/3), // optimally this should be an integer fraction of 2pi
+
+  draw: function() {
+    var origin = xy(0, 0)
+    var pos = origin.copy();
+
+    loopery.ctx.globalAlpha = 0.7;
+
+    while (pos.y < loopery.size.y) {
+      while (pos.x < loopery.size.x) {
+        loopery.editor.drawGridDot(pos);
+        pos.xshift(2 * this.size.x);
+      }
+
+      pos.x = -this.size.x;
+      pos.yshift(this.size.y);
+
+      while (pos.x < loopery.size.x) {
+        loopery.editor.drawGridDot(pos);
+        pos.xshift(2 * this.size.x);
+      }
+
+      pos.x = 0;
+      pos.yshift(this.size.y);
+    }
+
+    loopery.ctx.globalAlpha = 1;
+  },
+
+  transformPos: function(pos) {
+    return snapToGridTriangular(pos, loopery.editor.grids.triangular.size);
+  }
+}

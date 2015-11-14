@@ -73,7 +73,7 @@ loopery.editor.linear_tool.makeSampleTrack = function(wind1, wind2) {
     var color = 'white';
     if (!this.contains(loopery.mouse.pos)) {
       loopery.ctx.globalAlpha = 0.3;
-      color = 'black';
+      color = 'white';
     }
     draw.line(loopery.ctx, this.pos1, this.pos2, {
       stroke: color,

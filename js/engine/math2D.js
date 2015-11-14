@@ -193,7 +193,7 @@ function Vector(vec_params, mode) {
     return xy(this.x, this.y);
   }
 
-  this.snapToGrid = function(gridsize) {
+  this.snapToGrid = function(gridsize, origin) {
     var origin = origin || xy(0, 0);
     this._set_xy(
       round(this.x / gridsize.x) * gridsize.x,
@@ -209,6 +209,18 @@ function Vector(vec_params, mode) {
       round(this.th / gridsize.th) * gridsize.th
     ).add(origin);
     return this;
+  }
+
+  this.snapToGridTriangular = function(gridsize, origin) {
+    var origin = origin || rth(0, 0);
+    // first snap to the outer rectangular grid
+    var preliminary_snap = this.copy().snapToGrid(scale(gridsize, 2), origin);
+    var effective_pos = subtract(this, preliminary_snap);
+    var diff = rth(
+      round(effective_pos.r / gridsize.r) * gridsize.r,
+      round(effective_pos.th / gridsize.th) * gridsize.th
+    )
+    return preliminary_snap.add(diff);
   }
   
   if (mode && !this.mode) { this.mode = mode; }
@@ -414,6 +426,10 @@ function snapToGrid(v, gridsize, origin) {
 
 function snapToGridRadial(v, gridsize, origin) {
   return v.copy().snapToGridRadial(gridsize, origin);
+}
+
+function snapToGridTriangular(v, gridsize, origin) {
+  return v.copy().snapToGridTriangular(gridsize, origin);
 }
 
 
