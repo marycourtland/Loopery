@@ -25,12 +25,12 @@
          "color": "white",
          "tie_to_center": false,
          "length_scale": 3,
-         "tied_orbs": [1]
+         "tied_orbs": [2]
         }
       }
     },
     {  
-      "id":1,
+      "id":2,
       "color":"white",
       "start":1,
       "start_dir":-1,

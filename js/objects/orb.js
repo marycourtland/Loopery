@@ -131,7 +131,7 @@ loopery.Orb.Roles.arm = {
       if (this.roles.arm.tied_orbs) {
         var _this = this;
         this.roles.arm.tied_orbs.forEach(function(orb_id) {
-          _this.drawTieLineTo(_this.lookup({group: 'orbs', id: orb_id}).getLoc());
+          _this.drawTieLineTo(_this.lookup({group: 'orbs', id: orb_id}));
         });
       }
     });
