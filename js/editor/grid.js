@@ -93,10 +93,11 @@ loopery.editor.grids.radial = {
 
   getSizeFromInput: function() {
     var d = parseInt($("#grid-size-input input").val());
+    var angle = parseInt($("#grid-size-angle-input-radial input").val());
 
     // No need to re-create vector objects every tick
     if (d !== this.size.x) {
-      this.size._set_rth(d, Math.PI/20);
+      this.size._set_rth(d, radians(angle));
     }
 
     return this.size;
@@ -133,8 +134,9 @@ loopery.editor.grids.triangular = {
 
   getSizeFromInput: function() {
     var d = parseInt($("#grid-size-input input").val());
+    var angle = parseInt($("#grid-size-angle-input-triangle input").val());
     if (d !== this.size.x) {
-      this.size._set_rth(d, Math.PI/3);
+      this.size._set_rth(d, radians(angle));
     }
     return this.size;
   },

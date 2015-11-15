@@ -48,15 +48,23 @@ function makeEditorButton(id, label, callback) {
 function makeNumberInput(id, label, default_value) {
   var container = $("<div></div>")
     .attr('id', id)
+    .css({
+      "margin-top":10,
+      "width":130
+    });
+
+  $("<span>")
     .text(label)
     .css({
       "font-size":12,
-      "margin-top":10
-    }
-  );
+      "width": "70%"
+    }).appendTo(container);
 
   $("<input>").css({
-    'width': 120
+    "font-size":12,
+    "width":"20%",
+    "float":"right",
+    "text-align":"right"
   }).val(default_value).appendTo(container);
 
   return container;
@@ -127,33 +135,43 @@ loopery.editor.toggle_grid_button.togglebutton({
   off: function() {
     loopery.editor.toggle_grid_button.setLabel("Grid: off");
     loopery.editor.disableGrid();
-    $('#grid-size-input').hide();
+    $(".grid-number-input").hide();
   },
 
   triangular: function() {
     loopery.editor.toggle_grid_button.setLabel("Grid: triangular");
     loopery.editor.enableGrid(loopery.editor.grids.triangular);
+    $(".grid-number-input").hide();
     $('#grid-size-input').show();
+    $('#grid-size-angle-input-triangle').show();
   },
 
   rectangular: function() {
     loopery.editor.toggle_grid_button.setLabel("Grid: rectangular");
     loopery.editor.enableGrid(loopery.editor.grids.rectangular);
+    $(".grid-number-input").hide();
     $('#grid-size-input').show();
   },
 
   radial: function() {
     loopery.editor.toggle_grid_button.setLabel("Grid: radial");
     loopery.editor.enableGrid(loopery.editor.grids.radial);
+    $(".grid-number-input").hide();
     $('#grid-size-input').show();
+    $('#grid-size-angle-input-radial').show();
   },
 })
 
-loopery.editor.grid_size = makeNumberInput('grid-size-input', 'Grid size:', 40);
-loopery.editor.grid_size.appendTo(loopery.editor.menu);
+loopery.editor.grid_size_input = makeNumberInput('grid-size-input', 'Grid size:', 40);
+loopery.editor.grid_size_input.appendTo(loopery.editor.menu).addClass('grid-number-input').hide();
 
+loopery.editor.grid_angle_input_triangle = makeNumberInput('grid-size-angle-input-triangle', 'Angle (deg):', 60);
+loopery.editor.grid_angle_input_triangle.appendTo(loopery.editor.menu).addClass('grid-number-input').hide();
 
-loopery.editor.grid_size.find('input').on('change', function() {
+loopery.editor.grid_angle_input_radial = makeNumberInput('grid-size-angle-input-radial', 'Angle (deg):', 10);
+loopery.editor.grid_angle_input_radial.appendTo(loopery.editor.menu).addClass('grid-number-input').hide();
+
+$(".grid-number-input").find('input').on('change', function() {
   loopery.editor.grid.redraw();
 })
 
@@ -184,9 +202,8 @@ loopery.editor.loop_radius_toggle.togglebutton({
   }
 })
 
-loopery.editor.preset_loop_radius_input = makeNumberInput('preset-label-loop-radius-input', 'Radius:', 40);
+loopery.editor.preset_loop_radius_input = makeNumberInput('preset-loop-radius-input', 'Radius:', 40);
 loopery.editor.preset_loop_radius_input.appendTo(loopery.editor.menu);
-
 
 
 // =======================================================================
