@@ -95,6 +95,7 @@ loopery.editor.draw = function() {
 }
 
 loopery.editor.tick = function() {
+
   if ('tick' in this.current_tool.states[this.current_tool.current_state]) {
     this.current_tool.states[this.current_tool.current_state].tick();
   }
@@ -114,3 +115,28 @@ loopery.onclick(function() {
   tool.current_state = tool.states[tool.current_state].next_state;
   tool.states[tool.current_state].onenter();
 });
+
+
+// KEYBOARD SHORTCUTS
+
+loopery.editor.keyboard_shortcuts = {
+  "L" : function() { loopery.editor.setTool(loopery.editor.circle_tool); },
+  "C" : function() { loopery.editor.setTool(loopery.editor.linear_tool); },
+  "S" : function() { loopery.editor.setTool(loopery.editor.select_tool); },
+  "D" : function() { loopery.editor.setTool(loopery.editor.delete_tool); },
+  "O" : function() { loopery.editor.setTool(loopery.editor.orb_tool); },
+  "G" : function() { $("#editor-grid").trigger('click'); },
+  "SPACE" : function(evt) {
+    evt.stopPropagation();
+    if (loopery.gameplay.paused) { loopery.gameplay.resume(); }
+    else { loopery.gameplay.pause(); }
+  },
+}
+
+window.addEventListener("keyup", function(event) {
+  key = getKeyFromEvent(event);
+  if (key in loopery.editor.keyboard_shortcuts) {
+    loopery.editor.keyboard_shortcuts[key](event);
+  }
+});
+

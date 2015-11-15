@@ -102,6 +102,7 @@ loopery.editor.linear_tool.start = function() {
   this.params.circle2 = null;
   // this.params.type = null;
   // this.params.which = null;
+  console.log('STARTING CONNECTOR')
 }
 
 loopery.editor.linear_tool.end = function() {
@@ -126,6 +127,7 @@ loopery.editor.linear_tool.destroy_sample_tracks = function() {
 loopery.editor.linear_tool.states = {
   choose_circle1: {
     onenter: function() {
+      console.log('CONNECTOR ONENTER')
       loopery.display.shade_hovered_circle_track = true;
     },
     
