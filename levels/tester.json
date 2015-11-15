@@ -58,7 +58,7 @@
         "player": {
           "end": 2
         },
-        "arm": {
+        "clock": {
          "color": "white",
          "tie_to_center": true
         }
@@ -71,7 +71,7 @@
       "start_dir":1,
       "roles": {
         "enemy": {},
-        "arm": {
+        "clock": {
           "length_scale" : 2,
           "color": "black"
         }

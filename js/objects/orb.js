@@ -121,11 +121,11 @@ loopery.Orb.Roles.player = {
   }
 }
 
-loopery.Orb.Roles.arm = {
+loopery.Orb.Roles.clock = {
   init: function(orb) {
     orb.initial_track_angle = 0;  // the angle that the orb is moving (from the track)
-    orb.initial_arm_angle = 0;        // the angle of the arm relative to the track angle
-    orb.initial_arm_spin_rate = 0.05; // rad/tick
+    orb.initial_clock_angle = 0;        // the angle of the clock relative to the track angle
+    orb.initial_clock_spin_rate = 0.05; // rad/tick
 
     $(orb).on('tick', function() {
       if (this.killed) { return; }
@@ -134,41 +134,41 @@ loopery.Orb.Roles.arm = {
       var loc2 = this.getLocFromPos(this.pos);
 
       this.track_angle = subtract(loc2, loc1).th;
-      this.arm_angle += this.arm_spin_rate;
+      this.clock_angle += this.clock_spin_rate;
     });
 
     $(orb).on('draw', function() {
-      this.drawArm();
+      this.drawClockHand();
 
-      if (this.roles.arm.tie_to_center) { this.drawTieLineTo(this.track.loc); }
+      if (this.roles.clock.tie_to_center) { this.drawTieLineTo(this.track.loc); }
 
-      if (this.roles.arm.tied_orbs) {
+      if (this.roles.clock.tied_orbs) {
         var _this = this;
-        this.roles.arm.tied_orbs.forEach(function(orb_id) {
+        this.roles.clock.tied_orbs.forEach(function(orb_id) {
           _this.drawTieLineTo(_this.lookup({group: 'orbs', id: orb_id}));
         });
       }
     });
 
-    orb.drawArm = function(target_pos) {
-      var length_scale = this.roles.arm.length_scale || 1;
+    orb.drawClockHand = function(target_pos) {
+      var length_scale = this.roles.clock.length_scale || 1;
       var loc = this.getLoc();
-      var arm_angle = this.track_angle + this.arm_angle + Math.PI/2;
-      var arm_loc = add(loc, rth(loopery.display.orb_radius * length_scale, arm_angle));
+      var clock_angle = this.track_angle + this.clock_angle + Math.PI/2;
+      var clock_loc = add(loc, rth(loopery.display.orb_radius * length_scale, clock_angle));
 
-      draw.line(this.ctx, loc, arm_loc, {
-        stroke: this.roles.arm.color,
+      draw.line(this.ctx, loc, clock_loc, {
+        stroke: this.roles.clock.color,
         lineWidth: 2
       });
     };
 
     orb.drawTieLineTo = function(target_loc) {
-      // The line gets more visible when the arm is pointing towards the loop center
-      var arm_angle = this.track_angle + this.arm_angle + Math.PI/2;
+      // The line gets more visible when the clock hand is pointing towards the loop center
+      var clock_angle = this.track_angle + this.clock_angle + Math.PI/2;
       var this_loc = this.getLoc();
       var orb_to_loop = subtract(target_loc, this_loc);
-      var arm = rth(orb_to_loop.r, arm_angle);
-      var visibility = 1 - subtract(orb_to_loop, arm).r / (2 * orb_to_loop.r); // normalize it from 0 to 1
+      var clock = rth(orb_to_loop.r, clock_angle);
+      var visibility = 1 - subtract(orb_to_loop, clock).r / (2 * orb_to_loop.r); // normalize it from 0 to 1
       visibility = visibility * visibility;
 
       draw.line(this.ctx, this_loc, target_loc, {
@@ -182,8 +182,8 @@ loopery.Orb.Roles.arm = {
   reset: function(orb) {
     // Dynamic things
     orb.track_angle = orb.initial_track_angle;
-    orb.arm_angle = orb.initial_arm_angle;
-    orb.arm_spin_rate = orb.initial_arm_spin_rate;
+    orb.clock_angle = orb.initial_clock_angle;
+    orb.clock_spin_rate = orb.initial_clock_spin_rate;
   }
 }
 

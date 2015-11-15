@@ -21,7 +21,7 @@
       "start_pos": 0,
       "roles": {
         "player": { "end": 2 },
-        "arm": {
+        "clock": {
          "color": "white",
          "tie_to_center": false,
          "length_scale": 3,
@@ -36,9 +36,8 @@
       "start_dir":-1,
       "start_pos": 0.1667,
       "roles": {
-        "arm": {
-         "color": "white",
-         "tie_to_center": true
+        "clock": {
+         "color": "white"
         }
       }
     }

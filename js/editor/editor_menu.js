@@ -284,13 +284,13 @@ var param_box_property_style = {
         on: function() { $(this).text('Player role: ON'); }
       })
 
-    makeEditorButton("new-orb-role-arm")
+    makeEditorButton("new-orb-role-clock")
       .addClass('new-orb-role')
-      .data('new-orb-role', 'arm')
+      .data('new-orb-role', 'clock')
       .appendTo(orb_params)
       .togglebutton({
-        off: function() { $(this).text('Arm role: OFF'); },
-        on: function() { $(this).text('Arm role: ON'); }
+        off: function() { $(this).text('Clock role: OFF'); },
+        on: function() { $(this).text('Clock role: ON'); }
       })
 
     makeEditorButton("new-orb-role-enemy")
