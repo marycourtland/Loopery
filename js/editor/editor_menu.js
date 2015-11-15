@@ -16,7 +16,7 @@ function makeEditorButton(id, label, callback) {
     .attr('id', id)
     .css({
       'display': 'inline-block',
-      'margin-top': 10,
+      'margin-top': 5,
       'background-color': '#222222',
       'padding': 5,
       'width': 120,
@@ -34,8 +34,11 @@ function makeEditorButton(id, label, callback) {
 }
 
 $.fn.highlight = function() {
-  $('.editor-button').css('border', '0px');
-  this.css('border', '1px solid white');
+  $('.editor-button').css('background-color', '#222');
+  this.css('background-color', '#575');
+
+  // $('.editor-button').css('border', '0px');
+  // this.css('border', '1px solid white');
 }
 
 function makeNumberInput(id, label, default_value) {
@@ -196,6 +199,20 @@ $(".grid-number-input").find('input').on('change', function() {
 // =======================================================================
 addMenuSpacer();
 
+loopery.editor.select_tool.button = makeEditorButton(
+  "editor-select",
+  "Select/Edit",
+  function() { loopery.editor.setTool(loopery.editor.select_tool); }
+).appendTo(loopery.editor.menu);
+
+loopery.editor.delete_tool.button = makeEditorButton(
+  "editor-delete",
+  "Delete",
+  function() { loopery.editor.setTool(loopery.editor.delete_tool); }
+).appendTo(loopery.editor.menu);
+
+addMenuSpacer();
+
 loopery.editor.circle_tool.button = makeEditorButton(
   "editor-circular",
   "Add Loop",
@@ -209,21 +226,9 @@ loopery.editor.linear_tool.button = makeEditorButton(
   function() { loopery.editor.setTool(loopery.editor.linear_tool); }
 ).appendTo(loopery.editor.menu);
 
-loopery.editor.select_tool.button = makeEditorButton(
-  "editor-select",
-  "Select/Edit",
-  function() { loopery.editor.setTool(loopery.editor.select_tool); }
-).appendTo(loopery.editor.menu);
-
-loopery.editor.delete_tool.button = makeEditorButton(
-  "editor-delete",
-  "Delete",
-  function() { loopery.editor.setTool(loopery.editor.delete_tool); }
-).appendTo(loopery.editor.menu);
-
 loopery.editor.orb_tool.button = makeEditorButton(
   "editor-orb",
-  "New Orb",
+  "Add Orb",
   function() { loopery.editor.setTool(loopery.editor.orb_tool); }
 ).appendTo(loopery.editor.menu);
 
@@ -256,7 +261,7 @@ var param_box_property_style = {
     .appendTo(loopery.editor.menu);
 
     $("<input type='color'>").attr('id', 'new-orb-color')
-      .val("#0000ff")
+      .val("#00ff00")
       .css({display: 'block', background: 'transparent', 'margin-top':5})
       .appendTo(orb_params);
 

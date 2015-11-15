@@ -11,13 +11,13 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     this.start_pos = data.start_pos;
     this.roles = data.roles;
 
-    // dynamic things
-    this.reset();
-
     // apply roles
     for (var role in this.roles) {
       loopery.Orb.Roles[role].init(this);
     }
+
+    // dynamic things
+    this.reset();
   }
 
   this.reset = function() {
@@ -25,8 +25,13 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     this.track = this.lookup({id: this.start});
     this.dir = this.start_dir;
     this.pos = this.start_pos;
+    this.killed = false;
 
-    // Not sure if roles will need to be re-initialized. Probably.
+    for (var role in this.roles) {
+      if (typeof loopery.Orb.Roles[role].reset === 'function') {
+        loopery.Orb.Roles[role].reset(this);
+      }
+    }
   }
 
   this.getData = function() {
@@ -59,16 +64,15 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
   }
 
 
-  this.destroy = function() {
-    this.destroyed = true;
+  this.kill = function() {
+    this.killed = true;
     $(this).trigger('tick');
     $(this).trigger('draw');
-    $(this).unbind('tick');
-    $(this).unbind('draw');
   }
 
 
   $(this).on('draw', function() {
+    if (this.killed) { return; }
     draw.circle(this.ctx, this.track.getPosCoords(this.pos), loopery.display.orb_radius, {
       fill: this.color,
       stroke: this.color
@@ -76,6 +80,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
   });
 
   $(this).on('tick', function() {
+    if (this.killed) { return; }
     // if (game.disable_gameplay) return;
     // if (this.disabled) return;
 
@@ -100,6 +105,7 @@ loopery.Orb.Roles.player = {
   init: function(orb) {
     // detect levelcomplete
     $(orb).on('tick', function() {
+      if (this.killed) { return; }
       if (this.track.id === this.roles.player.end) { $(this).trigger('levelcomplete'); }
     })
 
@@ -117,11 +123,12 @@ loopery.Orb.Roles.player = {
 
 loopery.Orb.Roles.arm = {
   init: function(orb) {
-    orb.track_angle = 0;  // the angle that the orb is moving (from the track)
-    orb.arm_angle = 0;        // the angle of the arm relative to the track angle
-    orb.arm_spin_rate = 0.05; // rad/tick
+    orb.initial_track_angle = 0;  // the angle that the orb is moving (from the track)
+    orb.initial_arm_angle = 0;        // the angle of the arm relative to the track angle
+    orb.initial_arm_spin_rate = 0.05; // rad/tick
 
     $(orb).on('tick', function() {
+      if (this.killed) { return; }
       // Calculate angles
       var loc1 = this.getLocFromPos(this.oldpos);
       var loc2 = this.getLocFromPos(this.pos);
@@ -170,7 +177,13 @@ loopery.Orb.Roles.arm = {
         lineWidth:10
       })
     };
+  },
 
+  reset: function(orb) {
+    // Dynamic things
+    orb.track_angle = orb.initial_track_angle;
+    orb.arm_angle = orb.initial_arm_angle;
+    orb.arm_spin_rate = orb.initial_arm_spin_rate;
   }
 }
 
@@ -178,8 +191,7 @@ loopery.Orb.Roles.arm = {
 loopery.Orb.Roles.enemy = {
   init: function(orb) {
     $(orb).on('collision', function(evt, data) {
-      console.debug("Enemy orb collided with:", data)
-      data.orb.destroy();
+      data.orb.kill();
     })
   }
 }
