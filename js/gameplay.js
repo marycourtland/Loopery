@@ -288,11 +288,18 @@ loopery.gameplay = {
         if (!obj.contains(pos) && evt !== 'drag') { return; }
         obj.boundEvents[evt].forEach(function(func) { func.call(obj, pos, vel); })
       }
+      return this;
     }
 
     obj.on = function(evt, func) {
       if (!(evt in this.boundEvents)) { this.boundEvents[evt] = []; }
       this.boundEvents[evt].push(func);
+      return this;
+    }
+
+    obj.off = function(evt) {
+      delete this.boundEvents[evt];
+      return this;
     }
 
     if (obj.bindEvents && typeof obj.bindEvents === 'function') {

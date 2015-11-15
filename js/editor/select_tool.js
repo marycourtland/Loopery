@@ -101,17 +101,18 @@ loopery.editor.select_tool.end = function() {
 
 loopery.editor.select_tool.configLoopEvents = function(loop) {
   // meh
-  loop.on('mousedown', function() {
+  loop.off('mousedown').on('mousedown', function() {
     loopery.editor.select_tool.select(this);
   })
-  loop.on('drag', function(pos, vel) {
+  loop.off('drag').on('drag', function(pos, vel) {
     loopery.editor.select_tool.select(this);
     loop.loc.add(vel);
   })
 }
 
 loopery.editor.select_tool.removeLoopEvents = function(loop) {
-  // todo
+  loop.off('mousedown');
+  loop.off('drag');
 }
 
 // Tool states
