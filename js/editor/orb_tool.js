@@ -69,7 +69,6 @@ loopery.editor.orb_tool.states = {
   
   choose_position: {
     onenter: function() {
-      console.log("Loop:", loopery.editor.orb_tool.params.loop);
     },
     
     draw: function() {

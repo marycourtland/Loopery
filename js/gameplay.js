@@ -101,11 +101,12 @@ loopery.gameplay = {
 
   getLevelData: function() {
     var data = {
-      info: { name: 'TODO: save evel name...' }
+      info: { name: 'TODO: save level name...' }
     };
     loopery.gameplay.forAllGroups(function(group) {
       data[group] = [];
       loopery.gameplay.forAllObjectsInGroup(group, function(obj) {
+        if (typeof obj.getData !== 'function') { return; } // this handles the editor's resizer hack
         data[group].push(obj.getData());
       })
     })

@@ -80,7 +80,6 @@ loopery.editor.getNextId = function() {
 }
 
 loopery.editor.setTool = function(tool) {
-  console.log('Setting tool to:', tool)
   if (this.current_tool) this.current_tool.end();
   this.current_tool = tool;
   this.current_tool.start();

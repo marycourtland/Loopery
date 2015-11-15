@@ -106,7 +106,6 @@ var mouse = {
 
     loopery.gameplay.forAllObjects(function(obj) {
       if (obj.contains && obj.contains(_this.pos)) {
-        console.log("Clicked obj:", obj);
         _this.clicked_object = obj;
       }
     }, {ordering: 'clickPriority'});
