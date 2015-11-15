@@ -106,6 +106,11 @@ loopery.editor.clear_all_button = makeEditorButton(
 loopery.editor.toggle_grid_button = makeEditorButton("editor-grid", "Grid: off");
 
 loopery.editor.toggle_grid_button.togglebutton({
+  triangular: function() {
+    loopery.editor.toggle_grid_button.setLabel("Grid: triangular");
+    loopery.editor.enableGrid(loopery.editor.grids.triangular);
+  },
+
   off: function() {
     loopery.editor.toggle_grid_button.setLabel("Grid: off");
     loopery.editor.disableGrid();
@@ -119,15 +124,11 @@ loopery.editor.toggle_grid_button.togglebutton({
   radial: function() {
     loopery.editor.toggle_grid_button.setLabel("Grid: radial");
     loopery.editor.enableGrid(loopery.editor.grids.radial);
-  },
-
-  triangular: function() {
-    loopery.editor.toggle_grid_button.setLabel("Grid: triangular");
-    loopery.editor.enableGrid(loopery.editor.grids.triangular);
   }
 })
 
 
+// =======================================================================
 addMenuSpacer();
 
 loopery.editor.circle_tool.button = makeEditorButton(
@@ -135,6 +136,37 @@ loopery.editor.circle_tool.button = makeEditorButton(
   "Add Loop",
   function() { loopery.editor.setTool(loopery.editor.circle_tool); }
 );
+
+
+loopery.editor.loop_radius_toggle = makeEditorButton("editor-grid", "Loop radius: preset");
+
+loopery.editor.loop_radius_toggle.togglebutton({
+  preset: function() {
+    loopery.editor.loop_radius_toggle.setLabel("Loop radius: preset");
+    loopery.editor.circle_tool.preset_radius = true;
+    $("#preset-loop-radius-input").show();
+  },
+
+  dynamic: function() {
+    loopery.editor.loop_radius_toggle.setLabel("Loop radius: dynamic");
+    loopery.editor.circle_tool.preset_radius = false;
+    $("#preset-loop-radius-input").hide();
+  }
+})
+
+loopery.editor.preset_loop_radius_input = $("<div id='preset-loop-radius-input'></div>").text("Radius:").css({
+  "font-size":12,
+  "margin-top":10,
+});
+
+$("<input>").css({
+  'width': 120
+}).val('40').appendTo(loopery.editor.preset_loop_radius_input);
+loopery.editor.preset_loop_radius_input.appendTo(loopery.editor.menu);
+
+
+// =======================================================================
+addMenuSpacer();
 
 loopery.editor.linear_tool.button = makeEditorButton(
   "editor-linear",
@@ -165,7 +197,7 @@ loopery.editor.orb_tool.button = makeEditorButton(
 var param_box_style = {
   'position': 'absolute',
   'left': 5,
-  'top': 370,
+  'top': 500,
   'width': 150,
   'font-size': 14,
   'color': 'black',

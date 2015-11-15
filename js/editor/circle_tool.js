@@ -8,6 +8,12 @@ loopery.editor.circle_tool.params = {
   radius: null
 }
 
+loopery.editor.circle_tool.preset_radius = true; // falsey => dynamic radius
+
+loopery.editor.circle_tool.getPresetRadius = function() {
+  return 40; // TODO
+}
+
 // Creates a circular track based on the input params
 loopery.editor.circle_tool.complete = function() {
   if (this.params.center_pos === null || this.params.radius === null) return;
@@ -48,6 +54,7 @@ loopery.editor.circle_tool.end = function() {
 loopery.editor.circle_tool.states = {
   choose_center: {
     onenter: function() {
+      loopery.editor.circle_tool.params.radius = loopery.editor.circle_tool.getPresetRadius();
     },
 
     tick: function() {
@@ -60,12 +67,27 @@ loopery.editor.circle_tool.states = {
     
     draw: function() {
       var pos = loopery.editor.circle_tool.params.center_pos;
-      draw.circle(loopery.ctx, pos, loopery.display.track_width/2, loopery.display.track_color);
+
+      if (loopery.editor.circle_tool.preset_radius) {
+        loopery.editor.circle_tool.drawSampleLoop();
+      }
+      else {
+        draw.circle(loopery.ctx, pos, loopery.display.track_width/2, loopery.display.track_color);
+      }
     },
     
     onleave: function() {
       var pos = loopery.mouse.pos.copy();
       loopery.editor.circle_tool.params.center_pos = pos;
+
+      if (loopery.editor.circle_tool.preset_radius) {
+        loopery.editor.circle_tool.params.radius = loopery.editor.circle_tool.getPresetRadius();
+        loopery.editor.circle_tool.complete();
+        this.next_state = 'choose_center';
+      }
+      else {
+        this.next_state = 'choose_edge';
+      }
     },
     next_state: "choose_edge"
   },
@@ -83,14 +105,7 @@ loopery.editor.circle_tool.states = {
     },
     
     draw: function() {
-      draw.circle(loopery.ctx,
-        loopery.editor.circle_tool.params.center_pos,
-        loopery.editor.circle_tool.params.radius,
-        {
-          fill: 'transparent',
-          stroke: loopery.display.track_color,
-          lineWidth: loopery.display.track_width
-        });
+      loopery.editor.circle_tool.drawSampleLoop();
     },
     
     onleave: function() {
@@ -101,4 +116,17 @@ loopery.editor.circle_tool.states = {
     
     next_state: "choose_center"
   }
+}
+
+
+loopery.editor.circle_tool.drawSampleLoop = function() {
+  draw.circle(loopery.ctx,
+    loopery.editor.circle_tool.params.center_pos,
+    loopery.editor.circle_tool.params.radius,
+    {
+      fill: 'transparent',
+      stroke: loopery.display.track_color,
+      lineWidth: loopery.display.track_width
+    }
+  );
 }

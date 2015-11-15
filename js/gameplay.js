@@ -45,7 +45,6 @@ loopery.gameplay = {
   },
 
   removeObject: function(obj) {
-    console.debug("Destroying:", obj);
     if (!(obj.id in this.levelObjects[obj.group])) {
       console.warn('Tried to remove an object not in this level:', obj.group, obj.id);
       return;

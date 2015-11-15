@@ -9,7 +9,8 @@ loopery.editor.select_tool.params = {
 loopery.editor.select_tool.select = function(obj) {
   this.params.selected_object = obj;
 
-  if (obj.group === 'loops') {
+  if (obj.group === 'loops' && loopery.editor.current_tool === loopery.editor.select_tool) {
+    console.log('Showing selected')
     $("#editor-loop-params").show();
     loopery.editor.menu.updateLoopInfo({loop: obj});
   }
