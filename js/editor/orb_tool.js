@@ -31,7 +31,7 @@ loopery.editor.orb_tool.complete = function(loop, pos) {
 
   // Determine which roles the orb has. TODO: get role-specific data
   var roles = $(".new-orb-role")
-    .filter(function() { return $(this).data('on') })
+    .filter(function() { return $(this).data('togglebutton-state') === 'on'; })
     .map(function() { return $(this).data('new-orb-role'); });
 
   roles.each(function(role) {

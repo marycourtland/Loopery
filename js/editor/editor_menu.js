@@ -24,25 +24,18 @@ function makeEditorButton(id, label, callback) {
       'font-size': 12,
       'text-align': 'center'
     })
-    .text(label)
-    .appendTo(loopery.editor.menu);
+    .text(label);
 
   if (typeof callback === 'function')  {
     button.on('click', callback)
   }
 
-  button.tick = function() {};
-  button.draw = function() {};
-
-  button.setLabel = function(label) {
-    this.text(label);
-  }
-
-  button.highlight = function() {
-    $('.editor-button').css('border', '0px');
-    this.css('border', '1px solid white');
-  }
   return button;
+}
+
+$.fn.highlight = function() {
+  $('.editor-button').css('border', '0px');
+  this.css('border', '1px solid white');
 }
 
 function makeNumberInput(id, label, default_value) {
@@ -64,7 +57,8 @@ function makeNumberInput(id, label, default_value) {
     "font-size":12,
     "width":"20%",
     "float":"right",
-    "text-align":"right"
+    "text-align":"right",
+    "padding-right":3
   }).val(default_value).appendTo(container);
 
   return container;
@@ -78,6 +72,7 @@ function addMenuSpacer(height) {
   .appendTo(loopery.editor.menu);
 }
 
+
 // utility: binary toggle buttons
 $.fn.togglebutton = function(callbacks) {
   // Assume initial state is the first one
@@ -89,7 +84,7 @@ $.fn.togglebutton = function(callbacks) {
     $togglebutton = $(this);
     current_state += 1;
     current_state %= states.length;
-    $togglebutton.data('togglebutton-state');
+    $togglebutton.data('togglebutton-state', states[current_state]);
     callbacks[states[current_state]].call(this);
   })
 
@@ -135,7 +130,7 @@ loopery.editor.save_button = makeEditorButton(
   function() {
     loopery.editor.saveLevel();
   }
-);
+).appendTo(loopery.editor.menu);
 
 loopery.editor.clear_all_button = makeEditorButton(
   "editor-clear",
@@ -143,19 +138,25 @@ loopery.editor.clear_all_button = makeEditorButton(
   function() {
     loopery.editor.clearAll();
   }
-);
+).appendTo(loopery.editor.menu);
 
 loopery.editor.toggle_grid_button = makeEditorButton("editor-grid", "Grid: off");
+var wtf = loopery.editor.toggle_grid_button.appendTo(loopery.editor.menu);
+
+console.log('STUFF:');
+console.log(loopery.editor.toggle_grid_button);
+console.log(wtf);
+console.log('--')
 
 loopery.editor.toggle_grid_button.togglebutton({
   off: function() {
-    loopery.editor.toggle_grid_button.setLabel("Grid: off");
+    loopery.editor.toggle_grid_button.text("Grid: off");
     loopery.editor.disableGrid();
     $(".grid-number-input").hide();
   },
 
   triangular: function() {
-    loopery.editor.toggle_grid_button.setLabel("Grid: triangular");
+    loopery.editor.toggle_grid_button.text("Grid: triangular");
     loopery.editor.enableGrid(loopery.editor.grids.triangular);
     $(".grid-number-input").hide();
     $('#grid-size-input').show();
@@ -163,14 +164,14 @@ loopery.editor.toggle_grid_button.togglebutton({
   },
 
   rectangular: function() {
-    loopery.editor.toggle_grid_button.setLabel("Grid: rectangular");
+    loopery.editor.toggle_grid_button.text("Grid: rectangular");
     loopery.editor.enableGrid(loopery.editor.grids.rectangular);
     $(".grid-number-input").hide();
     $('#grid-size-input').show();
   },
 
   radial: function() {
-    loopery.editor.toggle_grid_button.setLabel("Grid: radial");
+    loopery.editor.toggle_grid_button.text("Grid: radial");
     loopery.editor.enableGrid(loopery.editor.grids.radial);
     $(".grid-number-input").hide();
     $('#grid-size-input').show();
@@ -199,62 +200,42 @@ loopery.editor.circle_tool.button = makeEditorButton(
   "editor-circular",
   "Add Loop",
   function() { loopery.editor.setTool(loopery.editor.circle_tool); }
-);
+).appendTo(loopery.editor.menu);
 
-
-loopery.editor.loop_radius_toggle = makeEditorButton("editor-grid", "Loop radius: preset");
-
-loopery.editor.loop_radius_toggle.togglebutton({
-  preset: function() {
-    loopery.editor.loop_radius_toggle.setLabel("Loop radius: preset");
-    loopery.editor.circle_tool.preset_radius = true;
-    $("#preset-loop-radius-input").show();
-  },
-
-  dynamic: function() {
-    loopery.editor.loop_radius_toggle.setLabel("Loop radius: dynamic");
-    loopery.editor.circle_tool.preset_radius = false;
-    $("#preset-loop-radius-input").hide();
-  }
-})
-
-loopery.editor.preset_loop_radius_input = makeNumberInput('preset-loop-radius-input', 'Radius:', 60);
-loopery.editor.preset_loop_radius_input.appendTo(loopery.editor.menu);
-
-
-// =======================================================================
-addMenuSpacer();
 
 loopery.editor.linear_tool.button = makeEditorButton(
   "editor-linear",
   "Add Connector",
   function() { loopery.editor.setTool(loopery.editor.linear_tool); }
-);
+).appendTo(loopery.editor.menu);
 
 loopery.editor.select_tool.button = makeEditorButton(
   "editor-select",
   "Select/Edit",
   function() { loopery.editor.setTool(loopery.editor.select_tool); }
-);
+).appendTo(loopery.editor.menu);
 
 loopery.editor.delete_tool.button = makeEditorButton(
   "editor-delete",
   "Delete",
   function() { loopery.editor.setTool(loopery.editor.delete_tool); }
-);
+).appendTo(loopery.editor.menu);
 
 loopery.editor.orb_tool.button = makeEditorButton(
   "editor-orb",
   "New Orb",
   function() { loopery.editor.setTool(loopery.editor.orb_tool); }
-);
+).appendTo(loopery.editor.menu);
 
+
+// =======================================================================
+addMenuSpacer();
 
 // PARAM BOXES
 var param_box_style = {
-  'position': 'absolute',
-  'left': 5,
-  'top': 500,
+  //'position': 'absolute',
+  //'left': 5,
+  //'top': 500,
   'width': 150,
   'font-size': 12,
   'color': 'black',
@@ -276,50 +257,46 @@ var param_box_property_style = {
 
     $("<input type='color'>").attr('id', 'new-orb-color')
       .val("#0000ff")
-      .css({display: 'block'})
+      .css({display: 'block', background: 'transparent', 'margin-top':5})
       .appendTo(orb_params);
 
-    $("<input type='button'>").attr('id', 'new-orb-dir')
-      .val('Direction: CW').data('dir', 1)
+    makeEditorButton("new-orb-dir")
+      .data('dir', 1)
       .appendTo(orb_params)
       .togglebutton({
-        cw: function() { $(this).data('dir', 1).val("Direction: CW"); },
-        ccw: function() { $(this).data('dir', -1).val("Direction: CCW"); }
+        cw: function() { $(this).data('dir', 1).text("Direction: CW"); },
+        ccw: function() { $(this).data('dir', -1).text("Direction: CCW"); }
       });
 
     // Give the new orb various roles
-    $("<input type='button'>")
+
+    makeEditorButton("new-orb-role-player")
       .addClass('new-orb-role')
       .data('new-orb-role', 'player')
       .appendTo(orb_params)
       .togglebutton({
-        off: function() { $(this).val('Player role: OFF'); },
-        on: function() { $(this).val('Player role: ON'); }
+        off: function() { $(this).text('Player role: OFF'); },
+        on: function() { $(this).text('Player role: ON'); }
       })
 
-    $("<input type='button'>")
+    makeEditorButton("new-orb-role-arm")
       .addClass('new-orb-role')
       .data('new-orb-role', 'arm')
       .appendTo(orb_params)
       .togglebutton({
-        off: function() { $(this).val('Arm role: OFF'); },
-        on: function() { $(this).val('Arm role: ON'); }
+        off: function() { $(this).text('Arm role: OFF'); },
+        on: function() { $(this).text('Arm role: ON'); }
       })
 
-    $("<input type='button'>")
+    makeEditorButton("new-orb-role-enemy")
       .addClass('new-orb-role')
       .data('new-orb-role', 'enemy')
       .appendTo(orb_params)
       .togglebutton({
-        off: function() { $(this).val('Enemy role: OFF'); },
-        on: function() { $(this).val('Enemy role: ON'); }
+        off: function() { $(this).text('Enemy role: OFF'); },
+        on: function() { $(this).text('Enemy role: ON'); }
       })
 
-    function getOrbRoles() {
-      return $(".new-orb-role")
-        .filter(function() { return $(this).data('on') })
-        .map(function() { return $(this).data('new-orb-role'); });
-    }
   })();
 
 
@@ -349,6 +326,27 @@ function showOrbRoleParams() {
     .text("Radius: ")
     .append($("<span>").attr('id', 'new-loop-radius').css(param_box_property_style))
     .appendTo(loop_params);
+
+
+
+  loopery.editor.loop_radius_toggle = makeEditorButton("editor-grid", "Loop radius: preset");
+
+  loopery.editor.loop_radius_toggle.togglebutton({
+    preset: function() {
+      loopery.editor.loop_radius_toggle.text("Loop radius: preset");
+      loopery.editor.circle_tool.preset_radius = true;
+      $("#preset-loop-radius-input").show();
+    },
+
+    dynamic: function() {
+      loopery.editor.loop_radius_toggle.text("Loop radius: dynamic");
+      loopery.editor.circle_tool.preset_radius = false;
+      $("#preset-loop-radius-input").hide();
+    }
+  }).appendTo(loop_params);
+
+  loopery.editor.preset_loop_radius_input = makeNumberInput('preset-loop-radius-input', 'Radius:', 60);
+  loopery.editor.preset_loop_radius_input.appendTo(loop_params);
 })();
 
 
