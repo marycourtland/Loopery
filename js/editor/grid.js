@@ -27,7 +27,7 @@ loopery.editor.createGridCanvas = function() {
       'pointer-events': 'none'
     })
     .insertAfter("#game_canvas");
-  this.grid.draw();
+  this.grid.redraw();
 }
 
 loopery.editor.destroyGridCanvas = function() {
@@ -35,10 +35,15 @@ loopery.editor.destroyGridCanvas = function() {
   this.grid_canvas = null;
 }
 
+loopery.editor.clearGrid = function() {
+  draw.clear(this.grid_canvas[0].getContext('2d'));
+}
+
 loopery.editor.drawGridDot = function(pos) {
   draw.circle(this.grid_canvas[0].getContext('2d'), pos, 1, {fill: 'white'});
 }
 
+// =====================================================================================
 
 // Different types of grids...
 
@@ -47,39 +52,68 @@ loopery.editor.grids = {};
 loopery.editor.grids.rectangular = {
   size: xy(20, 20),
 
-  draw: function() {
+  getSizeFromInput: function() {
+    var d = parseInt($("#grid-size-input input").val());
+
+    // No need to re-create vector objects every tick
+    if (d !== this.size.x) {
+      this.size._set_xy(d, d);
+    }
+
+    return this.size;
+  },
+
+  redraw: function() {
+    loopery.editor.clearGrid();
+
+    var size = this.getSizeFromInput();
     var pos = xy(0, 0);
-    loopery.ctx.globalAlpha = 0.7;
+
     while (pos.y < loopery.size.y) {
       while (pos.x < loopery.size.x) {
         loopery.editor.drawGridDot(pos);
-        pos.xshift(this.size.x);
+        pos.xshift(size.x);
       }
       pos.x = 0;
-      pos.yshift(this.size.y);
+      pos.yshift(size.y);
     }
-    loopery.ctx.globalAlpha = 1;
   },
 
   transformPos: function(pos) {
-    return snapToGrid(pos, loopery.editor.grids.rectangular.size);
+    return snapToGrid(pos, loopery.editor.grids.rectangular.getSizeFromInput());
   }
 }
+
+// =====================================================================================
 
 
 loopery.editor.grids.radial = {
   origin: loopery.size.copy().scale(0.5),
   size: rth(20, Math.PI/20), // optimally this should be an integer fraction of 2pi
 
-  draw: function() {
+  getSizeFromInput: function() {
+    var d = parseInt($("#grid-size-input input").val());
+
+    // No need to re-create vector objects every tick
+    if (d !== this.size.x) {
+      this.size._set_rth(d, Math.PI/20);
+    }
+
+    return this.size;
+  },
+
+  redraw: function() {
+    loopery.editor.clearGrid();
+    var size = this.getSizeFromInput();
+
     // Draw dot at origin
     loopery.editor.drawGridDot(this.origin);
 
     // Now go out in circular layers...
     var max_radius = Math.min(loopery.size.x, loopery.size.y);
 
-    for (var r = this.size.r; r < max_radius; r += this.size.r) {
-      for (var th = 0; th < 2 * Math.PI; th += this.size.th) {
+    for (var r = size.r; r < max_radius; r += size.r) {
+      for (var th = 0; th < 2 * Math.PI; th += size.th) {
         var dot_pos = rth(r, th).add(this.origin);
         loopery.editor.drawGridDot(dot_pos);
       }
@@ -91,12 +125,24 @@ loopery.editor.grids.radial = {
   }
 }
 
+// =====================================================================================
 
 loopery.editor.grids.triangular = {
   origin: loopery.size.copy().scale(0.5),
   size: rth(20, Math.PI/3), // optimally this should be an integer fraction of 2pi
 
-  draw: function() {
+  getSizeFromInput: function() {
+    var d = parseInt($("#grid-size-input input").val());
+    if (d !== this.size.x) {
+      this.size._set_rth(d, Math.PI/3);
+    }
+    return this.size;
+  },
+
+  redraw: function() {
+    loopery.editor.clearGrid();
+
+    var size = this.getSizeFromInput();
     var origin = xy(0, 0)
     var pos = origin.copy();
 
@@ -105,19 +151,19 @@ loopery.editor.grids.triangular = {
     while (pos.y < loopery.size.y) {
       while (pos.x < loopery.size.x) {
         loopery.editor.drawGridDot(pos);
-        pos.xshift(2 * this.size.x);
+        pos.xshift(2 * size.x);
       }
 
-      pos.x = -this.size.x;
-      pos.yshift(this.size.y);
+      pos.x = -size.x;
+      pos.yshift(size.y);
 
       while (pos.x < loopery.size.x) {
         loopery.editor.drawGridDot(pos);
-        pos.xshift(2 * this.size.x);
+        pos.xshift(2 * size.x);
       }
 
       pos.x = 0;
-      pos.yshift(this.size.y);
+      pos.yshift(size.y);
     }
 
     loopery.ctx.globalAlpha = 1;

@@ -45,6 +45,24 @@ function makeEditorButton(id, label, callback) {
   return button;
 }
 
+function makeNumberInput(id, label, default_value) {
+  var container = $("<div></div>")
+    .attr('id', id)
+    .text(label)
+    .css({
+      "font-size":12,
+      "margin-top":10
+    }
+  );
+
+  $("<input>").css({
+    'width': 120
+  }).val(default_value).appendTo(container);
+
+  return container;
+}
+
+
 function addMenuSpacer(height) {
   height = height || '1rem';
   var spacer = $("<div>")
@@ -106,25 +124,37 @@ loopery.editor.clear_all_button = makeEditorButton(
 loopery.editor.toggle_grid_button = makeEditorButton("editor-grid", "Grid: off");
 
 loopery.editor.toggle_grid_button.togglebutton({
-  triangular: function() {
-    loopery.editor.toggle_grid_button.setLabel("Grid: triangular");
-    loopery.editor.enableGrid(loopery.editor.grids.triangular);
-  },
-
   off: function() {
     loopery.editor.toggle_grid_button.setLabel("Grid: off");
     loopery.editor.disableGrid();
+    $('#grid-size-input').hide();
+  },
+
+  triangular: function() {
+    loopery.editor.toggle_grid_button.setLabel("Grid: triangular");
+    loopery.editor.enableGrid(loopery.editor.grids.triangular);
+    $('#grid-size-input').show();
   },
 
   rectangular: function() {
     loopery.editor.toggle_grid_button.setLabel("Grid: rectangular");
     loopery.editor.enableGrid(loopery.editor.grids.rectangular);
+    $('#grid-size-input').show();
   },
 
   radial: function() {
     loopery.editor.toggle_grid_button.setLabel("Grid: radial");
     loopery.editor.enableGrid(loopery.editor.grids.radial);
-  }
+    $('#grid-size-input').show();
+  },
+})
+
+loopery.editor.grid_size = makeNumberInput('grid-size-input', 'Grid size:', 40);
+loopery.editor.grid_size.appendTo(loopery.editor.menu);
+
+
+loopery.editor.grid_size.find('input').on('change', function() {
+  loopery.editor.grid.redraw();
 })
 
 
@@ -154,15 +184,9 @@ loopery.editor.loop_radius_toggle.togglebutton({
   }
 })
 
-loopery.editor.preset_loop_radius_input = $("<div id='preset-loop-radius-input'></div>").text("Radius:").css({
-  "font-size":12,
-  "margin-top":10,
-});
-
-$("<input>").css({
-  'width': 120
-}).val('40').appendTo(loopery.editor.preset_loop_radius_input);
+loopery.editor.preset_loop_radius_input = makeNumberInput('preset-label-loop-radius-input', 'Radius:', 40);
 loopery.editor.preset_loop_radius_input.appendTo(loopery.editor.menu);
+
 
 
 // =======================================================================
@@ -199,7 +223,7 @@ var param_box_style = {
   'left': 5,
   'top': 500,
   'width': 150,
-  'font-size': 14,
+  'font-size': 12,
   'color': 'black',
 };
 
@@ -281,18 +305,18 @@ function showOrbRoleParams() {
     .hide()
     .appendTo(loopery.editor.menu);
 
-    var propert
+    // var propert
 
-    $("<div>")
-      .text("Position: ")
-      .append($("<span>").attr('id', 'new-loop-position').css(param_box_property_style))
-      .appendTo(loop_params);
+  $("<div>")
+    .text("Position: ")
+    .append($("<span>").attr('id', 'new-loop-position').css(param_box_property_style))
+    .appendTo(loop_params);
 
-    $("<div>")
-      .text("Radius: ")
-      .append($("<span>").attr('id', 'new-loop-radius').css(param_box_property_style))
-      .appendTo(loop_params);
-  })();
+  $("<div>")
+    .text("Radius: ")
+    .append($("<span>").attr('id', 'new-loop-radius').css(param_box_property_style))
+    .appendTo(loop_params);
+})();
 
 
 loopery.editor.menu.updateLoopInfo = function(params) {

@@ -11,7 +11,7 @@ loopery.editor.circle_tool.params = {
 loopery.editor.circle_tool.preset_radius = true; // falsey => dynamic radius
 
 loopery.editor.circle_tool.getPresetRadius = function() {
-  return 40; // TODO
+  return parseInt($("#preset-label-loop-radius-input input").val());
 }
 
 // Creates a circular track based on the input params
@@ -53,12 +53,11 @@ loopery.editor.circle_tool.end = function() {
 // Tool states
 loopery.editor.circle_tool.states = {
   choose_center: {
-    onenter: function() {
-      loopery.editor.circle_tool.params.radius = loopery.editor.circle_tool.getPresetRadius();
-    },
+    onenter: function() {},
 
     tick: function() {
       loopery.editor.circle_tool.params.center_pos = loopery.mouse.pos.copy();
+      loopery.editor.circle_tool.params.radius = loopery.editor.circle_tool.getPresetRadius();
       loopery.editor.menu.updateLoopInfo({
         pos: loopery.editor.circle_tool.params.center_pos,
         radius: loopery.editor.circle_tool.params.radius,
