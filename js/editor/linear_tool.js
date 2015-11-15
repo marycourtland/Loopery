@@ -36,6 +36,17 @@ loopery.editor.linear_tool.complete = function(sample_track) {
     loopery.editor.clicked_tracks.push(this);
   })
 
+  // Make sure joint initial state will persist
+  var setJointInitialState = function() {
+    if (loopery.gameplay.paused) {
+      this.initial_state = this.state;
+    }
+  }
+
+  var joints = connector.joints;
+  joints[0].on("click", setJointInitialState);
+  joints[1].on("click", setJointInitialState);
+
   // Reset the params
   this.params.circle1 = null;
   this.params.circle2 = null;

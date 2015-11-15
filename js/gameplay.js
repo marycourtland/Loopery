@@ -22,6 +22,14 @@ loopery.gameplay = {
     })
   },
 
+  resetLevel: function() {
+    this.forAllObjects(function(obj) {
+      if (typeof obj.reset === 'function') {
+        obj.reset();
+      }
+    })
+  },
+
   loadAndInitObject: function(obj_group, obj_type, obj_data, parent) {
     var obj = this.loadObject(obj_group, obj_type, obj_data);
     this.initObject(obj_group, obj_data, parent);
@@ -110,7 +118,7 @@ loopery.gameplay = {
         data[group].push(obj.getData());
       })
     })
-    return JSON.stringify(data);
+    return data;
   },
 
   // tick: function() { this.applyToObjectGroups('tick'); },

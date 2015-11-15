@@ -8,18 +8,25 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     this.color = data.color || 'white';
     this.start = data.start;
     this.start_dir = data.start_dir;
+    this.start_pos = data.start_pos;
     this.roles = data.roles;
 
     // dynamic things
-    this.oldpos = null;
-    this.pos = (typeof data.start_pos === 'number') ? data.start_pos : 0.5;
-    this.track = this.lookup({id: data.start});
-    this.dir = this.start_dir;
+    this.reset();
 
     // apply roles
     for (var role in this.roles) {
       loopery.Orb.Roles[role].init(this);
     }
+  }
+
+  this.reset = function() {
+    this.oldpos = null;
+    this.track = this.lookup({id: this.start});
+    this.dir = this.start_dir;
+    this.pos = this.start_pos;
+
+    // Not sure if roles will need to be re-initialized. Probably.
   }
 
   this.getData = function() {

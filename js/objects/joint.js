@@ -9,10 +9,14 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     this.connector = parent;
     this.winding = data.winding;
     this.initial_state = data.state;
-    this.state = this.initial_state;
+    this.reset();
 
     // Position on loop; this will be set by connector
     this.pos = null;
+  }
+
+  this.reset = function() {
+    this.state = this.initial_state;
   }
 
   this.getData = function() {

@@ -47,7 +47,7 @@ loopery.enableEditor = function() {
 }
 
 loopery.editor.saveLevel = function() {
-  var level_output = loopery.gameplay.getLevelData();
+  var level_output = JSON.stringify(loopery.gameplay.getLevelData());
   var download_data = "text/json;charset=utf-8," + encodeURIComponent(level_output);
   $("#level_output").text(level_output);
   $("#level_download")

@@ -96,6 +96,13 @@ $.fn.togglebutton = function(callbacks) {
   return this;
 };
 
+
+
+// =======================================================================
+
+// Start making the menu
+
+// Gameplay pause/resume button
 (function() {
   $("<div>")
     .css({
@@ -107,8 +114,17 @@ $.fn.togglebutton = function(callbacks) {
       'color': 'white',
     })
     .togglebutton({
-      off: function() { loopery.gameplay.pause(); $(this).html("&#9654;"); },
-      on: function() { loopery.gameplay.resume(); $(this).html("&#9612;&#9612;"); }
+      off: function() {
+        // turn off gameplay and go back to normal editing mode
+        loopery.gameplay.resetLevel();
+        loopery.gameplay.pause();
+        $(this).html("&#9654;");
+      },
+      on: function() {
+        // turn on gameplay, leave normal editing mode
+        loopery.gameplay.resume();
+        $(this).html("&#9612;&#9612;");
+      }
     })
     .appendTo(loopery.editor.menu);
 })()
@@ -202,7 +218,7 @@ loopery.editor.loop_radius_toggle.togglebutton({
   }
 })
 
-loopery.editor.preset_loop_radius_input = makeNumberInput('preset-loop-radius-input', 'Radius:', 40);
+loopery.editor.preset_loop_radius_input = makeNumberInput('preset-loop-radius-input', 'Radius:', 60);
 loopery.editor.preset_loop_radius_input.appendTo(loopery.editor.menu);
 
 

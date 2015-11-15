@@ -11,7 +11,6 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     this.radius = data.r;
   }
 
-
   this.getData = function() {
     return {
       id: this.id,
