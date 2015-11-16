@@ -35,8 +35,6 @@ loopery.editor.orb_tool.complete = function(loop, pos) {
     .map(function() { return $(this).data('new-orb-role'); })
     .toArray();
 
-  console.log('ROLES:', roles);
-
   roles.forEach(function(role) {
     orb_data.roles[role] = {}; // THIS IS WHERE ROLE-SPECIFIC DATA WILL GO
   })
@@ -86,6 +84,16 @@ loopery.editor.orb_tool.states = {
         lineWidth: 0,
         stroke: color
       })
+
+      if ($("#new-orb-role-enemy").data('togglebutton-state') === 'on') {
+        // spikes for enemies (pass in a mock orb)
+        loopery.Orb.Roles.enemy.drawSpikes({
+          getLoc: function() { return pos; },
+          color: color,
+          ctx: loopery.ctx
+        });  
+      }
+      
     },
     
     onleave: function() {

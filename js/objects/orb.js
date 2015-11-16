@@ -193,5 +193,33 @@ loopery.Orb.Roles.enemy = {
     $(orb).on('collision', function(evt, data) {
       data.orb.kill();
     })
+
+    $(orb).on('draw', function() {
+      if (this.killed) return;
+      loopery.Orb.Roles.enemy.drawSpikes(this);
+    });
+  },
+
+  drawSpikes: function(orb) {
+    var r = 0.3; // ratio of the spike length to orb radius
+    var w = 0.02; // ratio of the spike width to the complete circle
+    var n = 12; // number of spikes
+
+    for (var i = 0; i < n; i++) {
+      var th = i * 2*Math.PI / n;
+      var p0 = rth(loopery.display.orb_radius, th);
+      var p1 = rotate(p0, w*2*Math.PI);
+      var p2 = rotate(p0, -w*2*Math.PI);
+      var p3 = p0.copy().scale(1 + r);
+      var loc = orb.getLoc();
+      draw.polygon(orb.ctx, [
+        p1.add(loc),
+        p2.add(loc),
+        p3.add(loc)
+      ], {
+        fill: orb.color,
+        stroke: orb.color
+      })
+    }
   }
 }

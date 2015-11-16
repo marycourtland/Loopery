@@ -163,7 +163,7 @@ loopery.editor.toggle_grid_button.togglebutton({
     loopery.editor.enableGrid(loopery.editor.grids.triangular);
     $(".grid-number-input").hide();
     $('#grid-size-input').show();
-    $('#grid-size-angle-input-triangle').show();
+    //$('#grid-size-angle-input-triangle').show();
   },
 
   rectangular: function() {
@@ -238,10 +238,7 @@ addMenuSpacer();
 
 // PARAM BOXES
 var param_box_style = {
-  //'position': 'absolute',
-  //'left': 5,
-  //'top': 500,
-  'width': 150,
+  'width': 130,
   'font-size': 12,
   'color': 'black',
 };
@@ -361,6 +358,7 @@ loopery.editor.menu.updateLoopInfo = function(params) {
     params.pos = params.loop.loc;
     params.radius = params.loop.radius;
   }
-  $("#new-loop-position").text(params.pos.x + ", " + params.pos.y);
+  var pos = vround(params.pos, 1)
+  $("#new-loop-position").text(pos.x + ", " + pos.y);
   $("#new-loop-radius").text(Math.round(params.radius))
 }

@@ -91,6 +91,16 @@ var draw = {
     }
   },
 
+  polygon: function(ctx, pts, params) {
+    params = params || this.lineStyle("#fff");
+    this.doDrawing(ctx, params, function() {
+      ctx.moveTo(pts[0].x, pts[0].y);
+      pts.forEach(function(p) {
+        ctx.lineTo(p.x, p.y);
+      })
+    })
+  },
+
   text: function(ctx, txt, pos, pos_loc, params) {
     // Valid values for pos_loc:
     //  "centered"  the given pos will be in the center of the text
