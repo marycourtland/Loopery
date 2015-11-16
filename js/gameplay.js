@@ -15,6 +15,8 @@ loopery.gameplay = {
 
   levelObjects: {},
 
+  animations: [],
+
   clear: function() {
     var _this = this;
     loopery.objectTypes.forEach(function(obj) {
@@ -145,6 +147,8 @@ loopery.gameplay = {
 
   draw: function() {
     this.triggerForAllObjectGroups('draw', {}, {ordering: 'renderOrder'});
+
+    this.animations.forEach(function(animation) { animation.draw(); })
   },
 
   triggerForAllObjectGroups: function(trigger, data, params) {

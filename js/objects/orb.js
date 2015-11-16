@@ -65,9 +65,43 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
 
   this.kill = function() {
-    this.killed = true;
     $(this).trigger('tick');
     $(this).trigger('draw');
+    this.killed = true;
+
+    // trigger a death animation
+    this.makeDeathAnimation();
+  }
+
+  this.makeDeathAnimation = function() {
+    var n = 30;
+    var pieces = [];
+    for (var i=0; i<n; i++) {
+        pieces.push(Math.random() * 2*Math.PI);
+    }
+    pieces.sort();
+
+    // now group them in pairs
+    var piece_pairs = [];
+    while (pieces.length > 1) {
+        piece_pairs.push(pieces.splice(0, 2));
+    }
+
+    // now setup the animation
+    var loc = this.getLoc();
+    var _this = this;
+    var T = 100;
+
+    // random bits of a circle
+    (new Animation(T, function(frame) {
+      piece_pairs.forEach(function(angle_pair) {
+        draw.arc(_this.ctx, loc, loopery.display.orb_radius + 20*Math.log(frame), angle_pair[0], angle_pair[1], {
+          fill: 'transparent',
+          stroke: _this.color,
+          lineWidth: loopery.display.orb_radius/frame
+        });
+      })
+    })).start();
   }
 
 
@@ -187,8 +221,6 @@ loopery.Orb.Roles.clock = {
     orb.clock_spin_rate = orb.initial_clock_spin_rate;
   }
 }
-
-window.s = 2;
 
 
 loopery.Orb.Roles.enemy = {
