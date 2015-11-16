@@ -59,11 +59,11 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   }
 
   this.shade = function(color) {
-    if (!color) { color = 'black'; }
+    if (!color) { color = 'white'; }
     draw.circle(this.ctx, this.loc, this.radius - loopery.display.track_width/2,
       {
         fill: color,
-        alpha: 0.5
+        alpha: 0.3
       }
     );
     this.show_shade = false;

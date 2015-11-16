@@ -89,6 +89,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     // Detect collision
     var orbs = this.lookup({group: 'orbs'});
     for (var id in orbs) {
+      if (orbs[id].killed) { return; }
       if (this.isCollidingWith(orbs[id])) { $(this).trigger('collision', {orb: orbs[id]}) }
     }
 
@@ -187,6 +188,8 @@ loopery.Orb.Roles.clock = {
   }
 }
 
+window.s = 2;
+
 
 loopery.Orb.Roles.enemy = {
   init: function(orb) {
@@ -202,19 +205,20 @@ loopery.Orb.Roles.enemy = {
 
   drawSpikes: function(orb) {
     var r = 0.3; // ratio of the spike length to orb radius
-    var w = 0.02; // ratio of the spike width to the complete circle
+    var w = 0.03; // ratio of the spike width to the complete circle
     var n = 12; // number of spikes
+    var th0 = loopery.state.frame % (2*Math.PI); // have the spikes spin a bit
 
     for (var i = 0; i < n; i++) {
       var th = i * 2*Math.PI / n;
-      var p0 = rth(loopery.display.orb_radius, th);
+      var p0 = rth(loopery.display.orb_radius, th + th0);
       var p1 = rotate(p0, w*2*Math.PI);
-      var p2 = rotate(p0, -w*2*Math.PI);
+      //var p2 = rotate(p0, -w*2*Math.PI);
       var p3 = p0.copy().scale(1 + r);
       var loc = orb.getLoc();
       draw.polygon(orb.ctx, [
         p1.add(loc),
-        p2.add(loc),
+        p0.add(loc),
         p3.add(loc)
       ], {
         fill: orb.color,

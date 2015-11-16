@@ -143,13 +143,7 @@ loopery.editor.clear_all_button = makeEditorButton(
   }
 ).appendTo(loopery.editor.menu);
 
-loopery.editor.toggle_grid_button = makeEditorButton("editor-grid", "Grid: off");
-var wtf = loopery.editor.toggle_grid_button.appendTo(loopery.editor.menu);
-
-console.log('STUFF:');
-console.log(loopery.editor.toggle_grid_button);
-console.log(wtf);
-console.log('--')
+loopery.editor.toggle_grid_button = makeEditorButton("editor-grid", "Grid: off").appendTo(loopery.editor.menu);
 
 loopery.editor.toggle_grid_button.togglebutton({
   off: function() {

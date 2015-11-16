@@ -125,6 +125,7 @@
          "id":998,
          "start":105,
          "start_dir":-1,
+         "start_pos":0.5,
          "color":"red",
          "roles":{  
             "enemy":{  
@@ -136,6 +137,7 @@
          "id":996,
          "start":107,
          "start_dir":1,
+         "start_pos":0.5,
          "color":"red",
          "roles":{  
             "enemy":{  
