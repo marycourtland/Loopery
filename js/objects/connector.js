@@ -90,6 +90,20 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
     if (loopery.display.shade_hovered_line_track && this.contains(loopery.mouse.pos)) {
       this.shade();
     }
+
+    // draw little dots?
+    var dot_separation = 20;
+    var l = 0;
+    var dp = subtract(p4, p1);
+    var p = p1.copy();
+    p.add(rth((loopery.state.frame % 20), dp.th));
+    var num_dots = dp.r / dot_separation;
+    for (var i = 0; i < num_dots; i++) {
+      draw.circle(this.ctx, p, 1, {fill: 'black'});
+      p.add(rth(dot_separation, dp.th));
+
+    }
+
   });
 
   this.shade = function(color) {

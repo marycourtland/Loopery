@@ -27,10 +27,8 @@ loopery.editor.circle_tool.complete = function() {
   }
   var loop = loopery.gameplay.loadAndInitObject('loops', 'Loop', track_data);
 
-  loop.on("click", function(loc) {
-    loopery.editor.clicked_tracks.push(this);
-  })
-  
+  loopery.editor.initSelection(loop);
+
   // Reset the params
   this.params.center_pos = null;
   this.params.radius = null;

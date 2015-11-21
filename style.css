@@ -47,7 +47,7 @@ a {
   margin-bottom: 1em;
 }
 
-#level_loader, #level_save {
+#level_load, #level_save {
   position: absolute;
   left: 100px; top:60px;
   width: 580px;

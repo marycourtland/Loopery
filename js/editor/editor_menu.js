@@ -135,6 +135,14 @@ loopery.editor.save_button = makeEditorButton(
   }
 ).appendTo(loopery.editor.menu);
 
+loopery.editor.load_button = makeEditorButton(
+  "editor-load",
+  "Load level",
+  function() {
+    $("#level_load").show();
+  }
+).appendTo(loopery.editor.menu);
+
 loopery.editor.clear_all_button = makeEditorButton(
   "editor-clear",
   "Clear level",
@@ -142,6 +150,22 @@ loopery.editor.clear_all_button = makeEditorButton(
     loopery.editor.clearAll();
   }
 ).appendTo(loopery.editor.menu);
+
+// Toggle loop ids
+loopery.editor.toggle_loop_ids = makeEditorButton("editor-loop-ids").appendTo(loopery.editor.menu);
+
+loopery.editor.toggle_loop_ids.togglebutton({
+  off: function() {
+    loopery.editor.toggle_loop_ids.text("Loop IDs: off");
+    loopery.editor.hideLoopIds();
+  },
+
+  on: function() {
+    loopery.editor.toggle_loop_ids.text("Loop IDs: on");
+    loopery.editor.showLoopIds();
+  }
+})
+
 
 loopery.editor.toggle_grid_button = makeEditorButton("editor-grid", "Grid: off").appendTo(loopery.editor.menu);
 
@@ -188,7 +212,6 @@ loopery.editor.grid_angle_input_radial.appendTo(loopery.editor.menu).addClass('g
 $(".grid-number-input").find('input').on('change', function() {
   loopery.editor.grid.redraw();
 })
-
 
 // =======================================================================
 addMenuSpacer();

@@ -60,6 +60,33 @@ loopery.editor.hideSaver = function() {
   $("#level_save").hide();
 }
 
+loopery.editor.showLoader = function() {
+  $("#level_load").show();
+}
+
+loopery.editor.hideLoader = function() {
+  $("#level_load").hide();
+}
+
+loopery.editor.loadLevel = function(level_json) {
+  var level_json = $("#level_input").val();
+  try {
+    var level_data = JSON.parse(level_json);
+  }
+  catch(exception) {
+    console.log('JSON error while loading level:', exception);
+    return;
+  }
+  loopery.editor.hideLoader();
+
+  loopery.gameplay.loadLevel(level_data);
+  // Make sure all the loops are clickable
+
+  loopery.gameplay.forAllObjectsInGroup('loops', function(loop) {
+    loopery.editor.initSelection(loop);
+  })
+}
+
 loopery.editor.clearAll = function() {
   loopery.gameplay.forAllObjects(function(obj) {
     loopery.gameplay.removeObject(obj)
@@ -87,10 +114,12 @@ loopery.editor.setTool = function(tool) {
 }
 
 loopery.editor.draw = function() {
-  // console.log('editor draw');
   if (!this.enabled) return;
   this.current_tool.states[this.current_tool.current_state].draw();
   this.current_tool.button.highlight();
+  if (loopery.editor.settings.show_loop_ids) {
+    loopery.editor.drawLoopIds();
+  }
 }
 
 loopery.editor.tick = function() {
@@ -115,6 +144,26 @@ loopery.onclick(function() {
   tool.states[tool.current_state].onenter();
 });
 
+loopery.editor.initSelection = function(track) {
+  track.on("click", function(loc) {
+    loopery.editor.clicked_tracks.push(this);
+  }) 
+}
+
+// Settings
+// todo: move other setting things to here
+loopery.editor.settings = {
+  show_loop_ids: false
+}
+
+loopery.editor.showLoopIds = function() { loopery.editor.settings.show_loop_ids = true; }
+loopery.editor.hideLoopIds = function() { loopery.editor.settings.show_loop_ids = false; }
+
+loopery.editor.drawLoopIds = function() {
+  loopery.gameplay.forAllObjectsInGroup('loops', function(loop) {
+    draw.text(loop.ctx, loop.id.toString(), loop.loc, 'centered');
+  })
+}
 
 // KEYBOARD SHORTCUTS
 
