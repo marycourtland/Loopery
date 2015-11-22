@@ -13,6 +13,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
 
     // Position on loop; this will be set by connector
     this.pos = null;
+
+    this.enabled = true;
   }
 
   this.reset = function() {
@@ -33,7 +35,6 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     // Transfer any orb which is on this joint
     // TODO: maybe there's an easier way for this joint to have access to orbs
     // or, even better, to know which orbs are on its relevant tracks
-
     for (var orb_id in loopery.gameplay.levelObjects.orbs) {
       var orb = loopery.gameplay.levelObjects.orbs[orb_id];
       this.attemptTransfer(orb);
@@ -41,10 +42,27 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
 
   });
 
+  $(this).on('draw', function() {
+    if (!this.enabled) { return; }
+    this.drawClicker();
+  });
+
+
   this.bindEvents = function() {
     this.on('click', function(pos) {
+      if (!this.enabled) { return; }
       this.toggle();
     })
+  }
+
+  // allow player to toggle the joint
+  this.enable = function() {
+    this.enabled = true;
+  }
+
+  // prevemt player from toggling the joint
+  this.disable = function() {
+    this.enabled = false;
   }
 
   this.toggle = function() {
@@ -86,6 +104,13 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     orb.oldpos = null;
     orb.pos = this.pos;
     orb.dir = -this.winding;
+
+    if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles.player) {
+      // When a player orb switches loops, we need to enable the joints on the new loop, etc.
+      // Todo: this could be optimized a tiny bit by disabling/enabling only joints that need changing.s
+      // (instead of disabling all of them and re-enabling all relevante ones)
+      loopery.gameplay.initPlayerEnabledJoints();
+    }
   }
 
   this.transferOrbToConnector = function(orb) {
@@ -107,10 +132,6 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     var offset = rth(dir * loopery.joint_click_distance, this.connector.geometry.angle);
     return add(this.loop.getPosCoords(this.pos), offset);
   }
-
-  $(this).on('draw', function() {
-    this.drawClicker();
-  });
 
   this.drawClicker = function() {
     var loc = this.getLoc();

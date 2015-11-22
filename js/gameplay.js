@@ -107,6 +107,10 @@ loopery.gameplay = {
         _this.initObject(obj.group, object_data);
       })
     })
+
+    if (loopery.features.clickersOnlyOnPlayerLoops) {
+      this.initPlayerEnabledJoints();
+    }
   },
 
   getLevelData: function() {
@@ -136,6 +140,7 @@ loopery.gameplay = {
 
   tick: function() {
     if (this.paused) { return; }
+
     // check for destroyed objects
     this.forAllObjects(function(obj) {
       if (obj.destroyed) loopery.gameplay.removeObject(obj);
@@ -149,6 +154,39 @@ loopery.gameplay = {
     this.triggerForAllObjectGroups('draw', {}, {ordering: 'renderOrder'});
 
     this.animations.forEach(function(animation) { animation.draw(); })
+  },
+
+  initPlayerEnabledJoints: function() {
+    this.disableAllJoints();
+    var orbs = this.lookup({group:'orbs'});
+    for (var id in orbs) {
+      var orb = orbs[id];
+
+      // only enable joints for player orbs...
+      if (!orb.roles.player) { continue; }
+
+      // only enable joints if the orb is on a loop...
+      if (orb.track.group !== 'loops') { continue; }
+
+      // ok enable all the joints
+      var joints = this.lookup({group:'joints', loop_id: orb.track.id});
+      for(var id in joints) {
+        joints[id].enable();
+      }
+    }
+  },
+
+  disableAllJoints: function() {
+    this.forAllObjectsInGroup('joints', function(joint) {
+      joint.disable();
+    })
+  },
+
+  enableJointsOnLoop: function(loop) {
+    var joints = this.lookup({group:'joints', loop_id: loop.id});
+    joints.forEach(function(joint) {
+      joint.enable();
+    })
   },
 
   triggerForAllObjectGroups: function(trigger, data, params) {
