@@ -80,8 +80,8 @@ loopery.editor.loadLevel = function(level_json) {
   loopery.editor.hideLoader();
 
   loopery.gameplay.loadLevel(level_data);
+  
   // Make sure all the loops are clickable
-
   loopery.gameplay.forAllObjectsInGroup('loops', function(loop) {
     loopery.editor.initSelection(loop);
   })

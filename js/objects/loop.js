@@ -9,6 +9,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     this.old_loc = xy(-1, -1);
     this.loc = xy(data.x, data.y);
     this.radius = data.r;
+    // (two different formats of event triggering - hacky)
   }
 
   this.getData = function() {
@@ -79,4 +80,16 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
       lineWidth: loopery.display.track_width
     });
   });
+
+  this.bindEvents = function() {
+    this.on('click', function() {
+      if (loopery.features.toggleAllJointsOnLoop) {
+        this.lookup({loop_id: this.id, group: 'joints'}).forEach(function(joint) {
+          console.log('Joint:', joint);
+          joint.toggle();
+        });
+      }
+    });
+  }
 }
+

@@ -43,8 +43,12 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
 
   this.bindEvents = function() {
     this.on('click', function(pos) {
-      this.state = !this.state;
+      this.toggle();
     })
+  }
+
+  this.toggle = function() {
+    this.state = !this.state;
   }
 
   this.attemptTransfer = function(orb) {
