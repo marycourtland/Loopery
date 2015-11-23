@@ -52,8 +52,8 @@ loopery.stages.levelmenu = {
 
 loopery.stages.gameplay = {
   tick: function() {
-    loopery.gameplay.tick();
     clear(loopery.ctx);
+    loopery.gameplay.tick();
     if (loopery.state.redraw_bg) { clear(loopery.ctx_bg); }
     loopery.gameplay.draw();
     loopery.state.redraw_bg = false;
@@ -69,9 +69,11 @@ loopery.stages.editor = {
     clear(loopery.ctx);
     loopery.gameplay.tick();
     loopery.editor.tick();
+    if (loopery.state.redraw_bg) { clear(loopery.ctx_bg); }
 
     loopery.gameplay.draw();
     loopery.editor.draw();
+    loopery.state.redraw_bg = false;
     loopery.next();
   },
   stageStart: function() { loopery.enableEditor(); },

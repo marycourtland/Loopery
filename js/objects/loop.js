@@ -80,6 +80,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
       stroke: loopery.display.track_color,
       lineWidth: loopery.display.track_width
     });
+    this.old_loc = this.loc.copy();
   });
 
   this.bindEvents = function() {
