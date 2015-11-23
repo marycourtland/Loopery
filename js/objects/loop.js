@@ -71,6 +71,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   }
   
   $(this).on('draw', function() {
+    if (!loopery.state.redraw_bg) { return; }
     if (this.show_shade || (loopery.display.shade_hovered_circle_track && this.contains(loopery.mouse.pos))) {
       this.shade();
     }

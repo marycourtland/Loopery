@@ -41,7 +41,8 @@ loopery.gameplay = {
   loadObject: function(obj_group, obj_type, obj_data) {
     var id = obj_data["id"];
     var ObjectType = loopery[obj_type];
-    this.levelObjects[obj_group][id] = new ObjectType(id, loopery.ctx, loopery.gameplay.lookup);
+    var ctx = (obj_type === 'Loop' || obj_type === 'Connector') ? loopery.ctx_bg : loopery.ctx;
+    this.levelObjects[obj_group][id] = new ObjectType(id, ctx, loopery.gameplay.lookup);
     return this.levelObjects[obj_group][id];
   },
 
@@ -84,6 +85,7 @@ loopery.gameplay = {
   loadLevel: function(level_data) {
     var lookup = loopery.gameplay.lookup;
     var _this = this;
+    var max_id = 0;
 
     this.clear();
 
@@ -93,7 +95,8 @@ loopery.gameplay = {
       if (obj.parent) { return; }
 
       level_data[obj.group].forEach(function(object_data) {
-        _this.loadObject(obj.group, obj.type, object_data)
+        var new_obj = _this.loadObject(obj.group, obj.type, object_data);
+        max_id = (new_obj.id > max_id) ? new_obj.id : max_id;
       })
     })
 
@@ -111,6 +114,12 @@ loopery.gameplay = {
     if (loopery.features.clickersOnlyOnPlayerLoops) {
       this.initPlayerEnabledJoints();
     }
+
+    if (loopery.editor) {
+      loopery.editor.next_id = max_id + 1;
+    }
+
+    loopery.state.redraw_bg = true;
   },
 
   getLevelData: function() {
@@ -182,10 +191,23 @@ loopery.gameplay = {
     })
   },
 
+  enableAllJoints: function() {
+    this.forAllObjectsInGroup('joints', function(joint) {
+      joint.enable();
+    })
+  },
+
   enableJointsOnLoop: function(loop) {
     var joints = this.lookup({group:'joints', loop_id: loop.id});
     joints.forEach(function(joint) {
       joint.enable();
+    })
+  },
+
+  disableJointsOnLoop: function(loop) {
+    var joints = this.lookup({group:'joints', loop_id: loop.id});
+    joints.forEach(function(joint) {
+      joint.disable();
     })
   },
 

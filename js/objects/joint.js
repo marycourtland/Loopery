@@ -67,6 +67,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
 
   this.toggle = function() {
     this.state = !this.state;
+    loopery.state.redraw_bg = true;
   }
 
   this.attemptTransfer = function(orb) {

@@ -12,7 +12,7 @@ loopery.editor.menu = $("<div id='editor_menu'></div>")
   .hide();
 
 function makeEditorButton(id, label, callback) {
-  var button = $("<a href='#' class='editor-button'></a>")
+  var button = $("<a href='javascript:void(0)' class='editor-button'></a>")
     .attr('id', id)
     .css({
       'display': 'inline-block',
@@ -103,6 +103,7 @@ $.fn.togglebutton = function(callbacks) {
 // Gameplay pause/resume button
 (function() {
   $("<div>")
+    .attr('id', 'gameplay-pause-resume')
     .css({
       'padding': 5,
       'width': '3em',

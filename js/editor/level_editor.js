@@ -61,6 +61,7 @@ loopery.editor.hideSaver = function() {
 }
 
 loopery.editor.showLoader = function() {
+  $("#level_input").val("");
   $("#level_load").show();
 }
 
@@ -90,7 +91,8 @@ loopery.editor.loadLevel = function(level_json) {
 loopery.editor.clearAll = function() {
   loopery.gameplay.forAllObjects(function(obj) {
     loopery.gameplay.removeObject(obj)
-  })
+  });
+  loopery.editor.next_id = 0;
 }
 
 loopery.disableEditor = function() {
@@ -176,8 +178,7 @@ loopery.editor.keyboard_shortcuts = {
   "G" : function() { $("#editor-grid").trigger('click'); },
   "SPACE" : function(evt) {
     evt.stopPropagation();
-    if (loopery.gameplay.paused) { loopery.gameplay.resume(); }
-    else { loopery.gameplay.pause(); }
+    $("#gameplay-pause-resume").trigger('click');
   },
 }
 

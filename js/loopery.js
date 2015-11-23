@@ -4,6 +4,17 @@ loopery.setTitle("Loopery");
 loopery.setSize(xy(800, 600));
 loopery.center = xy(400, 300);
 
+// Two canvases: background/foreground
+// todo: refactor into layers in game.js
+loopery.canvas_bg = $("#game_canvas_bg")[0];
+loopery.canvas_bg.style.backgroundColor = loopery.display.bg_color;
+loopery.canvas.style.backgroundColor = 'transparent';
+loopery.canvas_bg.width = loopery.size.x;
+loopery.canvas_bg.height = loopery.size.y;
+loopery.ctx_bg = loopery.canvas_bg.getContext('2d');
+loopery.state.redraw_bg = true; // todo: unhackify this
+
+
 window.onload = function() {
   loopery.start();
 }
@@ -41,9 +52,11 @@ loopery.stages.levelmenu = {
 
 loopery.stages.gameplay = {
   tick: function() {
-    clear(loopery.ctx);
     loopery.gameplay.tick();
+    clear(loopery.ctx);
+    if (loopery.state.redraw_bg) { clear(loopery.ctx_bg); }
     loopery.gameplay.draw();
+    loopery.state.redraw_bg = false;
     loopery.next();
   },
   stageStart: function() { $("#hud").show(); },
@@ -74,6 +87,8 @@ loopery.setStage = function(stage_name) {
   loopery.currentStage = loopery.stages[stage_name];
   if (loopery.currentStage && typeof loopery.currentStage.stageStart === 'function') { loopery.currentStage.stageStart(); }
 
+  clear(loopery.ctx_bg);
+  loopery.state.redraw_bg = true;
 }
 
 loopery.startGameplay = function(level_data) {

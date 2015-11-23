@@ -48,6 +48,7 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
   })
 
   $(this).on('draw', function() {
+    if (!loopery.state.redraw_bg) { return; }
     var color = loopery.display.track_color;
     var p1 = this.getPosCoords(0);
     var p2a = this.getPosCoords(loopery.display.darkened_track_extent);
@@ -118,6 +119,7 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
   this.checkPlacement = function() {
     if (this.joints[0].loop.hasMoved() || this.joints[1].loop.hasMoved()) {
       this.recomputePlacement();
+      loopery.state.redraw_bg = true;
     }
   }
 
