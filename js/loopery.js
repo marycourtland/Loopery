@@ -2,7 +2,7 @@
 var loopery = new Game({bg_color: "#071500"});
 loopery.setTitle("Loopery");
 loopery.setSize(xy(1000, 800));
-loopery.center = xy(400, 300);
+loopery.center = xy(500, 600);
 
 // Two canvases: background/foreground
 // todo: refactor into layers in game.js
