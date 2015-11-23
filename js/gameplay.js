@@ -180,6 +180,10 @@ loopery.gameplay = {
       // ok enable all the joints
       var joints = this.lookup({group:'joints', loop_id: orb.track.id});
       for(var id in joints) {
+
+        // but only if they're going in the right direction
+        if (joints[id].winding !== orb.dir) { continue; }
+
         joints[id].enable();
       }
     }

@@ -130,6 +130,8 @@ loopery.editor.tick = function() {
     this.current_tool.states[this.current_tool.current_state].tick();
   }
   this.clicked_tracks = [];
+
+  loopery.state.redraw_bg = true; // do this every frame for the editor
 }
 
 loopery.editor.clicked_tracks = [];
@@ -163,7 +165,7 @@ loopery.editor.hideLoopIds = function() { loopery.editor.settings.show_loop_ids 
 
 loopery.editor.drawLoopIds = function() {
   loopery.gameplay.forAllObjectsInGroup('loops', function(loop) {
-    draw.text(loop.ctx, loop.id.toString(), loop.loc, 'centered');
+    draw.text(loopery.ctx, loop.id.toString(), loop.loc, 'centered');
   })
 }
 

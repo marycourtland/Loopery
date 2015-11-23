@@ -1,6 +1,7 @@
 loopery.levels = [
   'levels/advanceguard.json',
-  'levels/ld_level_3.json'
+  'levels/ld_level_3.json',
+  'levels/quitehard.json'
 ]
 
 loopery.loadLevelData = function(level_url, onSuccess, onError) {

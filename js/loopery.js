@@ -1,7 +1,7 @@
 // The game
 var loopery = new Game({bg_color: "#071500"});
 loopery.setTitle("Loopery");
-loopery.setSize(xy(800, 600));
+loopery.setSize(xy(1000, 800));
 loopery.center = xy(400, 300);
 
 // Two canvases: background/foreground

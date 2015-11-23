@@ -144,6 +144,15 @@ loopery.Orb.Roles.player = {
       if (this.track.id === this.roles.player.end) { $(this).trigger('levelcomplete'); }
     })
 
+    $(orb).on('draw', function() {
+      var end_track = this.lookup({group:'loops', id:this.roles.player.end});
+      if (!end_track) { return; }
+      draw.circle(this.ctx, end_track.loc, loopery.display.orb_radius*2, {
+        fill: this.color,
+        stroke: this.color
+      });
+    })
+
     $(orb).on('levelcomplete', function(evt, data) {
       // todo
       console.debug('woohoo, you finished a level')
