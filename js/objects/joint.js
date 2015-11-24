@@ -167,7 +167,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
   this.alphaPulse = oscillator(loopery.display.joint_click_pulse_period, 0, loopery.display.joint_click_max_alpha);
 
   this.contains = function(loc) {
-    // console.log(this.getAlpha(loopery.state.frame))
+    if (!this.enabled) { return false; }
     return distance(loc, this.getLoc()) < loopery.joint_click_radius
   }
 }
