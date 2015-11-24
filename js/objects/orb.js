@@ -147,10 +147,21 @@ loopery.Orb.Roles.player = {
     $(orb).on('draw', function() {
       var end_track = this.lookup({group:'loops', id:this.roles.player.end});
       if (!end_track) { return; }
-      draw.circle(this.ctx, end_track.loc, loopery.display.orb_radius*2, {
-        fill: this.color,
-        stroke: this.color
-      });
+
+      var r = loopery.display.orb_radius * 2;
+      var th = Math.PI / 3;
+      var th_offset = loopery.state.frame / 100;
+      var p1 = add(end_track.loc, rth(r, th_offset));
+      var p2 = add(end_track.loc, rth(r, th_offset + th));
+      var p3 = add(end_track.loc, rth(r, th_offset + 2 * th));
+      var p4 = add(end_track.loc, rth(r, th_offset + 3 * th));
+      var p5 = add(end_track.loc, rth(r, th_offset + 4 * th));
+      var p6 = add(end_track.loc, rth(r, th_offset + 5 * th));
+
+      var params = {stroke: this.color, lineWidth:2, lineCap:'round'};
+      draw.line(this.ctx, p1, p4, params);
+      draw.line(this.ctx, p2, p5, params);
+      draw.line(this.ctx, p3, p6, params);
     })
 
     $(orb).on('levelcomplete', function(evt, data) {
