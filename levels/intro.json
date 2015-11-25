@@ -1,0 +1,106 @@
+{
+    "info": {
+        "name": "Intro"
+    },
+    "loops": [
+        {
+            "id": 2,
+            "x": 480,
+            "y": 277.1281292110204,
+            "r": 120
+        },
+        {
+            "id": 3,
+            "x": 240,
+            "y": 346.4101615137755,
+            "r": 40
+        },
+        {
+            "id": 4,
+            "x": 720,
+            "y": 346.4101615137755,
+            "r": 40
+        }
+    ],
+    "joints": [
+        {
+            "id": 6,
+            "loop": 3,
+            "connector": 5,
+            "winding": 1,
+            "state": false
+        },
+        {
+            "id": 7,
+            "loop": 2,
+            "connector": 5,
+            "winding": -1,
+            "state": false
+        },
+        {
+            "id": 9,
+            "loop": 2,
+            "connector": 8,
+            "winding": 1,
+            "state": false
+        },
+        {
+            "id": 10,
+            "loop": 4,
+            "connector": 8,
+            "winding": -1,
+            "state": false
+        }
+    ],
+    "connectors": [
+        {
+            "id": 5,
+            "joint1": {
+                "id": 6,
+                "loop": 3,
+                "connector": 5,
+                "winding": 1,
+                "state": false
+            },
+            "joint2": {
+                "id": 7,
+                "loop": 2,
+                "connector": 5,
+                "winding": -1,
+                "state": false
+            }
+        },
+        {
+            "id": 8,
+            "joint1": {
+                "id": 9,
+                "loop": 2,
+                "connector": 8,
+                "winding": 1,
+                "state": false
+            },
+            "joint2": {
+                "id": 10,
+                "loop": 4,
+                "connector": 8,
+                "winding": -1,
+                "state": false
+            }
+        }
+    ],
+    "orbs": [
+        {
+            "id": 11,
+            "color": "#55bbff",
+            "start": 3,
+            "start_dir": 1,
+            "start_pos": 0.3333333333333334,
+            "roles": {
+                "player": {
+                    "end": 4
+                }
+            }
+        }
+    ],
+    "decorations": []
+}

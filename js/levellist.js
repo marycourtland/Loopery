@@ -1,4 +1,5 @@
 loopery.levels = [
+  'levels/intro.json',
   'levels/shortpaths.json',
   'levels/shortpaths2.json',
   'levels/quitehard.json',
