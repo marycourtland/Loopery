@@ -138,6 +138,8 @@ loopery.Orb.Roles = {};
 
 loopery.Orb.Roles.player = {
   init: function(orb) {
+    this.levelcomplete = false;
+
     // detect levelcomplete
     $(orb).on('tick', function() {
       if (this.killed) { return; }
@@ -145,29 +147,57 @@ loopery.Orb.Roles.player = {
     })
 
     $(orb).on('draw', function() {
+      if (this.levelcomplete) { return; }
       var end_track = this.lookup({group:'loops', id:this.roles.player.end});
       if (!end_track) { return; }
 
-      var r = loopery.display.orb_radius * 2;
-      var th = Math.PI / 3;
-      var th_offset = loopery.state.frame / 100;
-      var p1 = add(end_track.loc, rth(r, th_offset));
-      var p2 = add(end_track.loc, rth(r, th_offset + th));
-      var p3 = add(end_track.loc, rth(r, th_offset + 2 * th));
-      var p4 = add(end_track.loc, rth(r, th_offset + 3 * th));
-      var p5 = add(end_track.loc, rth(r, th_offset + 4 * th));
-      var p6 = add(end_track.loc, rth(r, th_offset + 5 * th));
-
-      var params = {stroke: this.color, lineWidth:2, lineCap:'round'};
-      draw.line(this.ctx, p1, p4, params);
-      draw.line(this.ctx, p2, p5, params);
-      draw.line(this.ctx, p3, p6, params);
+      drawGoalStar(end_track.loc, loopery.display.orb_radius * 2, loopery.state.frame / 100);
     })
 
     $(orb).on('levelcomplete', function(evt, data) {
-      // todo
-      console.debug('woohoo, you finished a level')
+      if (this.levelcomplete) { return; }
+      this.levelcomplete = true;
+
+      var end_track = this.lookup({group:'loops', id:this.roles.player.end});
+      if (end_track) {
+        showLevelCompleteAnimation(end_track.loc);
+      }
     })
+
+    function drawGoalStar(loc, r, th_offset, lineWidth, alpha) {
+      lineWidth = (lineWidth !== undefined) ? lineWidth : 2;
+      alpha = (alpha !== undefined) ? alpha : 1;
+      var th = Math.PI / 3;
+      var p1 = add(loc, rth(r, th_offset));
+      var p2 = add(loc, rth(r, th_offset + th));
+      var p3 = add(loc, rth(r, th_offset + 2 * th));
+      var p4 = add(loc, rth(r, th_offset + 3 * th));
+      var p5 = add(loc, rth(r, th_offset + 4 * th));
+      var p6 = add(loc, rth(r, th_offset + 5 * th));
+
+      var params = {stroke: orb.color, lineWidth:lineWidth, lineCap:'round', alpha:alpha};
+      draw.line(orb.ctx, p1, p4, params);
+      draw.line(orb.ctx, p2, p5, params);
+      draw.line(orb.ctx, p3, p6, params);
+    }
+
+    function showLevelCompleteAnimation(loc) {
+      var T = 120;
+      var r0 = loopery.display.orb_radius * 2;
+      (new Animation(T,
+        function draw(frame) {
+          var r =  r0 + 80*Math.log(frame);
+          // var width = (1 + 1/(5*(frame - 30)));
+          // var width = (frame < 5) ? 2 : 2 / (frame - 10);
+          var width = 2;
+          var alpha =  (frame < 20) ? 1 : Math.max(1-(frame/50), 0);
+          drawGoalStar(loc, r0, loopery.state.frame / 5, width, alpha);
+        },
+        function end() {
+          // todo: 'you win' message
+        }
+      )).start();
+    }
 
     $(orb).on('collision', function(evt, data) {
       // reverse direction!
