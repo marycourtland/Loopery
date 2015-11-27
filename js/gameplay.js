@@ -166,16 +166,30 @@ loopery.gameplay = {
   },
 
   initPlayerEnabledJoints: function() {
+    // When a player orb switches loops, we need to enable the joints on the new loop, etc.
+    // Todo: this could be optimized a tiny bit by disabling/enabling only joints that need changing.s
+    // (instead of disabling all of them and re-enabling all relevante ones)
+
     this.disableAllJoints();
+
     var orbs = this.lookup({group:'orbs'});
     for (var id in orbs) {
       var orb = orbs[id];
 
-      // only enable joints for player orbs...
+      // only enable joints for player orbs
       if (!orb.roles.player) { continue; }
 
-      // only enable joints if the orb is on a loop...
-      if (orb.track.group !== 'loops') { continue; }
+      if (orb.track.group === 'loops') {
+        this.enableJointsOnLoop(orb.track, orb.dir);
+      }
+      else if (orb.track.group === 'connectors') {
+        // enable clickers for loops on both sides of a connector
+        var joint_behind = (orb.dir === 1) ? orb.track.joints[1] : orb.track.joints[0];
+        var joint_ahead = (orb.dir === 1) ? orb.track.joints[0] : orb.track.joints[1];
+
+        this.enableJointsOnLoop(joint_behind.loop, -joint_behind.winding);
+        this.enableJointsOnLoop(joint_ahead.loop, joint_ahead.winding);
+      }
 
       // ok enable all the joints
       var joints = this.lookup({group:'joints', loop_id: orb.track.id});
@@ -201,9 +215,11 @@ loopery.gameplay = {
     })
   },
 
-  enableJointsOnLoop: function(loop) {
+  enableJointsOnLoop: function(loop, dir) {
+    // if dir is specified, only enable joints for orbs going in that direction on the loop
     var joints = this.lookup({group:'joints', loop_id: loop.id});
     joints.forEach(function(joint) {
+      if (typeof dir !== 'undefined' && joint.winding !== dir) { return; }
       joint.enable();
     })
   },

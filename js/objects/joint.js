@@ -111,9 +111,6 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     orb.dir = -this.winding;
 
     if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles.player) {
-      // When a player orb switches loops, we need to enable the joints on the new loop, etc.
-      // Todo: this could be optimized a tiny bit by disabling/enabling only joints that need changing.s
-      // (instead of disabling all of them and re-enabling all relevante ones)
       loopery.gameplay.initPlayerEnabledJoints();
     }
   }
@@ -125,6 +122,10 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     orb.oldpos = null;
     orb.pos = (this.getConnectorEnd() === 0 ? pos_diff : 1 - pos_diff);
     orb.dir = (this.getConnectorEnd() === 0 ? 1 : -1);
+
+    if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles.player) {
+      loopery.gameplay.initPlayerEnabledJoints();
+    }
   }
 
   this.getConnectorEnd = function() {
