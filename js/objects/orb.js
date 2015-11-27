@@ -123,7 +123,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     // Detect collision
     var orbs = this.lookup({group: 'orbs'});
     for (var id in orbs) {
-      if (orbs[id].killed) { return; }
+      if (orbs[id].killed) { continue; }
       if (this.isCollidingWith(orbs[id])) { $(this).trigger('collision', {orb: orbs[id]}) }
     }
 
