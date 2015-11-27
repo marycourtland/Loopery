@@ -190,7 +190,7 @@ loopery.Orb.Roles.player = {
           // var width = (1 + 1/(5*(frame - 30)));
           // var width = (frame < 5) ? 2 : 2 / (frame - 10);
           var width = 2;
-          var alpha =  (frame < 20) ? 1 : Math.max(1-(frame/50), 0);
+          var alpha = (frame < 20) ? 1 : Math.max(1-(frame/50), 0);
           drawGoalStar(loc, r0, loopery.state.frame / 5, width, alpha);
         },
         function end() {

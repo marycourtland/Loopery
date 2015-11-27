@@ -53,6 +53,7 @@ loopery.stages.levelmenu = {
 loopery.stages.gameplay = {
   tick: function() {
     clear(loopery.ctx);
+    loopery.hidePointer();
     loopery.gameplay.tick();
     if (loopery.state.redraw_bg) { clear(loopery.ctx_bg); }
     loopery.gameplay.draw();
@@ -114,6 +115,16 @@ loopery.restart = function() {
 loopery.startCurrentLevel = function() {
   loopery.levels[loopery.current_level].onload();
 }
+
+
+// ========== Inirect html/css access
+loopery.showPointer = function() {
+  $("body").css("cursor", "pointer");
+}
+loopery.hidePointer = function() {
+  $("body").css("cursor", "auto");
+}
+
 
 $(document).ready(function() {
   $("#game_fadeout").hide(); // start with the fadeout layer hidden (i.e. game is not faded out)

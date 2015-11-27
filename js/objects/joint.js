@@ -44,7 +44,11 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
 
   $(this).on('draw', function() {
     if (!this.enabled) { return; }
-    this.drawClicker();
+    this.drawArrowClicker();
+
+    if (this.contains(loopery.mouse.pos)) {
+      loopery.showPointer();
+    }
   });
 
 
@@ -134,7 +138,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     return add(this.loop.getPosCoords(this.pos), offset);
   }
 
-  this.drawClicker = function() {
+  this.drawCircleClicker = function() {
     var loc = this.getLoc();
     if (!loc) { return; }
     var alpha = this.getAlpha();
@@ -143,6 +147,31 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
       alpha: alpha,
       stroke: 'transparent'
     });
+  }
+
+  this.drawArrowClicker = function() {
+    // draw arrow
+    var loc = this.getLoc();
+    if (!loc) { return; }
+    var w = loopery.joint_click_radius * 0.8;
+    // var w = loopery.display.track_width * 2;
+    var dir = this.connector.joints[0] === this ? 1 : -1;
+    var p1 = rth(dir * w, this.connector.geometry.angle);
+    var p2 = rotate(p1, Math.PI/2).scale(1/2);
+    var p3 = rth(dir * 2, this.connector.geometry.angle);
+    var p4 = rotate(p1, -Math.PI/2).scale(1/2);
+    draw.polygon(this.ctx, [
+        add(loc, p1),
+        add(loc, p2),
+        add(loc, p3),
+        add(loc, p4),
+      ],
+      {
+        fill: this.state ? 'white' : 'black',
+        stroke: 'white',
+        lineWidth: 2
+      }
+    )
   }
 
   this.getAlpha = function() {
