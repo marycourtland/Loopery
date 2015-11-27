@@ -120,6 +120,23 @@ loopery.gameplay = {
     }
 
     loopery.state.redraw_bg = true;
+
+    if (loopery.presentation) {
+      var tips = [];
+      var orbs = this.lookup({group:'orbs'});
+      for (var id in orbs) {
+        if (orbs[id].roles.player) {
+          tips.push({
+            initialpos: 0,
+            oldpos: 0.001,
+            pos: 0.001,
+            dir: 1,
+            track: orbs[id].track
+          })
+        }
+      }
+      loopery.presentation.start(tips, function() {});
+    }
   },
 
   getLevelData: function() {

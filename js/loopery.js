@@ -7,13 +7,20 @@ loopery.center = xy(500, 600);
 // Two canvases: background/foreground
 // todo: refactor into layers in game.js
 loopery.canvas_bg = $("#game_canvas_bg")[0];
-loopery.canvas_bg.style.backgroundColor = loopery.display.bg_color;
+loopery.canvas_bg.style.backgroundColor = 'transparent';
 loopery.canvas.style.backgroundColor = 'transparent';
 loopery.canvas_bg.width = loopery.size.x;
 loopery.canvas_bg.height = loopery.size.y;
 loopery.ctx_bg = loopery.canvas_bg.getContext('2d');
 loopery.state.redraw_bg = true; // todo: unhackify this
 
+
+loopery.bg = $("#game_bg")[0];
+$("#game_bg").css({
+  backgroundColor: loopery.display.bg_color,
+  width: loopery.size.x,
+  height: loopery.size.y,
+})
 
 window.onload = function() {
   loopery.start();
@@ -55,8 +62,10 @@ loopery.stages.gameplay = {
     clear(loopery.ctx);
     loopery.hidePointer();
     loopery.gameplay.tick();
+    if (loopery.presentation && loopery.presentation.running) { loopery.presentation.tick(); }
     if (loopery.state.redraw_bg) { clear(loopery.ctx_bg); }
     loopery.gameplay.draw();
+    if (loopery.presentation && loopery.presentation.running) { loopery.presentation.draw(); }
     loopery.state.redraw_bg = false;
     loopery.next();
   },

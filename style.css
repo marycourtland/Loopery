@@ -15,6 +15,10 @@ a {
   /*background-image:url('background.png');*/
 }
 
+#game_bg {
+  color: ;
+}
+
 .game-overlay {
   position: absolute;
   left:0; top:0;

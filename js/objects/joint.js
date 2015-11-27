@@ -110,7 +110,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     orb.pos = this.pos;
     orb.dir = -this.winding;
 
-    if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles.player) {
+    if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles && orb.roles.player) {
       loopery.gameplay.initPlayerEnabledJoints();
     }
   }
@@ -123,7 +123,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     orb.pos = (this.getConnectorEnd() === 0 ? pos_diff : 1 - pos_diff);
     orb.dir = (this.getConnectorEnd() === 0 ? 1 : -1);
 
-    if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles.player) {
+    if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles && orb.roles.player) {
       loopery.gameplay.initPlayerEnabledJoints();
     }
   }

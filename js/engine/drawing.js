@@ -7,7 +7,7 @@ var draw = {
     ctx.fillStyle = params.fill || "";
     ctx.strokeStyle = params.stroke || "black";
     ctx.lineWidth = params.lineWidth !== null ? params.lineWidth : 1;
-    ctx.lineCap = params.linecap || 'butt';
+    ctx.lineCap = params.lineCap || 'butt';
     ctx.globalAlpha = params.alpha !== null ? params.alpha : 1;
   },
 
