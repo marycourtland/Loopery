@@ -110,6 +110,12 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     orb.pos = this.pos;
     orb.dir = -this.winding;
 
+    // See if the orb is stuck with no joints to click
+    var new_joints = this.lookup({group:'joints', loop_id: this.loop.id}).filter(function(joint) { return joint.winding === orb.dir; });
+    if (new_joints.length === 0) {
+      $(orb).trigger('stuck');
+    }
+
     if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles && orb.roles.player) {
       loopery.gameplay.initPlayerEnabledJoints();
     }

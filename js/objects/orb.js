@@ -90,7 +90,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     // now setup the animation
     var loc = this.getLoc();
     var _this = this;
-    var T = 100;
+    var T = 80;
 
     // random bits of a circle
     (new Animation(T, function(frame) {
@@ -101,6 +101,11 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
           lineWidth: loopery.display.orb_radius/frame
         });
       })
+    },
+
+    function() {
+      // animation complete
+      $(_this).trigger('death');
     })).start();
   }
 
@@ -162,6 +167,19 @@ loopery.Orb.Roles.player = {
       if (end_track) {
         showLevelCompleteAnimation(end_track.loc);
       }
+    })
+
+    $(orb).on('death', function(evt) {
+      loopery.gameplay.showLevelFailed("A death has occurred");
+    })
+
+    $(orb).on('stuck', function(evt) {
+      if (this.track.id === this.roles.player.end) { return; } // levelcomplete; doesn't matter if it's stuck
+
+      // TODO: on levels with multiple player orbs, only show this message this if all of them are stuck
+      setTimeout(function() {
+        loopery.gameplay.showLevelFailed("You're stuck!");
+      }, 2000);
     })
 
     function drawGoalStar(loc, r, th_offset, lineWidth, alpha) {

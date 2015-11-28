@@ -46,15 +46,16 @@ canvas {
     }
 
 #game_fadeout {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
-#level_complete {
+.level-message {
   display: none;
 }
 
-  #level_complete h2 {
+  .level-message h2 {
     font-size: 144px;
+    margin-bottom: 0.4em;
   }
 
 .level_navigation {

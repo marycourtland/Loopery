@@ -26,7 +26,12 @@ loopery.gameplay = {
     clear(loopery.ctx);
     clear(loopery.ctx_bg);
     if (loopery.presentation.ctx) { clear(loopery.presentation.ctx); }
+    this.hideAllMessages();
+  },
+
+  hideAllMessages: function() {
     this.hideLevelComplete();
+    this.hideLevelFailed();
   },
 
   showLevelComplete: function() {
@@ -41,6 +46,21 @@ loopery.gameplay = {
     this.resume();
   },
 
+  showLevelFailed: function(message) {
+    if (message) {
+      $("#level_failed h2").text(message);
+    }
+    $("#game_fadeout").fadeIn();
+    $("#level_failed").fadeIn();
+    this.pause();
+  },
+
+  hideLevelFailed: function() {
+    $("#game_fadeout").hide();
+    $("#level_failed").hide();
+    this.resume();
+  },
+
   resetLevel: function() {
     this.forAllObjects(function(obj) {
       if (typeof obj.reset === 'function') {
@@ -48,7 +68,7 @@ loopery.gameplay = {
       }
     });
     this.initPlayerEnabledJoints();
-    this.hideLevelComplete();
+    this.hideAllMessages();
   },
 
   loadAndInitObject: function(obj_group, obj_type, obj_data, parent) {
@@ -205,8 +225,8 @@ loopery.gameplay = {
 
   initPlayerEnabledJoints: function() {
     // When a player orb switches loops, we need to enable the joints on the new loop, etc.
-    // Todo: this could be optimized a tiny bit by disabling/enabling only joints that need changing.s
-    // (instead of disabling all of them and re-enabling all relevante ones)
+    // Todo: this could be optimized a tiny bit by disabling/enabling only joints that need changing.
+    // (instead of disabling all of them and re-enabling all relevant ones)
 
     this.disableAllJoints();
 

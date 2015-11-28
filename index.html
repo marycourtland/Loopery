@@ -41,7 +41,7 @@
 
         <div id="game_fadeout" class="game-overlay"></div>
 
-        <div id="level_complete" class="game-overlay">
+        <div id="level_complete" class="level-message game-overlay">
           <div class="center-screen-h">
             <h2>COMPLETE</h2>
             <a class="level_navigation" href="javascript:void(0);" onclick="loopery.loadNextLevel();">NEXT LEVEL</a>
@@ -49,7 +49,13 @@
             <a class="level_navigation" href="javascript:void(0);" onclick="loopery.setStage('levelmenu');">back to the big list</a>
           </div>
         </div>
-        <!-- <a href="javascript:void(0);" onclick="loopery.setStage('editor');">Level Editor</a> -->
+
+        <div id="level_failed" class="level-message game-overlay">
+          <div class="center-screen-h">
+            <h2>A DEATH HAS OCCURRED</h2>
+            <a class="level_navigation" href="javascript:void(0);" onclick="loopery.gameplay.resetLevel();">try again</a>
+          </div>
+        </div>
       </div>
       
 
