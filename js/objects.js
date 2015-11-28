@@ -12,10 +12,12 @@ loopery.objectTypes.sortBy = function(property, opposite) {
   this.forEach(function(object) {
     sorted.push(object);
   })
-  var ordering = opposite ? -1 : 1;
   sorted.sort(function(obj1, obj2) {
-    return (obj1[property] > obj2[property]) * ordering;
+    return (obj1[property] - obj2[property]);
   })
+  if (opposite) {
+    sorted.reverse();
+  }
   return sorted;
 
 }

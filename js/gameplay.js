@@ -199,9 +199,6 @@ loopery.gameplay = {
     return data;
   },
 
-  // tick: function() { this.applyToObjectGroups('tick'); },
-  // draw: function() { this.applyToObjectGroups('draw', {ordering: 'renderOrder'}); },
-
   pause: function() {
     this.paused = true;
   },
