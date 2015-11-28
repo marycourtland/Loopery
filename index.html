@@ -32,13 +32,26 @@
       <canvas id="game_canvas" class="main_canvas"></canvas>
 
       <div id="hud" class="game-overlay">
-        <a href="#" onclick="loopery.setStage('levelmenu');">Back to the level menu</a><br />
-        <!-- <a href="#" onclick="loopery.setStage('editor');">Level Editor</a> -->
+        <div>
+          <a class="hud-link" href="javascript:void(0);" style="float:left;" onclick="loopery.setStage('levelmenu');">&equiv; all levels</a>
+          <a class="hud-link" href="javascript:void(0);" style="float:left;" onclick="loopery.gameplay.resetLevel();">restart &oast;</a>
+          <a class="hud-link" href="javascript:void(0);" style="float:right; margin-right:1em" onclick="loopery.setStage('levelmenu');">next &sc;</a>
+          <a class="hud-link" href="javascript:void(0);" style="float:right;" onclick="loopery.setStage('levelmenu');">&pr; back</a>
+        </div>
+        <div id="game_fadeout" class="game-overlay"></div>
+        <div id="level_complete" class="game-overlay">
+          <div class="center-screen-h">
+            <h2>COMPLETE</h2>
+            <a class="level_navigation" href="javascript:void(0);" onclick="loopery.gameplay.resetLevel();">NEXT LEVEL</a>
+            <a class="level_navigation" href="javascript:void(0);" onclick="loopery.gameplay.resetLevel();">solve this one again</a>
+            <a class="level_navigation" href="javascript:void(0);" onclick="loopery.setStage('levelmenu');">back to the big list</a>
+          </div>
+        </div>
+        <!-- <a href="javascript:void(0);" onclick="loopery.setStage('editor');">Level Editor</a> -->
       </div>
       
-      <div id="game_fadeout" class="game-overlay"></div>
 
-      <div id="level_menu">
+      <div id="level_menu" class="game-overlay">
         <h2>Loopery will be released on: <span style="font-size:larger; display:block; margin-bottom:3rem;">December 1!</span></h2>
         <h3>In the mean time, here are a few sample levels.</h3>
         <h3 style="margin-bottom:3rem;">Or, try out the <a href="editor.htm" style="text-decoration:underline; display:inline;">level editor</a>.</h3>

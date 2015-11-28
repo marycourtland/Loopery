@@ -1,5 +1,5 @@
 html {
-  font-family: Arial;
+  font-family: serif;
   color: #fff;
 }
 
@@ -22,8 +22,8 @@ a {
 .game-overlay {
   position: absolute;
   left:0; top:0;
-  width: 801px;
-  height: 601px;
+  width: 1001px;
+  height: 801px;
 }
 
 #hud {
@@ -31,25 +31,76 @@ a {
   background: transparent;
 }
 
+  #hud .hud-link {
+    font-size: 17px;
+    margin: 0.5em;
+    color: #ddd;
+    
+  }
+    #hud .hud-link:hover {
+      color: white;
+    }
+
 #game_fadeout {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#level_complete {
+  display: none;
+}
+
+  #level_complete h2 {
+    font-size: 144px;
+  }
+
+.level_navigation {
+  display: block;
+  font-size: 32px;
+  color: #ccc;
+  line-height: 4rem;
+  transition: font-size 0.1s;
+}
+  .level_navigation:hover {
+    font-size: 36px;
+    color: white;
+  }
+
+
+
+
+
+.center-screen {
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.center-screen-h {
+  position: absolute;
+  text-align: center;
 }
 
 #level_menu {
-  position: absolute;
-  left: 100px; top:60px;
-  width: 580px;
-  height: 460px;
-  padding:10px 20px;
   background-color: transparent;
   text-align: center;
   display: none;
 }
 
-#level_menu a {
-  display: block;
-  margin-bottom: 1em;
-}
+  #level_menu h2 {
+    margin-top: 5em;
+  }
+
+  #level_menu a {
+    display: block;
+    margin-bottom: 1em;
+  }
+
 
 #level_load, #level_save {
   position: absolute;

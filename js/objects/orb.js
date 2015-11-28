@@ -182,7 +182,7 @@ loopery.Orb.Roles.player = {
     }
 
     function showLevelCompleteAnimation(loc) {
-      var T = 120;
+      var T = 80;
       var r0 = loopery.display.orb_radius * 2;
       (new Animation(T,
         function draw(frame) {
@@ -194,7 +194,7 @@ loopery.Orb.Roles.player = {
           drawGoalStar(loc, r0, loopery.state.frame / 5, width, alpha);
         },
         function end() {
-          // todo: 'you win' message
+          loopery.gameplay.showLevelComplete();
         }
       )).start();
     }
@@ -203,6 +203,11 @@ loopery.Orb.Roles.player = {
       // reverse direction!
       this.dir *= -1;
     })
+  },
+
+  reset: function(orb) {
+    // Dynamic things
+    orb.levelcomplete = false;
   }
 }
 

@@ -10,7 +10,7 @@ loopery.levelMenu.drawActions.push(function() {
 
 loopery.levelMenu.makeLink = function() {
   return $("<a></a>")
-    .attr('href', '#')
+    .attr('href', 'javascript:void(0);')
     .appendTo("#level_menu");
 }
 

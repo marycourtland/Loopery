@@ -70,7 +70,10 @@ loopery.stages.gameplay = {
     loopery.next();
   },
   stageStart: function() { $("#hud").show(); },
-  stageEnd: function() { $("#hud").hide(); }
+  stageEnd: function() {
+    $("#hud").hide();
+    if (loopery.presentation) { clear(loopery.presentation.ctx); }
+  }
 }
 
 loopery.stages.editor = {

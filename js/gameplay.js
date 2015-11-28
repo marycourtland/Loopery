@@ -21,7 +21,23 @@ loopery.gameplay = {
     var _this = this;
     loopery.objectTypes.forEach(function(obj) {
       _this.levelObjects[obj.group] = {};
-    })
+    });
+    clear(loopery.ctx);
+    clear(loopery.ctx_bg);
+    if (loopery.presentation.ctx) { clear(loopery.presentation.ctx); }
+    this.hideLevelComplete();
+  },
+
+  showLevelComplete: function() {
+    $("#game_fadeout").fadeIn();
+    $("#level_complete").fadeIn();
+    this.pause();
+  },
+
+  hideLevelComplete: function() {
+    $("#game_fadeout").hide();
+    $("#level_complete").hide();
+    this.resume();
   },
 
   resetLevel: function() {
@@ -29,7 +45,9 @@ loopery.gameplay = {
       if (typeof obj.reset === 'function') {
         obj.reset();
       }
-    })
+    });
+    this.initPlayerEnabledJoints();
+    this.hideLevelComplete();
   },
 
   loadAndInitObject: function(obj_group, obj_type, obj_data, parent) {
