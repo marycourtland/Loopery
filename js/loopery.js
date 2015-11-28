@@ -106,13 +106,11 @@ loopery.setStage = function(stage_name) {
   loopery.state.redraw_bg = true;
 }
 
-loopery.startGameplay = function(level_data) {
-  // this.doNextLevel(); // TODO: gameplay loads a level. TODO: know which level to load
-
+loopery.startGameplay = function(level_index) {
+  if (!(level_index in loopery.levels)) { return; }
+  var level_data = loopery.levels[level_index].data;
   loopery.setStage('gameplay');
-
-  // Load a test level (temporary)
-  loopery.gameplay.loadLevel(level_data)
+  loopery.gameplay.loadLevel(level_data);
 }
 
 loopery.ctx.canvas.addEventListener("click", function(event) {

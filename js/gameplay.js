@@ -10,10 +10,11 @@ loopery.gameplay = {
   //   decorations: {},
   //   joints: {}
   // },
+  levelObjects: {},
+
+  current_level: 0,
 
   paused: false,
-
-  levelObjects: {},
 
   animations: [],
 
@@ -101,6 +102,8 @@ loopery.gameplay = {
   },
 
   loadLevel: function(level_data) {
+    this.current_level = level_data.info.index;
+
     var lookup = loopery.gameplay.lookup;
     var _this = this;
     var max_id = 0;

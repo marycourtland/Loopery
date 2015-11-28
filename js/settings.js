@@ -1,7 +1,7 @@
 // ========== SETTINGS
 
 // Display constants
-loopery.display.track_width = 8; // px
+loopery.display.track_width = 6; // px
 loopery.display.track_color = 'white';
 loopery.display.orb_radius = 12; // px
 loopery.display.darkened_track_extent = 0.4;

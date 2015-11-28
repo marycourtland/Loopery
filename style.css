@@ -8,10 +8,14 @@ a {
   text-decoration: none;
 }
 
+canvas {
+  border: 0;
+}
+
 .main_canvas {
   position: absolute;
-  left:0; top:0;
-  border:1px solid black;
+  left:0;
+  top:0;
   /*background-image:url('background.png');*/
 }
 
@@ -65,10 +69,6 @@ a {
     color: white;
   }
 
-
-
-
-
 .center-screen {
   position: absolute;
   text-align: center;
@@ -96,11 +96,18 @@ a {
     margin-top: 5em;
   }
 
-  #level_menu a {
+  #level_menu .level-menu-link {
     display: block;
-    margin-bottom: 1em;
+    color: white;
+    height: 3rem;
+    transition: font-size 0.1s;
   }
 
+    #level_menu .level-menu-link:hover {
+      cursor: pointer;
+      color: #ad4;
+      font-size: 20px;
+    }
 
 #level_load, #level_save {
   position: absolute;
