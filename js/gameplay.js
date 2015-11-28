@@ -25,7 +25,7 @@ loopery.gameplay = {
     });
     clear(loopery.ctx);
     clear(loopery.ctx_bg);
-    if (loopery.presentation.ctx) { clear(loopery.presentation.ctx); }
+    if (loopery.presentation && loopery.presentation.ctx) { clear(loopery.presentation.ctx); }
     this.hideAllMessages();
   },
 

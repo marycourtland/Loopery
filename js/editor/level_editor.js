@@ -41,9 +41,20 @@ loopery.enableEditor = function() {
 
   // Piggyback on the loopery.gameplay object to render everything
   // Start out with the blank_level.json level
-  loopery.loadLevelData('levels/blank_level.json', function(level_data) {
-    loopery.gameplay.loadLevel(level_data);
+  loopery.gameplay.loadLevel({
+    info: {
+      name: "",
+      index: -1
+    },
+    loops: [],
+    connectors: [],
+    joints: [],
+    orbs: [],
+    decorations: []
   });
+  // loopery.loadLevelData('levels/blank_level.json', function(level_data) {
+  //   loopery.gameplay.loadLevel(level_data);
+  // });
 }
 
 loopery.editor.saveLevel = function() {
@@ -81,6 +92,7 @@ loopery.editor.loadLevel = function(level_json) {
   loopery.editor.hideLoader();
 
   loopery.gameplay.loadLevel(level_data);
+  loopery.gameplay.pause();
   
   // Make sure all the loops are clickable
   loopery.gameplay.forAllObjectsInGroup('loops', function(loop) {
