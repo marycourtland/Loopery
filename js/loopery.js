@@ -135,6 +135,28 @@ loopery.hidePointer = function() {
   $("body").css("cursor", "auto");
 }
 
+// ========== Local storage
+loopery.localStorageSet = function(key, value) {
+  if (!window.localStorage) { return; }
+  var data = loopery.localStorage();
+  data[key] = value;
+  window.localStorage.loopery_data = JSON.stringify(data);
+}
+loopery.localStorageGet = function(key) {
+  if (!window.localStorage) { return undefined; }
+  var data = loopery.localStorage();
+  return data[key];
+}
+
+loopery.localStorage = function() {
+  if (!window.localStorage) { return {}; }
+  if (!('loopery_data' in window.localStorage)) { 
+    window.localStorage.loopery_data = '{}';
+  }
+  return JSON.parse(window.localStorage.loopery_data);
+}
+
+
 
 $(document).ready(function() {
   $("#game_fadeout").hide(); // start with the fadeout layer hidden (i.e. game is not faded out)

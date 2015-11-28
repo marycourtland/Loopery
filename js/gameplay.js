@@ -29,6 +29,11 @@ loopery.gameplay = {
     this.hideAllMessages();
   },
 
+  completeLevel: function() {
+    loopery.markLevelSolved(this.current_level);
+    this.showLevelComplete();
+  },
+
   hideAllMessages: function() {
     this.hideLevelComplete();
     this.hideLevelFailed();

@@ -26,6 +26,27 @@ loopery.levels = [
   }
 ]
 
+loopery.isLevelSolved = function(level_index) {
+  if (!(level_index in loopery.levels)) { return false; }
+  var url = loopery.levels[level_index].url;
+
+  var solved_levels = loopery.localStorageGet('solved_levels') || {};
+
+  if (!(url in solved_levels)) { return false; }
+  return solved_levels[url];
+}
+
+loopery.markLevelSolved = function(level_index) {
+  if (!(level_index in loopery.levels)) { return false; }
+  var url = loopery.levels[level_index].url;
+
+  loopery.levels[level_index].link.addClass('level-solved');
+
+  var solved_levels = loopery.localStorageGet('solved_levels') || {};
+  solved_levels[url] = true;
+
+  loopery.localStorageSet('solved_levels', solved_levels);
+}
 
 loopery.loadNextLevel = function() {
   loopery.startGameplay(loopery.gameplay.current_level + 1);
@@ -35,9 +56,14 @@ loopery.loadPreviousLevel = function() {
   loopery.startGameplay(loopery.gameplay.current_level - 1);
 }
 
+
 loopery.fetchLevelData = function(level_index) {
   var url = loopery.levels[level_index].url;
   loopery.levels[level_index].link = loopery.levelMenu.makeLink();
+
+  if (loopery.isLevelSolved(level_index)) {
+    loopery.levels[level_index].link.addClass('level-solved');
+  }
 
   $.ajax({
     url: url,

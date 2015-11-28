@@ -212,7 +212,7 @@ loopery.Orb.Roles.player = {
           drawGoalStar(loc, r0, loopery.state.frame / 5, width, alpha);
         },
         function end() {
-          loopery.gameplay.showLevelComplete();
+          loopery.gameplay.completeLevel();
         }
       )).start();
     }

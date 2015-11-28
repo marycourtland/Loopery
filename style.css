@@ -39,10 +39,10 @@ canvas {
     font-size: 17px;
     margin: 0.5em;
     color: #ddd;
-    
   }
     #hud .hud-link:hover {
-      color: white;
+      color: white !important;
+      text-decoration: none !important;
     }
 
 #game_fadeout {
@@ -104,9 +104,15 @@ canvas {
     transition: font-size 0.1s;
   }
 
+    #level_menu .level-menu-link.level-solved {
+      color: #787;
+      text-decoration: line-through;
+    }
+
     #level_menu .level-menu-link:hover {
       cursor: pointer;
-      color: #ad4;
+      color: white !important;
+      text-decoration: none !important;
       font-size: 20px;
     }
 
