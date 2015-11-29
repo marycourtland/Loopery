@@ -296,6 +296,9 @@ vunit = { // Unit vectors
   }
 }
 
+function vector_copy(v) {
+  return xy(v.x, v.y);
+}
 
 function randXY(v1, v2) {
   if (v2 == null) {

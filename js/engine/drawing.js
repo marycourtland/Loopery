@@ -113,26 +113,39 @@ var draw = {
     if (!_.isArray(txt)) txt = [txt];
     ctx.save();
 
-    this.configContext(params);
+    this.configContext(ctx, params);
 
-    if (pos != "center") pos = pos.copy();
-    
-    if (pos == "center")
-      pos = xy(ctx.canvas.width/2 - ctx.measureText(txt).width/2, ctx.canvas.height/2 + ctx.fontsize/2);
-    else if (!pos_loc || pos_loc.toLowerCase()=="nw")
-      pos.add(xy(0, ctx.fontsize));
-    else if (pos_loc.toLowerCase()=="ne")
-      pos.add(xy(-ctx.measureText(txt).width, ctx.fontsize));
-    else if (pos_loc.toLowerCase()=="se")
-      pos.add(xy(ctx.measureText(txt).width, 0));
-    else if (pos_loc.toLowerCase()=="centered")
-      pos.add(xy(-ctx.measureText(txt).width/2, ctx.fontsize/2));
-    
+    var text_width = Math.max.apply(Math, txt.map(function(i) {
+      return loopery.ctx.measureText(i).width;
+    }))
+    var text_height = ctx.fontsize; // todo: get this to handle multiple lines
+
+    if (pos == "center") {
+      pos = xy(ctx.canvas.width/2 - text_width/2, ctx.canvas.height/2 + ctx.fontsize/2);
+    }
+    else {
+      pos = vector_copy(pos);
+      pos_loc = pos_loc.toLowerCase();
+
+      var offsets = {
+        'nw' : xy(0, text_height),
+        'ne' : xy(-text_width, text_height),
+        'se' : xy(text_width, 0),
+        'sw' : xy(-text_width, 0),
+        'centered' : xy(-text_width/2, text_height/2),
+      };
+
+      if (!(pos_loc in offsets)) { pos_loc = 'nw'; }
+
+      pos.add(offsets[pos_loc]);
+    }
+
     for (var i=0; i < txt.length; i++) {
       if (typeof(txt[i]) != "string") continue;
       ctx.fillText(txt[i], pos.x, pos.y);
       pos.add(xy(0, ctx.fontsize));
     }
+
     ctx.restore();
   },
 

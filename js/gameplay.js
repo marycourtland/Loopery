@@ -85,7 +85,7 @@ loopery.gameplay = {
   loadObject: function(obj_group, obj_type, obj_data) {
     var id = obj_data["id"];
     var ObjectType = loopery[obj_type];
-    var ctx = (obj_type === 'Loop' || obj_type === 'Connector') ? loopery.ctx_bg : loopery.ctx;
+    var ctx = loopery[loopery.objectTypesByGroup[obj_group].ctx];
     this.levelObjects[obj_group][id] = new ObjectType(id, ctx, loopery.gameplay.lookup);
     return this.levelObjects[obj_group][id];
   },
@@ -96,7 +96,6 @@ loopery.gameplay = {
 
     loopery.objects.push(this.levelObjects[obj_group][id]);
     this.configObjectEvents(this.levelObjects[obj_group][id]);
-
   },
 
   removeObject: function(obj) {

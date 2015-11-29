@@ -6,12 +6,16 @@ loopery.center = xy(500, 600);
 
 // Two canvases: background/foreground
 // todo: refactor into layers in game.js
+// todo: REFACTOR THIS.
+// todo: why aren't you refactoring this?
 loopery.canvas_bg = $("#game_canvas_bg")[0];
 loopery.canvas_bg.style.backgroundColor = 'transparent';
 loopery.canvas.style.backgroundColor = 'transparent';
 loopery.canvas_bg.width = loopery.size.x;
 loopery.canvas_bg.height = loopery.size.y;
 loopery.ctx_bg = loopery.canvas_bg.getContext('2d');
+loopery.ctx_bg.font = loopery.display.font.size.toString() + "px " + loopery.display.font.type;
+loopery.ctx_bg.fontsize = loopery.display.font.size;
 loopery.state.redraw_bg = true; // todo: unhackify this
 
 
