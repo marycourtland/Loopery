@@ -5,7 +5,7 @@
    "loops":[  
       {  
          "id":31,
-         "x":-90,
+         "x":90,
          "y":340,
          "r":80
       },
@@ -43,76 +43,244 @@
    "connectors":[  
       {  
          "id":37,
-         "joint1":10037,
-         "joint2":20037
+         "joint1": {  
+            "id":10037,
+            "loop":31,
+            "connector":37,
+            "winding":1,
+            "state":true
+         },
+         "joint2": {  
+            "id":20037,
+            "loop":32,
+            "connector":37,
+            "winding":1,
+            "state":true
+         }
       },
       {  
          "id":38,
-         "joint1":10038,
-         "joint2":20038
+         "joint1": {  
+            "id":10038,
+            "loop":35,
+            "connector":38,
+            "winding":1,
+            "state":true
+         },
+         "joint2": {  
+            "id":20038,
+            "loop":36,
+            "connector":38,
+            "winding":-1,
+            "state":false
+         }
       },
       {  
          "id":39,
-         "joint1":10039,
-         "joint2":20039
+         "joint1": {  
+            "id":10039,
+            "loop":32,
+            "connector":39,
+            "winding":-1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20039,
+            "loop":33,
+            "connector":39,
+            "winding":-1,
+            "state":false
+         }
       },
       {  
          "id":40,
-         "joint1":10040,
-         "joint2":20040
+         "joint1": {  
+            "id":10040,
+            "loop":32,
+            "connector":40,
+            "winding":1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20040,
+            "loop":33,
+            "connector":40,
+            "winding":1,
+            "state":false
+         }
       },
       {  
          "id":41,
-         "joint1":10041,
-         "joint2":20041
+         "joint1": {  
+            "id":10041,
+            "loop":32,
+            "connector":41,
+            "winding":-1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20041,
+            "loop":34,
+            "connector":41,
+            "winding":-1,
+            "state":false
+         }
       },
       {  
          "id":42,
-         "joint1":10042,
-         "joint2":20042
+         "joint1": {  
+            "id":10042,
+            "loop":32,
+            "connector":42,
+            "winding":1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20042,
+            "loop":34,
+            "connector":42,
+            "winding":1,
+            "state":false
+         }
       },
       {  
          "id":43,
-         "joint1":10043,
-         "joint2":20043
+         "joint1": {  
+            "id":10043,
+            "loop":33,
+            "connector":43,
+            "winding":-1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20043,
+            "loop":35,
+            "connector":43,
+            "winding":-1,
+            "state":false
+         }
       },
       {  
          "id":44,
-         "joint1":10044,
-         "joint2":20044
+         "joint1": {  
+            "id":10044,
+            "loop":33,
+            "connector":44,
+            "winding":1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20044,
+            "loop":35,
+            "connector":44,
+            "winding":1,
+            "state":false
+         }
       },
       {  
          "id":45,
-         "joint1":10045,
-         "joint2":20045
+         "joint1": {  
+            "id":10045,
+            "loop":34,
+            "connector":45,
+            "winding":-1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20045,
+            "loop":35,
+            "connector":45,
+            "winding":-1,
+            "state":false
+         }
       },
       {  
          "id":46,
-         "joint1":10046,
-         "joint2":20046
+         "joint1": {  
+            "id":10046,
+            "loop":34,
+            "connector":46,
+            "winding":1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20046,
+            "loop":35,
+            "connector":46,
+            "winding":1,
+            "state":false
+         }
       },
       {  
          "id":47,
-         "joint1":10047,
-         "joint2":20047
+         "joint1": {  
+            "id":10047,
+            "loop":32,
+            "connector":47,
+            "winding":-1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20047,
+            "loop":33,
+            "connector":47,
+            "winding":1,
+            "state":false
+         }
       },
       {  
          "id":48,
-         "joint1":10048,
-         "joint2":20048
+         "joint1": {  
+            "id":10048,
+            "loop":34,
+            "connector":48,
+            "winding":1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20048,
+            "loop":35,
+            "connector":48,
+            "winding":-1,
+            "state":false
+         }
       },
       {  
          "id":49,
-         "joint1":10049,
-         "joint2":20049
+         "joint1": {  
+            "id":10049,
+            "loop":32,
+            "connector":49,
+            "winding":1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20049,
+            "loop":34,
+            "connector":49,
+            "winding":-1,
+            "state":false
+         }
       },
       {  
          "id":50,
-         "joint1":10050,
-         "joint2":20050
+         "joint1": {  
+            "id":10050,
+            "loop":33,
+            "connector":50,
+            "winding":-1,
+            "state":false
+         },
+         "joint2": {  
+            "id":20050,
+            "loop":35,
+            "connector":50,
+            "winding":1,
+            "state":false
+         }
       }
    ],
-   "joints":[  
+   "joints":[
       {  
          "id":10037,
          "loop":31,
@@ -261,7 +429,13 @@
          "state":false
       },
       {  
+         "id": {  
          "id":20047,
+         "loop":33,
+         "connector":47,
+         "winding":1,
+         "state":false
+      },
          "loop":33,
          "connector":47,
          "winding":1,

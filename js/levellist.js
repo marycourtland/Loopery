@@ -5,6 +5,11 @@ loopery.levels = [
     data: null
   },
   {
+    url: 'levels/boat.json',
+    link: null,
+    data: null
+  },
+  {
     url: 'levels/shortpaths.json',
     link: null,
     data: null

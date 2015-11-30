@@ -229,6 +229,18 @@ loopery.editor.delete_tool.button = makeEditorButton(
   function() { loopery.editor.setTool(loopery.editor.delete_tool); }
 ).appendTo(loopery.editor.menu);
 
+loopery.editor.cycle_tool.button = makeEditorButton(
+  "editor-cycles",
+  "View cycles",
+  function() { loopery.editor.setTool(loopery.editor.cycle_tool); }
+).appendTo(loopery.editor.menu);
+
+loopery.editor.path_tool.button = makeEditorButton(
+  "editor-paths",
+  "Find paths",
+  function() { loopery.editor.setTool(loopery.editor.path_tool); }
+).appendTo(loopery.editor.menu);
+
 addMenuSpacer();
 
 loopery.editor.circle_tool.button = makeEditorButton(
