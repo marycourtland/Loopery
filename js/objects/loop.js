@@ -69,6 +69,20 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     );
     this.show_shade = false;
   }
+
+  this.shadeHalf = function(side, color) {
+    // Side can be +1 (rightwards) or -1 (leftwards)
+    if (!color) { color = 'white'; }
+    var angle1 = (side === 1) ? -Math.PI/2 : Math.PI/2;
+    var angle2 = (side === 1) ? Math.PI/2 : 3*Math.PI/2;
+    draw.arc(this.ctx, this.loc, this.radius - loopery.display.track_width/2, angle1, angle2,
+      {
+        fill: color,
+        alpha: 0.3
+      }
+    );
+    this.show_shade = false;
+  }
   
   $(this).on('draw', function() {
     if (!loopery.state.redraw_bg) { return; }

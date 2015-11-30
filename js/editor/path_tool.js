@@ -1,8 +1,7 @@
-// Tool to view cycles, which helps with designing interesting and solvable levels
+// Tool to view paths between two loop nodes
 loopery.editor.path_tool = {};
 
 loopery.editor.path_tool.level_graph = null;
-loopery.editor.path_tool.level_cycles = null;
 
 loopery.editor.path_tool.params = {
   node1: null,
@@ -78,7 +77,7 @@ loopery.editor.path_tool.states = {
           loop.shade('green');
         }) 
       }
-      // todo: if mouse is in a loop, show both direction arrows, and shade the one which contains the mouse
+      // todo: show arrows indicating which dir each semicircle represents
     },
     
     onleave: function() {
@@ -87,6 +86,7 @@ loopery.editor.path_tool.states = {
         var dir = loopery.editor.path_tool.getLoopDirFromMousePos(loopery.mouse.pos, loop);
         var node = loopery.editor.path_tool.getNode(loop, dir);
         loopery.editor.path_tool.params.node1 = node;
+        this.loops = [];
         this.next_state = 'choose_node2';
       }
       else {
@@ -142,6 +142,7 @@ loopery.editor.path_tool.states = {
       }
       else {
         // repeat this state if clicked outside a loop
+        loopery.editor.path_tool.states.choose_node1.loops = [];
         this.next_state = 'choose_node2';
       }
 

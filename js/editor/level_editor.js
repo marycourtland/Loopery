@@ -189,7 +189,8 @@ loopery.editor.keyboard_shortcuts = {
   "S" : function() { loopery.editor.setTool(loopery.editor.select_tool); },
   "D" : function() { loopery.editor.setTool(loopery.editor.delete_tool); },
   "O" : function() { loopery.editor.setTool(loopery.editor.orb_tool); },
-  "V" : function() { loopery.editor.setTool(loopery.editor.cycle_tool); },
+  "Q" : function() { loopery.editor.setTool(loopery.editor.cycle_tool); },
+  "E" : function() { loopery.editor.setTool(loopery.editor.path_tool); },
   "G" : function() { $("#editor-grid").trigger('click'); },
   "SPACE" : function(evt) {
     evt.stopPropagation();
