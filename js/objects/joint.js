@@ -157,10 +157,14 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
   }
 
   this.drawArrowClicker = function() {
+    this.drawArrowClickerScaled(this.getProximityScale(distance(this.getLoc(), loopery.mouse.pos)));
+  }
+
+  this.drawArrowClickerScaled = function(scale) {
     // draw arrow
     var loc = this.getLoc();
     if (!loc) { return; }
-    var w = loopery.joint_click_radius * 0.8;
+    var w = loopery.joint_click_radius * 0.8 * scale;
     // var w = loopery.display.track_width * 2;
     var dir = this.connector.joints[0] === this ? 1 : -1;
     var p1 = rth(dir * w, this.connector.geometry.angle);
@@ -201,6 +205,12 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
   }
 
   this.alphaPulse = oscillator(loopery.display.joint_click_pulse_period, 0, loopery.display.joint_click_max_alpha);
+
+  this.getProximityScale = function(mouse_distance) {
+    // decide how large the clicker should be drawn based on how close the given position is
+    if (mouse_distance > loopery.display.joint_click_mouse_distance/2) { return 1; }
+    return 1 + 0.5*(1 - mouse_distance/loopery.display.joint_click_mouse_distance/2);
+  }
 
   this.contains = function(loc) {
     if (!this.enabled) { return false; }

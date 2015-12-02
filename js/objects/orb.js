@@ -6,6 +6,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
   this.init = function(data) {
     this.color = data.color || 'white';
+    this.color2 = data.color2;
     this.start = data.start;
     this.start_dir = data.start_dir;
     this.start_pos = data.start_pos;
@@ -38,6 +39,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     return {
       id: this.id,
       color: this.color,
+      color2: this.color2,
       start: this.start,
       start_dir: this.start_dir,
       start_pos: this.start_pos,
@@ -112,11 +114,33 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
   $(this).on('draw', function() {
     if (this.killed) { return; }
-    draw.circle(this.ctx, this.track.getPosCoords(this.pos), loopery.display.orb_radius, {
-      fill: this.color,
-      stroke: this.color
-    });
+    this.drawScaled(1);
   });
+
+  this.drawScaled = function(scale) {
+    var loc = this.track.getPosCoords(this.pos);
+
+    if (this.color2) {
+      var x = loc.x;
+      var y = loc.y;
+      var r =loopery.display.orb_radius * scale;
+
+      var gradient = this.ctx.createRadialGradient(x, y, r*3, (x - r/3), (y - r/3), r/8);
+      gradient.addColorStop(0,"#004CB3");
+      gradient.addColorStop(1,"#00ff00");
+      this.ctx.fillStyle = gradient;
+      this.ctx.beginPath();
+      this.ctx.arc(x, y, r, 0, 2*Math.PI, false);
+      this.ctx.fill();
+      this.ctx.closePath();
+    }
+    else {
+      draw.circle(this.ctx, loc, loopery.display.orb_radius * scale, {
+        fill: this.color,
+        stroke: this.color
+      }); 
+    }
+  }
 
   $(this).on('tick', function() {
     if (this.killed) { return; }

@@ -6,10 +6,8 @@ loopery.presentation.speed = loopery.orb_speed * 3;
 
 
 loopery.presentation.canvas = $("#presentation_canvas")[0];
-loopery.presentation.canvas.style.backgroundColor = 'transparent';
-loopery.presentation.canvas.width = loopery.size.x;
-loopery.presentation.canvas.height = loopery.size.y;
 loopery.presentation.ctx = loopery.presentation.canvas.getContext('2d');
+loopery.configLayer(loopery.presentation.ctx);
 
 loopery.presentation.tips = [];
 // tip object: {track:trackobj, pos:position, dir:dir}
@@ -96,8 +94,8 @@ loopery.presentation.getNewTips = function(tip) {
         new_tips.push({
           track: joint.connector,
           initialpos: joint_index,
-          pos: joint_index + dir*0.001,
-          oldpos: joint_index + dir*0.001,
+          pos: joint_index - dir*0.001,
+          oldpos: joint_index - dir*0.001,
           dir: dir,
           done: false
         });
@@ -112,8 +110,8 @@ loopery.presentation.getNewTips = function(tip) {
       new_tips.push({
         track: joint.loop,
         initialpos: joint.pos,
-        pos: joint.pos + -joint.winding*0.001,
-        oldpos: joint.pos + -joint.winding*0.001,
+        pos: joint.pos + -joint.winding*0.00001,
+        oldpos: joint.pos + -joint.winding*0.00001,
         dir: -joint.winding,
         done: false
       });
@@ -158,7 +156,12 @@ loopery.presentation.drawTip = function(tip) {
     }
   }
   else if (tip.track.group === 'connectors') {
-    draw.line(loopery.presentation.ctx, tip.track.getPosCoords(tip.initialpos), tip.track.getPosCoords(tip.pos), params);
+    if (tip.done) {
+      draw.line(loopery.presentation.ctx, tip.track.getPosCoords(0), tip.track.getPosCoords(1), params); 
+    }
+    else {
+      draw.line(loopery.presentation.ctx, tip.track.getPosCoords(tip.initialpos), tip.track.getPosCoords(tip.pos), params); 
+    }
   }
 }
 

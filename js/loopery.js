@@ -1,22 +1,37 @@
 // The game
 var loopery = new Game({bg_color: "#071500"});
 loopery.setTitle("Loopery");
-loopery.setSize(xy(1000, 800));
-loopery.center = xy(500, 600);
 
-// Two canvases: background/foreground
-// todo: refactor into layers in game.js
-// todo: REFACTOR THIS.
-// todo: why aren't you refactoring this?
-loopery.canvas_bg = $("#game_canvas_bg")[0];
-loopery.canvas_bg.style.backgroundColor = 'transparent';
-loopery.canvas.style.backgroundColor = 'transparent';
-loopery.canvas_bg.width = loopery.size.x;
-loopery.canvas_bg.height = loopery.size.y;
-loopery.ctx_bg = loopery.canvas_bg.getContext('2d');
-loopery.ctx_bg.font = loopery.display.font.size.toString() + "px " + loopery.display.font.type;
-loopery.ctx_bg.fontsize = loopery.display.font.size;
-loopery.state.redraw_bg = true; // todo: unhackify this
+loopery.refreshGameElements = function() {
+  var window_area = xy(window.innerWidth, window.innerHeight);
+  loopery.setSize(window_area);
+  loopery.center = scale(window_area, 0.5);
+
+  loopery.layers = [];
+
+  // Two canvases: background/foreground
+  loopery.canvas_bg = $("#game_canvas_bg")[0];
+  loopery.ctx_bg = loopery.canvas_bg.getContext('2d');
+  loopery.state.redraw_bg = true; // todo: unhackify thiss
+
+  loopery.configLayer(loopery.ctx);
+  loopery.configLayer(loopery.ctx_bg);
+}
+
+loopery.configLayer = function(layer_context) {
+  layer_context.canvas.style.backgroundColor = 'transparent';
+  layer_context.canvas.width = loopery.size.x;
+  layer_context.canvas.height = loopery.size.y;
+  layer_context.font = loopery.display.font.size.toString() + "px " + loopery.display.font.type;
+  layer_context.fontsize = loopery.display.font.size;
+
+  // Set 0, 0 to the center
+  layer_context.translate(loopery.size.x/2, loopery.size.y/2);
+}
+
+loopery.refreshGameElements();
+
+
 
 
 loopery.bg = $("#game_bg")[0];
