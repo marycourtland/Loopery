@@ -12,17 +12,6 @@
 // - Delete tool (guess what this does!)
 
 
-// TODOS:
-// - A "clear all" function/button
-// - Select/edit tool
-//    - Let designer resize circles
-// - Delete tool
-// - Display something that indicates which tool is the current tool
-// - Display informative text showing how to use the tool
-// - Let the designer choose the gridsize
-// - Let the designer try out the game
-// - Let the designer choose starting and ending tracks
-
 loopery.editor = new GameObject(loopery);
 
 loopery.editor.enabled = false;

@@ -23,7 +23,7 @@ loopery.presentation.start = function(initial_tips, endCallback) {
   for (var id in loops) { loops[id].presented = false; }
   for (var id in connectors) { connectors[id].presented = false; }
 
-  clear(loopery.presentation.ctx);
+  draw.clear(loopery.presentation.ctx);
   $(loopery.presentation.canvas).show();
   $(loopery.canvas_bg).hide();
   $(loopery.canvas).hide();
@@ -71,7 +71,7 @@ loopery.presentation.tick = function() {
 }
 
 loopery.presentation.draw = function() {
-  clear(loopery.presentation.ctx);
+  draw.clear(loopery.presentation.ctx);
   this.tips.forEach(loopery.presentation.drawTip);
 }
 

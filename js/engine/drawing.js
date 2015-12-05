@@ -24,7 +24,10 @@ var draw = {
   },
 
   clear: function(ctx) {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.closePath(); // just in case
+    ctx.clearRect(-loopery.size.x/2, -loopery.size.y/2, loopery.size.x, loopery.size.y);
+    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    // ctx.clearRect
   },
 
 

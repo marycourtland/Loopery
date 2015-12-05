@@ -42,19 +42,22 @@ var mouse = {
   },
 
   calcCanvasPos: function(event) {
+    var pos_without_offset = null;
     if (navigator.userAgent.match(/Firefox/i)) {
-      return xy(event.layerX - this.canvas.offsetLeft, event.layerY - this.canvas.offsetTop);
+      pos_without_offset = xy(event.layerX - this.canvas.offsetLeft, event.layerY - this.canvas.offsetTop);
     }
     else if (navigator.userAgent.match(/Chrome/i)) {
-      return xy(event.layerX, event.layerY);
+      pos_without_offset = xy(event.layerX, event.layerY);
     }
     else if (navigator.userAgent.match(/MSIE/i)) {
-      return xy(event.x - this.canvas.offsetLeft, event.y - this.canvas.offsetTop);
+      pos_without_offset = xy(event.x - this.canvas.offsetLeft, event.y - this.canvas.offsetTop);
     }
     else {
       // This is the same as the Chrome code
-      return xy(event.layerX, event.layerY);
+      pos_without_offset = xy(event.layerX, event.layerY);
     }
+
+    return pos_without_offset.subtract(loopery.center);
   },
   
   update: function() {

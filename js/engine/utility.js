@@ -56,9 +56,6 @@ function flatten(a) {
 function hw() {
     console.log("Hello world");
 }
-function clear(ctx) {
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-}
 function isInArea(pos, area_pos, area_size) {
   // Assumes that area_size is nonzero
   return !(

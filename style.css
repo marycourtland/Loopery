@@ -85,6 +85,7 @@ canvas {
 .center-screen-h {
   position: absolute;
   text-align: center;
+  width: 100%;
 }
 
 #level_menu {
@@ -118,7 +119,7 @@ canvas {
 
 #level_load, #level_save {
   position: absolute;
-  left: 100px; top:60px;
+  left: 180px; top:40px;
   width: 580px;
   padding: 1rem 1rem 2rem 1rem;
   background-color: rgb(157, 189, 116);

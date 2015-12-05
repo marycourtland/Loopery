@@ -55,7 +55,7 @@ loopery.disable_gameplay = false;
 // ========== GAME STAGES
 loopery.stages.titlescreen = {
   tick: function() {
-    clear(loopery.ctx);
+    draw.clear(loopery.ctx);
     loopery.setFont(loopery.display.font_title);
     draw.text(loopery.ctx, loopery.title, xy(400, 150), "centered");
     loopery.setFont(loopery.display.font_large, "italic");
@@ -67,7 +67,7 @@ loopery.stages.titlescreen = {
 
 loopery.stages.levelmenu = {
   tick: function() {
-    clear(loopery.ctx);
+    draw.clear(loopery.ctx);
     loopery.levelMenu.tick();
     loopery.levelMenu.draw();
     loopery.next();
@@ -78,11 +78,11 @@ loopery.stages.levelmenu = {
 
 loopery.stages.gameplay = {
   tick: function() {
-    clear(loopery.ctx);
+    draw.clear(loopery.ctx);
     loopery.hidePointer();
     loopery.gameplay.tick();
     if (loopery.presentation && loopery.presentation.running) { loopery.presentation.tick(); }
-    if (loopery.state.redraw_bg) { clear(loopery.ctx_bg); }
+    if (loopery.state.redraw_bg) { draw.clear(loopery.ctx_bg); }
     loopery.gameplay.draw();
     if (loopery.presentation && loopery.presentation.running) { loopery.presentation.draw(); }
     loopery.state.redraw_bg = false;
@@ -91,17 +91,17 @@ loopery.stages.gameplay = {
   stageStart: function() { $("#hud").show(); },
   stageEnd: function() {
     $("#hud").hide();
-    if (loopery.presentation) { clear(loopery.presentation.ctx); }
+    if (loopery.presentation) { draw.clear(loopery.presentation.ctx); }
   }
 }
 
 loopery.stages.editor = {
   // piggyback on the gameplay stage
   tick: function() {
-    clear(loopery.ctx);
+    draw.clear(loopery.ctx);
     loopery.gameplay.tick();
     loopery.editor.tick();
-    if (loopery.state.redraw_bg) { clear(loopery.ctx_bg); }
+    if (loopery.state.redraw_bg) { draw.clear(loopery.ctx_bg); }
 
     loopery.gameplay.draw();
     loopery.editor.draw();
@@ -121,7 +121,7 @@ loopery.setStage = function(stage_name) {
   loopery.currentStage = loopery.stages[stage_name];
   if (loopery.currentStage && typeof loopery.currentStage.stageStart === 'function') { loopery.currentStage.stageStart(); }
 
-  clear(loopery.ctx_bg);
+  draw.clear(loopery.ctx_bg);
   loopery.state.redraw_bg = true;
 }
 

@@ -4,9 +4,10 @@
 loopery.editor.menu = $("<div id='editor_menu'></div>")
   .css({
     position: 'absolute',
-    left: (loopery.size.x + 10) + 'px',
-    color: 'black',
-    width: '3.5em'
+    left: '20px',
+    color: 'white',
+    width: '3.5em',
+    'font-family': 'sans-serif'
   })
   .appendTo(document.body)
   .hide();
@@ -17,7 +18,7 @@ function makeEditorButton(id, label, callback) {
     .css({
       'display': 'inline-block',
       'margin-top': 5,
-      'background-color': '#222222',
+      'background-color': '#3C4E38',
       'padding': 5,
       'width': 120,
       'height': '1rem',
@@ -34,11 +35,11 @@ function makeEditorButton(id, label, callback) {
 }
 
 $.fn.highlight = function() {
-  $('.editor-button').css('background-color', '#222');
-  this.css('background-color', '#575');
+  $('.editor-button').css('background-color', '#3C4E38');
+  // this.css('background-color', '#575');
 
-  // $('.editor-button').css('border', '0px');
-  // this.css('border', '1px solid white');
+  $('.editor-button').css('border', '0px');
+  this.css('border', '1px solid white');
 }
 
 function makeNumberInput(id, label, default_value) {
@@ -109,7 +110,7 @@ $.fn.togglebutton = function(callbacks) {
       'width': '3em',
       'text-align': 'center',
       'cursor': 'pointer',
-      'background-color': 'black',
+      'background-color': '#3C4E38',
       'color': 'white',
     })
     .togglebutton({
@@ -270,7 +271,7 @@ addMenuSpacer();
 var param_box_style = {
   'width': 130,
   'font-size': 12,
-  'color': 'black',
+  'color': 'white',
 };
 
 var param_box_property_style = {

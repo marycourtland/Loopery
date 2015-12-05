@@ -23,9 +23,9 @@ loopery.gameplay = {
     loopery.objectTypes.forEach(function(obj) {
       _this.levelObjects[obj.group] = {};
     });
-    clear(loopery.ctx);
-    clear(loopery.ctx_bg);
-    if (loopery.presentation && loopery.presentation.ctx) { clear(loopery.presentation.ctx); }
+    draw.clear(loopery.ctx);
+    draw.clear(loopery.ctx_bg);
+    if (loopery.presentation && loopery.presentation.ctx) { draw.clear(loopery.presentation.ctx); }
     this.hideAllMessages();
   },
 
