@@ -1,164 +1,154 @@
-{  
-   "info":{  
-      "name":"Something different"
-   },
-   "loops":[  
-      {  
-         "id":104,
-         "x":179,
-         "y":280,
-         "r":40
+{
+  "info": {
+    "name": "Something different"
+  },
+  "loops": [
+    {
+      "id": 104,
+      "x": -241,
+      "y": 0,
+      "r": 40
+    },
+    {
+      "id": 105,
+      "x": -120,
+      "y": 0,
+      "r": 40
+    },
+    {
+      "id": 106,
+      "x": 0,
+      "y": 0,
+      "r": 40
+    },
+    {
+      "id": 107,
+      "x": 119,
+      "y": 0,
+      "r": 40
+    },
+    {
+      "id": 111,
+      "x": 240,
+      "y": 0,
+      "r": 40
+    }
+  ],
+  "connectors": [
+    {
+      "id": 108,
+      "joint1": {
+        "id": 10108,
+        "loop": 104,
+        "winding": -1,
+        "state": false
       },
-      {  
-         "id":105,
-         "x":300,
-         "y":280,
-         "r":40
-      },
-      {  
-         "id":106,
-         "x":420,
-         "y":280,
-         "r":40
-      },
-      {  
-         "id":107,
-         "x":539,
-         "y":280,
-         "r":40
-      },
-      {  
-         "id":111,
-         "x":660,
-         "y":280,
-         "r":40
+      "joint2": {
+        "id": 20108,
+        "loop": 105,
+        "winding": -1,
+        "state": false
       }
-   ],
-   "connectors":[  
-      {  
-         "id":108,
-         "joint1":{  
-            "id":10108,
-            "loop":104,
-            "winding":-1,
-            "state":false
-         },
-         "joint2":{  
-            "id":20108,
-            "loop":105,
-            "winding":-1,
-            "state":false
-         }
+    },
+    {
+      "id": 109,
+      "joint1": {
+        "id": 10109,
+        "loop": 105,
+        "winding": 1,
+        "state": false
       },
-      {  
-         "id":109,
-         "joint1":{  
-            "id":10109,
-            "loop":105,
-            "winding":1,
-            "state":false
-         },
-         "joint2":{  
-            "id":20109,
-            "loop":106,
-            "winding":1,
-            "state":false
-         }
-      },
-      {  
-         "id":110,
-         "joint1":{  
-            "id":10110,
-            "loop":106,
-            "winding":-1,
-            "state":false
-         },
-         "joint2":{  
-            "id":20110,
-            "loop":107,
-            "winding":-1,
-            "state":false
-         }
-      },
-      {  
-         "id":112,
-         "joint1":{  
-            "id":10112,
-            "loop":107,
-            "winding":1,
-            "state":false
-         },
-         "joint2":{  
-            "id":20112,
-            "loop":111,
-            "winding":1,
-            "state":false
-         }
+      "joint2": {
+        "id": 20109,
+        "loop": 106,
+        "winding": 1,
+        "state": false
       }
-   ],
-   "orbs":[  
-      {  
-         "id":0,
-         "color":"blue",
-         "start":104,
-         "start_dir":-1,
-         "start_pos":0.01,
-         "roles":{  
-            "player":{  
-               "end":111
-            }
-         }
+    },
+    {
+      "id": 110,
+      "joint1": {
+        "id": 10110,
+        "loop": 106,
+        "winding": -1,
+        "state": false
       },
-      {  
-         "id":999,
-         "start":104,
-         "start_dir":-1,
-         "start_pos":0.5,
-         "color":"red",
-         "roles":{  
-            "enemy":{  
-
-            }
-         }
-      },
-      {  
-         "id":998,
-         "start":105,
-         "start_dir":-1,
-         "start_pos":0.5,
-         "color":"red",
-         "roles":{  
-            "enemy":{  
-
-            }
-         }
-      },
-      {  
-         "id":996,
-         "start":107,
-         "start_dir":1,
-         "start_pos":0.5,
-         "color":"red",
-         "roles":{  
-            "enemy":{  
-
-            }
-         }
-      },
-      {  
-         "id":995,
-         "start":111,
-         "start_dir":1,
-         "start_pos":0.5,
-         "color":"red",
-         "roles":{  
-            "enemy":{  
-
-            }
-         }
+      "joint2": {
+        "id": 20110,
+        "loop": 107,
+        "winding": -1,
+        "state": false
       }
-   ],
-   "decorations":[  
-
-   ]
+    },
+    {
+      "id": 112,
+      "joint1": {
+        "id": 10112,
+        "loop": 107,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 20112,
+        "loop": 111,
+        "winding": 1,
+        "state": false
+      }
+    }
+  ],
+  "orbs": [
+    {
+      "id": 0,
+      "color": "blue",
+      "start": 104,
+      "start_dir": -1,
+      "start_pos": 0.01,
+      "roles": {
+        "player": {
+          "end": 111
+        }
+      }
+    },
+    {
+      "id": 999,
+      "start": 104,
+      "start_dir": -1,
+      "start_pos": 0.5,
+      "color": "red",
+      "roles": {
+        "enemy": {}
+      }
+    },
+    {
+      "id": 998,
+      "start": 105,
+      "start_dir": -1,
+      "start_pos": 0.5,
+      "color": "red",
+      "roles": {
+        "enemy": {}
+      }
+    },
+    {
+      "id": 996,
+      "start": 107,
+      "start_dir": 1,
+      "start_pos": 0.5,
+      "color": "red",
+      "roles": {
+        "enemy": {}
+      }
+    },
+    {
+      "id": 995,
+      "start": 111,
+      "start_dir": 1,
+      "start_pos": 0.5,
+      "color": "red",
+      "roles": {
+        "enemy": {}
+      }
+    }
+  ],
+  "decorations": []
 }

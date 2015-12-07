@@ -1,668 +1,668 @@
 {
-    "info": {
-        "name": "Level 2"
+  "info": {
+    "name": "Level 2"
+  },
+  "loops": [
+    {
+      "id": 1,
+      "x": 0,
+      "y": -120,
+      "r": 60
     },
-    "loops": [
-        {
-            "id": 1,
-            "x": 420,
-            "y": 194,
-            "r": 60
-        },
-        {
-            "id": 2,
-            "x": 420,
-            "y": 434,
-            "r": 60
-        },
-        {
-            "id": 3,
-            "x": 539,
-            "y": 313,
-            "r": 60
-        },
-        {
-            "id": 4,
-            "x": 300,
-            "y": 314,
-            "r": 60
-        },
-        {
-            "id": 5,
-            "x": 300,
-            "y": 74,
-            "r": 60
-        },
-        {
-            "id": 8,
-            "x": 540,
-            "y": 77,
-            "r": 60
-        },
-        {
-            "id": 9,
-            "x": 660,
-            "y": 194,
-            "r": 60
-        },
-        {
-            "id": 10,
-            "x": 660,
-            "y": 434,
-            "r": 60
-        },
-        {
-            "id": 11,
-            "x": 540,
-            "y": 554,
-            "r": 60
-        },
-        {
-            "id": 12,
-            "x": 180,
-            "y": 434,
-            "r": 60
-        },
-        {
-            "id": 13,
-            "x": 300,
-            "y": 554,
-            "r": 60
-        },
-        {
-            "id": 47,
-            "x": 65,
-            "y": 474,
-            "r": 20
-        },
-        {
-            "id": 78,
-            "x": 780,
-            "y": 154,
-            "r": 20
-        },
-        {
-            "id": 103,
-            "x": 180,
-            "y": 194,
-            "r": 60
+    {
+      "id": 2,
+      "x": 0,
+      "y": 120,
+      "r": 60
+    },
+    {
+      "id": 3,
+      "x": 119,
+      "y": -1,
+      "r": 60
+    },
+    {
+      "id": 4,
+      "x": -120,
+      "y": 0,
+      "r": 60
+    },
+    {
+      "id": 5,
+      "x": -120,
+      "y": -240,
+      "r": 60
+    },
+    {
+      "id": 8,
+      "x": 120,
+      "y": -237,
+      "r": 60
+    },
+    {
+      "id": 9,
+      "x": 240,
+      "y": -120,
+      "r": 60
+    },
+    {
+      "id": 10,
+      "x": 240,
+      "y": 120,
+      "r": 60
+    },
+    {
+      "id": 11,
+      "x": 120,
+      "y": 240,
+      "r": 60
+    },
+    {
+      "id": 12,
+      "x": -240,
+      "y": 120,
+      "r": 60
+    },
+    {
+      "id": 13,
+      "x": -120,
+      "y": 240,
+      "r": 60
+    },
+    {
+      "id": 47,
+      "x": -355,
+      "y": 160,
+      "r": 20
+    },
+    {
+      "id": 78,
+      "x": 360,
+      "y": -160,
+      "r": 20
+    },
+    {
+      "id": 103,
+      "x": -240,
+      "y": -120,
+      "r": 60
+    }
+  ],
+  "joints": [
+    {
+      "id": 49,
+      "loop": 12,
+      "connector": 48,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 50,
+      "loop": 47,
+      "connector": 48,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 52,
+      "loop": 12,
+      "connector": 51,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 53,
+      "loop": 4,
+      "connector": 51,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 55,
+      "loop": 12,
+      "connector": 54,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 56,
+      "loop": 2,
+      "connector": 54,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 58,
+      "loop": 4,
+      "connector": 57,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 59,
+      "loop": 1,
+      "connector": 57,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 64,
+      "loop": 5,
+      "connector": 63,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 65,
+      "loop": 1,
+      "connector": 63,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 67,
+      "loop": 5,
+      "connector": 66,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 68,
+      "loop": 8,
+      "connector": 66,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 70,
+      "loop": 1,
+      "connector": 69,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 71,
+      "loop": 8,
+      "connector": 69,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 73,
+      "loop": 3,
+      "connector": 72,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 74,
+      "loop": 8,
+      "connector": 72,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 76,
+      "loop": 3,
+      "connector": 75,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 77,
+      "loop": 9,
+      "connector": 75,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 80,
+      "loop": 9,
+      "connector": 79,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 81,
+      "loop": 78,
+      "connector": 79,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 83,
+      "loop": 2,
+      "connector": 82,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 84,
+      "loop": 13,
+      "connector": 82,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 86,
+      "loop": 13,
+      "connector": 85,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 87,
+      "loop": 11,
+      "connector": 85,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 89,
+      "loop": 11,
+      "connector": 88,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 90,
+      "loop": 3,
+      "connector": 88,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 95,
+      "loop": 11,
+      "connector": 94,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 96,
+      "loop": 10,
+      "connector": 94,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 98,
+      "loop": 10,
+      "connector": 97,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 99,
+      "loop": 9,
+      "connector": 97,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 105,
+      "loop": 103,
+      "connector": 104,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 106,
+      "loop": 5,
+      "connector": 104,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 108,
+      "loop": 103,
+      "connector": 107,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 109,
+      "loop": 4,
+      "connector": 107,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 113,
+      "loop": 47,
+      "connector": 112,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 114,
+      "loop": 12,
+      "connector": 112,
+      "winding": 1,
+      "state": false
+    }
+  ],
+  "connectors": [
+    {
+      "id": 48,
+      "joint1": {
+        "id": 49,
+        "loop": 12,
+        "connector": 48,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 50,
+        "loop": 47,
+        "connector": 48,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 51,
+      "joint1": {
+        "id": 52,
+        "loop": 12,
+        "connector": 51,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 53,
+        "loop": 4,
+        "connector": 51,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 54,
+      "joint1": {
+        "id": 55,
+        "loop": 12,
+        "connector": 54,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 56,
+        "loop": 2,
+        "connector": 54,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 57,
+      "joint1": {
+        "id": 58,
+        "loop": 4,
+        "connector": 57,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 59,
+        "loop": 1,
+        "connector": 57,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 63,
+      "joint1": {
+        "id": 64,
+        "loop": 5,
+        "connector": 63,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 65,
+        "loop": 1,
+        "connector": 63,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 66,
+      "joint1": {
+        "id": 67,
+        "loop": 5,
+        "connector": 66,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 68,
+        "loop": 8,
+        "connector": 66,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 69,
+      "joint1": {
+        "id": 70,
+        "loop": 1,
+        "connector": 69,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 71,
+        "loop": 8,
+        "connector": 69,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 72,
+      "joint1": {
+        "id": 73,
+        "loop": 3,
+        "connector": 72,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 74,
+        "loop": 8,
+        "connector": 72,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 75,
+      "joint1": {
+        "id": 76,
+        "loop": 3,
+        "connector": 75,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 77,
+        "loop": 9,
+        "connector": 75,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 79,
+      "joint1": {
+        "id": 80,
+        "loop": 9,
+        "connector": 79,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 81,
+        "loop": 78,
+        "connector": 79,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 82,
+      "joint1": {
+        "id": 83,
+        "loop": 2,
+        "connector": 82,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 84,
+        "loop": 13,
+        "connector": 82,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 85,
+      "joint1": {
+        "id": 86,
+        "loop": 13,
+        "connector": 85,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 87,
+        "loop": 11,
+        "connector": 85,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 88,
+      "joint1": {
+        "id": 89,
+        "loop": 11,
+        "connector": 88,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 90,
+        "loop": 3,
+        "connector": 88,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 94,
+      "joint1": {
+        "id": 95,
+        "loop": 11,
+        "connector": 94,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 96,
+        "loop": 10,
+        "connector": 94,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 97,
+      "joint1": {
+        "id": 98,
+        "loop": 10,
+        "connector": 97,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 99,
+        "loop": 9,
+        "connector": 97,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 104,
+      "joint1": {
+        "id": 105,
+        "loop": 103,
+        "connector": 104,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 106,
+        "loop": 5,
+        "connector": 104,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 107,
+      "joint1": {
+        "id": 108,
+        "loop": 103,
+        "connector": 107,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 109,
+        "loop": 4,
+        "connector": 107,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 112,
+      "joint1": {
+        "id": 113,
+        "loop": 47,
+        "connector": 112,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 114,
+        "loop": 12,
+        "connector": 112,
+        "winding": 1,
+        "state": false
+      }
+    }
+  ],
+  "orbs": [
+    {
+      "id": 110,
+      "color": "#00ff00",
+      "start": 47,
+      "start_dir": -1,
+      "start_pos": 0.5,
+      "roles": {
+        "player": {
+          "end": 78
         }
-    ],
-    "joints": [
-        {
-            "id": 49,
-            "loop": 12,
-            "connector": 48,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 50,
-            "loop": 47,
-            "connector": 48,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 52,
-            "loop": 12,
-            "connector": 51,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 53,
-            "loop": 4,
-            "connector": 51,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 55,
-            "loop": 12,
-            "connector": 54,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 56,
-            "loop": 2,
-            "connector": 54,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 58,
-            "loop": 4,
-            "connector": 57,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 59,
-            "loop": 1,
-            "connector": 57,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 64,
-            "loop": 5,
-            "connector": 63,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 65,
-            "loop": 1,
-            "connector": 63,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 67,
-            "loop": 5,
-            "connector": 66,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 68,
-            "loop": 8,
-            "connector": 66,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 70,
-            "loop": 1,
-            "connector": 69,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 71,
-            "loop": 8,
-            "connector": 69,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 73,
-            "loop": 3,
-            "connector": 72,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 74,
-            "loop": 8,
-            "connector": 72,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 76,
-            "loop": 3,
-            "connector": 75,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 77,
-            "loop": 9,
-            "connector": 75,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 80,
-            "loop": 9,
-            "connector": 79,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 81,
-            "loop": 78,
-            "connector": 79,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 83,
-            "loop": 2,
-            "connector": 82,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 84,
-            "loop": 13,
-            "connector": 82,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 86,
-            "loop": 13,
-            "connector": 85,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 87,
-            "loop": 11,
-            "connector": 85,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 89,
-            "loop": 11,
-            "connector": 88,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 90,
-            "loop": 3,
-            "connector": 88,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 95,
-            "loop": 11,
-            "connector": 94,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 96,
-            "loop": 10,
-            "connector": 94,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 98,
-            "loop": 10,
-            "connector": 97,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 99,
-            "loop": 9,
-            "connector": 97,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 105,
-            "loop": 103,
-            "connector": 104,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 106,
-            "loop": 5,
-            "connector": 104,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 108,
-            "loop": 103,
-            "connector": 107,
-            "winding": -1,
-            "state": false
-        },
-        {
-            "id": 109,
-            "loop": 4,
-            "connector": 107,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 113,
-            "loop": 47,
-            "connector": 112,
-            "winding": 1,
-            "state": false
-        },
-        {
-            "id": 114,
-            "loop": 12,
-            "connector": 112,
-            "winding": 1,
-            "state": false
-        }
-    ],
-    "connectors": [
-        {
-            "id": 48,
-            "joint1": {
-                "id": 49,
-                "loop": 12,
-                "connector": 48,
-                "winding": 1,
-                "state": false
-            },
-            "joint2": {
-                "id": 50,
-                "loop": 47,
-                "connector": 48,
-                "winding": -1,
-                "state": false
-            }
-        },
-        {
-            "id": 51,
-            "joint1": {
-                "id": 52,
-                "loop": 12,
-                "connector": 51,
-                "winding": -1,
-                "state": false
-            },
-            "joint2": {
-                "id": 53,
-                "loop": 4,
-                "connector": 51,
-                "winding": -1,
-                "state": false
-            }
-        },
-        {
-            "id": 54,
-            "joint1": {
-                "id": 55,
-                "loop": 12,
-                "connector": 54,
-                "winding": -1,
-                "state": false
-            },
-            "joint2": {
-                "id": 56,
-                "loop": 2,
-                "connector": 54,
-                "winding": -1,
-                "state": false
-            }
-        },
-        {
-            "id": 57,
-            "joint1": {
-                "id": 58,
-                "loop": 4,
-                "connector": 57,
-                "winding": 1,
-                "state": false
-            },
-            "joint2": {
-                "id": 59,
-                "loop": 1,
-                "connector": 57,
-                "winding": -1,
-                "state": false
-            }
-        },
-        {
-            "id": 63,
-            "joint1": {
-                "id": 64,
-                "loop": 5,
-                "connector": 63,
-                "winding": -1,
-                "state": false
-            },
-            "joint2": {
-                "id": 65,
-                "loop": 1,
-                "connector": 63,
-                "winding": 1,
-                "state": false
-            }
-        },
-        {
-            "id": 66,
-            "joint1": {
-                "id": 67,
-                "loop": 5,
-                "connector": 66,
-                "winding": 1,
-                "state": false
-            },
-            "joint2": {
-                "id": 68,
-                "loop": 8,
-                "connector": 66,
-                "winding": -1,
-                "state": false
-            }
-        },
-        {
-            "id": 69,
-            "joint1": {
-                "id": 70,
-                "loop": 1,
-                "connector": 69,
-                "winding": 1,
-                "state": false
-            },
-            "joint2": {
-                "id": 71,
-                "loop": 8,
-                "connector": 69,
-                "winding": 1,
-                "state": false
-            }
-        },
-        {
-            "id": 72,
-            "joint1": {
-                "id": 73,
-                "loop": 3,
-                "connector": 72,
-                "winding": 1,
-                "state": false
-            },
-            "joint2": {
-                "id": 74,
-                "loop": 8,
-                "connector": 72,
-                "winding": 1,
-                "state": false
-            }
-        },
-        {
-            "id": 75,
-            "joint1": {
-                "id": 76,
-                "loop": 3,
-                "connector": 75,
-                "winding": -1,
-                "state": false
-            },
-            "joint2": {
-                "id": 77,
-                "loop": 9,
-                "connector": 75,
-                "winding": -1,
-                "state": false
-            }
-        },
-        {
-            "id": 79,
-            "joint1": {
-                "id": 80,
-                "loop": 9,
-                "connector": 79,
-                "winding": 1,
-                "state": false
-            },
-            "joint2": {
-                "id": 81,
-                "loop": 78,
-                "connector": 79,
-                "winding": -1,
-                "state": false
-            }
-        },
-        {
-            "id": 82,
-            "joint1": {
-                "id": 83,
-                "loop": 2,
-                "connector": 82,
-                "winding": 1,
-                "state": false
-            },
-            "joint2": {
-                "id": 84,
-                "loop": 13,
-                "connector": 82,
-                "winding": 1,
-                "state": false
-            }
-        },
-        {
-            "id": 85,
-            "joint1": {
-                "id": 86,
-                "loop": 13,
-                "connector": 85,
-                "winding": -1,
-                "state": false
-            },
-            "joint2": {
-                "id": 87,
-                "loop": 11,
-                "connector": 85,
-                "winding": 1,
-                "state": false
-            }
-        },
-        {
-            "id": 88,
-            "joint1": {
-                "id": 89,
-                "loop": 11,
-                "connector": 88,
-                "winding": -1,
-                "state": false
-            },
-            "joint2": {
-                "id": 90,
-                "loop": 3,
-                "connector": 88,
-                "winding": -1,
-                "state": false
-            }
-        },
-        {
-            "id": 94,
-            "joint1": {
-                "id": 95,
-                "loop": 11,
-                "connector": 94,
-                "winding": -1,
-                "state": false
-            },
-            "joint2": {
-                "id": 96,
-                "loop": 10,
-                "connector": 94,
-                "winding": -1,
-                "state": false
-            }
-        },
-        {
-            "id": 97,
-            "joint1": {
-                "id": 98,
-                "loop": 10,
-                "connector": 97,
-                "winding": 1,
-                "state": false
-            },
-            "joint2": {
-                "id": 99,
-                "loop": 9,
-                "connector": 97,
-                "winding": 1,
-                "state": false
-            }
-        },
-        {
-            "id": 104,
-            "joint1": {
-                "id": 105,
-                "loop": 103,
-                "connector": 104,
-                "winding": 1,
-                "state": false
-            },
-            "joint2": {
-                "id": 106,
-                "loop": 5,
-                "connector": 104,
-                "winding": -1,
-                "state": false
-            }
-        },
-        {
-            "id": 107,
-            "joint1": {
-                "id": 108,
-                "loop": 103,
-                "connector": 107,
-                "winding": -1,
-                "state": false
-            },
-            "joint2": {
-                "id": 109,
-                "loop": 4,
-                "connector": 107,
-                "winding": 1,
-                "state": false
-            }
-        },
-        {
-            "id": 112,
-            "joint1": {
-                "id": 113,
-                "loop": 47,
-                "connector": 112,
-                "winding": 1,
-                "state": false
-            },
-            "joint2": {
-                "id": 114,
-                "loop": 12,
-                "connector": 112,
-                "winding": 1,
-                "state": false
-            }
-        }
-    ],
-    "orbs": [
-        {
-            "id": 110,
-            "color": "#00ff00",
-            "start": 47,
-            "start_dir": -1,
-            "start_pos": 0.5,
-            "roles": {
-                "player": {
-                    "end": 78
-                }
-            }
-        }
-    ],
-    "decorations": []
-}
+      }
+    }
+  ],
+  "decorations": []
+} 

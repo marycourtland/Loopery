@@ -4,13 +4,13 @@
     },
     "loops": [{
         "id": 1,
-        "x": 400,
-        "y": 300,
+        "x": -100,
+        "y": 0,
         "r": 60
     }, {
         "id": 2,
-        "x": 600,
-        "y": 300,
+        "x": 100,
+        "y": 0,
         "r": 60
     }],
     "joints": [{
@@ -46,6 +46,7 @@
     "orbs": [{
         "id": 6,
         "color": "#00ff00",
+        "color2": "#0044AA",
         "start": 1,
         "start_dir": 1,
         "start_pos": 0.5,
@@ -60,7 +61,7 @@
         "command": "text",
         "args": [
             "use arrows to guide your orb to its goal",
-            {"x": 500, "y": 420},
+            {"x": 0, "y": 120},
             "centered"
         ],
         "params": {
