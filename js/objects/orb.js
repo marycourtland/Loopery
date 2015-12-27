@@ -1,7 +1,6 @@
 loopery.Orb = function(id, canvas_context, lookup_func) {
   this.group = 'orbs';
   this.id = id;
-  this.ctx = canvas_context;
   this.lookup = lookup_func;
 
   this.init = function(data) {
@@ -28,11 +27,21 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     this.pos = this.start_pos;
     this.killed = false;
 
+    this.setupCanvas();
+
     for (var role in this.roles) {
       if (typeof loopery.Orb.Roles[role].reset === 'function') {
         loopery.Orb.Roles[role].reset(this);
       }
     }
+  }
+
+  this.setupCanvas = function() {
+    var orb_radius = loopery.display.orb_radius;
+    this.canvas = loopery.requestCanvas(xy(orb_radius * 5, orb_radius * 5));
+    this.$canvas = $(this.canvas);
+    this.ctx = this.canvas.getContext('2d');
+    this.redrawCanvasRepr();
   }
 
   this.getData = function() {
@@ -111,12 +120,26 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     })).start();
   }
 
-
   $(this).on('draw', function() {
     if (this.killed) { return; }
-    this.drawScaled(1);
+    // this.drawScaled(1);
+    this.updateCanvasRepr();
   });
 
+  this.updateCanvasRepr = function() {
+    var loc = this.track.getPosCoords(this.pos);
+    this.canvas.setPosition(loc);
+  }
+
+  this.redrawCanvasRepr = function() {
+    draw.clear(this.ctx);
+    draw.circle(this.ctx, xy(0, 0), loopery.display.orb_radius, {
+      fill: this.color,
+      stroke: this.color
+    });
+  }
+
+  // Canvas version
   this.drawScaled = function(scale) {
     var loc = this.track.getPosCoords(this.pos);
 
@@ -169,18 +192,33 @@ loopery.Orb.Roles.player = {
   init: function(orb) {
     this.levelcomplete = false;
 
+    var goal_radius = loopery.display.orb_radius * 2; // TODO: this should depend on its loop size
+    var goal_canvas = loopery.requestCanvas(xy(goal_radius*3, goal_radius*3));
+    var goal_ctx = goal_canvas.getContext('2d');
+
+    // TODO: update the position of this goal canvas whenever its 'parent' loop moves
+    // (mostly for level editor)
+    var end_track = orb.lookup({group: 'loops', id: orb.roles.player.end});
+    goal_canvas.setPosition(end_track.loc);
+
+
     // detect levelcomplete
     $(orb).on('tick', function() {
       if (this.killed) { return; }
       if (this.track.id === this.roles.player.end) { $(this).trigger('levelcomplete'); }
     })
 
+    $(orb).on('erase', function() {
+      draw.clear(goal_ctx);
+    })
+
     $(orb).on('draw', function() {
       if (this.levelcomplete) { return; }
-      var end_track = this.lookup({group:'loops', id:this.roles.player.end});
+
+      var end_track = orb.lookup({group: 'loops', id: orb.roles.player.end});
       if (!end_track) { return; }
 
-      drawGoalStar(end_track.loc, loopery.display.orb_radius * 2, loopery.state.frame / 100);
+      drawGoalStar(end_track.loc, goal_radius, loopery.state.frame / 100);
     })
 
     $(orb).on('levelcomplete', function(evt, data) {
@@ -210,22 +248,23 @@ loopery.Orb.Roles.player = {
       lineWidth = (lineWidth !== undefined) ? lineWidth : 2;
       alpha = (alpha !== undefined) ? alpha : 1;
       var th = Math.PI / 3;
-      var p1 = add(loc, rth(r, th_offset));
-      var p2 = add(loc, rth(r, th_offset + th));
-      var p3 = add(loc, rth(r, th_offset + 2 * th));
-      var p4 = add(loc, rth(r, th_offset + 3 * th));
-      var p5 = add(loc, rth(r, th_offset + 4 * th));
-      var p6 = add(loc, rth(r, th_offset + 5 * th));
+
+      var p1 = rth(r, th_offset);
+      var p2 = rth(r, th_offset + th);
+      var p3 = rth(r, th_offset + 2 * th);
+      var p4 = rth(r, th_offset + 3 * th);
+      var p5 = rth(r, th_offset + 4 * th);
+      var p6 = rth(r, th_offset + 5 * th);
 
       var params = {stroke: orb.color, lineWidth:lineWidth, lineCap:'round', alpha:alpha};
-      draw.line(orb.ctx, p1, p4, params);
-      draw.line(orb.ctx, p2, p5, params);
-      draw.line(orb.ctx, p3, p6, params);
+      draw.line(goal_ctx, p1, p4, params);
+      draw.line(goal_ctx, p2, p5, params);
+      draw.line(goal_ctx, p3, p6, params);
     }
 
     function showLevelCompleteAnimation(loc) {
       var T = 80;
-      var r0 = loopery.display.orb_radius * 2;
+      var r0 = goal_radius;
       (new Animation(T,
         function draw(frame) {
           var r =  r0 + 80*Math.log(frame);

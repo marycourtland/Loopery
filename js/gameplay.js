@@ -26,6 +26,7 @@ loopery.gameplay = {
     draw.clear(loopery.ctx);
     draw.clear(loopery.ctx_bg);
     if (loopery.presentation && loopery.presentation.ctx) { draw.clear(loopery.presentation.ctx); }
+    $("canvas.game-obj-canvas").remove();
     this.hideAllMessages();
   },
 
@@ -216,12 +217,25 @@ loopery.gameplay = {
 
     // trigger tick
     this.triggerForAllObjectGroups('tick', {}, {ordering: 'renderOrder'});
+
+    if (loopery.presentation && loopery.presentation.running) { loopery.presentation.tick(); }
+  },
+
+  erase: function() {
+    if (loopery.state.redraw_bg) { draw.clear(loopery.ctx_bg); }
+    this.triggerForAllObjectGroups('erase', {}, {ordering: 'renderOrder'});
   },
 
   draw: function() {
+    this.erase();
+
     this.triggerForAllObjectGroups('draw', {}, {ordering: 'renderOrder'});
 
     this.animations.forEach(function(animation) { animation.draw(); })
+
+    if (loopery.presentation && loopery.presentation.running) { loopery.presentation.draw(); }
+
+    loopery.state.redraw_bg = false;
   },
 
   initPlayerEnabledJoints: function() {

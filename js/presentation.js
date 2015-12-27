@@ -2,7 +2,7 @@
 
 loopery.presentation = {};
 loopery.presentation.running = false;
-loopery.presentation.speed = loopery.orb_speed * 3;
+loopery.presentation.getSpeed = function() { return loopery.getFrameSpeed(loopery.orb_speed * 65 )};
 
 
 loopery.presentation.canvas = $("#presentation_canvas")[0];
@@ -27,6 +27,7 @@ loopery.presentation.start = function(initial_tips, endCallback) {
   $(loopery.presentation.canvas).show();
   $(loopery.canvas_bg).hide();
   $(loopery.canvas).hide();
+  $(loopery.repr_layer).hide();
 }
 
 loopery.presentation.stop = function() {
@@ -34,6 +35,7 @@ loopery.presentation.stop = function() {
   $(loopery.canvas_bg).fadeIn(500);
   $(loopery.canvas).show();
   $(loopery.presentation.canvas).fadeOut(500);
+  $(loopery.repr_layer).show();
   if (this.endCallback) { this.endCallback(); }
 }
 
@@ -77,7 +79,7 @@ loopery.presentation.draw = function() {
 
 loopery.presentation.advanceTip = function(tip) {
   tip.oldpos = tip.pos;
-  tip.pos = tip.track.getNextPos(tip.pos, tip.dir, loopery.presentation.speed);
+  tip.pos = tip.track.getNextPos(tip.pos, tip.dir, loopery.presentation.getSpeed());
 }
 
 loopery.presentation.getNewTips = function(tip) {

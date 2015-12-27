@@ -109,7 +109,7 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
   }
 
    this.getNextPos = function(old_pos, dir, speed) {
-    return old_pos + dir * speed / this.geometry.length;
+    return old_pos + dir * loopery.getFrameSpeed(speed) / this.geometry.length;
   }
 
   this.contains = function(loc) {

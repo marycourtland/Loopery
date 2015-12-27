@@ -19,6 +19,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
 
   this.reset = function() {
     this.state = this.initial_state;
+    this.setupCanvas();
   }
 
   this.getData = function() {
@@ -31,6 +32,17 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     }
   }
 
+  this.setupCanvas = function() {
+    this.canvas = loopery.requestCanvas(xy(60, 60));
+    this.$canvas = $(this.canvas);
+    this.ctx = this.canvas.getContext('2d');
+
+    var _this = this;
+    loopery.onNextTick(function() {
+      _this.redrawCanvasRepr();
+    })
+  }
+
   $(this).on('tick', function() {
     // Transfer any orb which is on this joint
     // TODO: maybe there's an easier way for this joint to have access to orbs
@@ -39,18 +51,39 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
       var orb = loopery.gameplay.levelObjects.orbs[orb_id];
       this.attemptTransfer(orb);
     }
+  });
 
+  $(this).on('erase', function() {
+    // todo: this could be cached or something - it gets calculated multiple times per loop
+    var proximity_scale = this.getProximityScale(distance(this.getLoc(), loopery.mouse.pos));
+
+    if (proximity_scale > 1) {
+      draw.clear(this.ctx)
+    }
   });
 
   $(this).on('draw', function() {
     if (!this.enabled) { return; }
-    this.drawArrowClicker();
+    // this.drawArrowClicker();
 
-    if (this.contains(loopery.mouse.pos)) {
-      loopery.showPointer();
+    var proximity_scale = this.getProximityScale(distance(this.getLoc(), loopery.mouse.pos));
+
+    if (proximity_scale > 1) {
+      this.redrawCanvasRepr();
+      if (this.contains(loopery.mouse.pos)) {
+        loopery.showPointer();
+      }
     }
   });
 
+  this.redrawCanvasRepr = function() {
+    var loc = this.getLoc();
+    this.canvas.setPosition(loc);
+    draw.clear(this.ctx);
+    if (!this.enabled) { return; }
+
+    this.drawArrowClicker();
+  }
 
   this.bindEvents = function() {
     this.on('click', function(pos) {
@@ -62,11 +95,13 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
   // allow player to toggle the joint
   this.enable = function() {
     this.enabled = true;
+    this.redrawCanvasRepr();
   }
 
-  // prevemt player from toggling the joint
+  // prevent player from toggling the joint
   this.disable = function() {
     this.enabled = false;
+    this.redrawCanvasRepr();
   }
 
   this.toggle = function() {
@@ -162,8 +197,6 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
 
   this.drawArrowClickerScaled = function(scale) {
     // draw arrow
-    var loc = this.getLoc();
-    if (!loc) { return; }
     var w = loopery.joint_click_radius * 0.8 * scale;
     // var w = loopery.display.track_width * 2;
     var dir = this.connector.joints[0] === this ? 1 : -1;
@@ -171,12 +204,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     var p2 = rotate(p1, Math.PI/2).scale(1/2);
     var p3 = rth(dir * 2, this.connector.geometry.angle);
     var p4 = rotate(p1, -Math.PI/2).scale(1/2);
-    draw.polygon(this.ctx, [
-        add(loc, p1),
-        add(loc, p2),
-        add(loc, p3),
-        add(loc, p4),
-      ],
+
+    draw.polygon(this.ctx, [ p1, p2, p3, p4 ],
       {
         fill: this.state ? 'white' : 'black',
         stroke: 'white',
@@ -208,8 +237,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
 
   this.getProximityScale = function(mouse_distance) {
     // decide how large the clicker should be drawn based on how close the given position is
-    if (mouse_distance > loopery.display.joint_click_mouse_distance/2) { return 1; }
-    return 1 + 0.5*(1 - mouse_distance/loopery.display.joint_click_mouse_distance/2);
+    if (mouse_distance > loopery.display.joint_click_mouse_distance) { return 1; }
+    return 1 + (1 - mouse_distance/loopery.display.joint_click_mouse_distance);
   }
 
   this.contains = function(loc) {

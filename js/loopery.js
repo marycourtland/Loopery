@@ -29,9 +29,28 @@ loopery.configLayer = function(layer_context) {
   layer_context.translate(loopery.size.x/2, loopery.size.y/2);
 }
 
+loopery.requestCanvas = function(size) {
+  // Deliver a canvas intended for drawing 1 object
+  // should be done on level initialization
+
+  var canvas = document.createElement('canvas');
+  canvas.width = size.x;
+  canvas.height = size.y;
+  canvas.className = 'game-obj-canvas';
+  loopery.repr_layer.appendChild(canvas);
+  
+  // Set 0, 0 to the center
+  canvas.getContext('2d').translate(canvas.width/2, canvas.height/2);
+
+  canvas.setPosition = function(loc) {
+    this.style.left = (loc.x + loopery.size.x/2 - this.width/2) + 'px';
+    this.style.top = (loc.y + loopery.size.y/2 - this.height/2) + 'px';
+  }
+
+  return canvas;
+}
+
 loopery.refreshGameElements();
-
-
 
 
 loopery.bg = $("#game_bg")[0];
@@ -40,6 +59,8 @@ $("#game_bg").css({
   width: loopery.size.x,
   height: loopery.size.y,
 })
+
+loopery.repr_layer = $("#game_reprs")[0];
 
 window.onload = function() {
   loopery.start();
@@ -74,23 +95,22 @@ loopery.stages.levelmenu = {
   },
   stageStart: function() { $("#level_menu").show(); },
   stageEnd: function() { $("#level_menu").hide(); }
-} 
+}
 
 loopery.stages.gameplay = {
   tick: function() {
-    draw.clear(loopery.ctx);
+    loopery.recordTime();
     loopery.hidePointer();
     loopery.gameplay.tick();
-    if (loopery.presentation && loopery.presentation.running) { loopery.presentation.tick(); }
-    if (loopery.state.redraw_bg) { draw.clear(loopery.ctx_bg); }
     loopery.gameplay.draw();
-    if (loopery.presentation && loopery.presentation.running) { loopery.presentation.draw(); }
-    loopery.state.redraw_bg = false;
+
     loopery.next();
   },
   stageStart: function() { $("#hud").show(); },
   stageEnd: function() {
+    loopery.gameplay.clear();
     $("#hud").hide();
+    $('.game-repr').remove();
     if (loopery.presentation) { draw.clear(loopery.presentation.ctx); }
   }
 }
@@ -175,6 +195,49 @@ loopery.localStorage = function() {
   return JSON.parse(window.localStorage.loopery_data);
 }
 
+
+// ========== Time management
+loopery.recent_times = [];
+loopery.calculateFPS = function() {
+  var sum = loopery.recent_times.reduce(function(sum, next) { return sum + next; }, 0);
+  var frames_per_ms = loopery.recent_times.length / sum;
+  return frames_per_ms * 1000;
+}
+
+loopery.recordTime = function() {
+  // track fps
+  var current_time = (new Date()).valueOf();
+  loopery.state.dt = current_time - loopery.state.time;
+  loopery.recent_times.push(loopery.state.dt);
+  if (loopery.recent_times.length > 20) { loopery.recent_times.shift(); }
+  loopery.state.time = current_time;
+  loopery.state.actual_fps = loopery.calculateFPS();
+}
+
+loopery.getFrameSpeed = function(speed) {
+  return speed * loopery.state.dt / 1000;
+}
+
+
+
+// ========== Schedule one-off procedures to be executed during the gameloop
+
+loopery.tickCallbacks = {};
+loopery.onNextTick = function(callback) {
+  var next_frame = (this.state.frame || 0) + 1;
+  if (!(next_frame in loopery.tickCallbacks)) {
+    loopery.tickCallbacks[next_frame] = [];
+  }
+  loopery.tickCallbacks[next_frame].push(callback);
+
+}
+
+loopery.ontick(function() {
+  if (loopery.state.frame in loopery.tickCallbacks) {
+    loopery.tickCallbacks[loopery.state.frame].forEach(function(cb) { cb(); })
+    delete loopery.tickCallbacks[loopery.state.frame];
+  }
+})
 
 
 $(document).ready(function() {

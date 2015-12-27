@@ -31,7 +31,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   
   // Determine an orb's next position on the loop (as it's moving)
   this.getNextPos = function(old_pos, dir, speed) {
-    return mod(old_pos + dir * speed / (2 * Math.PI * this.radius), 1);
+    return mod(old_pos + dir * loopery.getFrameSpeed(speed) / (2 * Math.PI * this.radius), 1);
   }
   
   // Given an orb's position on the loop (from 0 to 1), return the XY coords
@@ -46,13 +46,11 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   }
 
   this.getPosFromOldTrack = function(connector) {
-    // TODO: fix this method
     return connector.parent_track_pos[this.id];
   }
 
   this.getDirFromOldTrack = function(connector) {
     return -1 * connector.parent_track_winding[this.id];
-    // TODO: fix this method
   }
 
   this.contains = function(loc) {

@@ -2,7 +2,6 @@ function Game(params) {
   
   // Initialize game settings
   if (params == null) params = {};
-  this.fps = 120,
   this.t0 = new Date().getTime(),
   this.mouse = null,
   this.display = {
@@ -11,7 +10,8 @@ function Game(params) {
   },
   this.state = {
     win: false,
-    frame: 0
+    frame: 0,
+    time: (new Date()).valueOf()
   },
   this.currentStage = null,
   this.objects = [],
@@ -80,7 +80,9 @@ function Game(params) {
   
   this.next = function() {
     var _this = this;
-    if (!this.win) setTimeout(function() { _this.tick() }, 1000/_this.fps);
+    if (!this.win) {
+      requestAnimationFrame(function() { _this.tick(); });
+    }
   }
 
   // Game stages
