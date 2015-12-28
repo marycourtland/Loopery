@@ -237,16 +237,25 @@ loopery.ontick(function() {
 })
 
 
+
+// ========== GOGOGO
+
+function go() {
+  loopery.setStage('levelmenu');
+  loopery.start();
+}
+
+
 $(document).ready(function() {
   $("#game_fadeout").hide(); // start with the fadeout layer hidden (i.e. game is not faded out)
   $("#level_loader").hide();
 
   if (loopery.sound) {
     loopery.sound.load(function() {
-      // Initial stage
-      loopery.setStage('levelmenu');
-      loopery.start();   
+      go();
     }); 
   }
+  else {
+    go();
+  }
 })
-

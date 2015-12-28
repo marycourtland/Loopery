@@ -20,7 +20,7 @@ function makeEditorButton(id, label, callback) {
       'margin-top': 5,
       'background-color': '#3C4E38',
       'padding': 5,
-      'width': 120,
+      'width': 140,
       'height': '1rem',
       'font-size': 12,
       'text-align': 'center'
