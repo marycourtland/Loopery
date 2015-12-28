@@ -3,6 +3,8 @@
   <head>
     <script type="text/javascript" src = "js/lib/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src = "js/lib/underscore-min.js"></script>
+    <script type="text/javascript" src = "js/lib/soundjs-0.6.2.min.js"></script>
+    <script type="text/javascript" src = "js/lib/preloadjs-0.6.2.min.js"></script>
     <script type="text/javascript" src = "js/engine/game.js"></script>
     <script type="text/javascript" src = "js/engine/math2D.js"></script>
     <script type="text/javascript" src = "js/engine/drawing.js"></script>
@@ -36,6 +38,8 @@
       <div id="hud" class="game-overlay">
         <div>
           <a class="hud-link" href="javascript:void(0);" style="float:left;" onclick="loopery.setStage('levelmenu');">&equiv; all levels</a>
+          <a class="hud-link" id="turn-sound-off" href="javascript:void(0);" style="float:left;" onclick="loopery.sound.turnOff();">turn sound off</a>
+          <a class="hud-link" id="turn-sound-on" href="javascript:void(0);" style="float:left;" onclick="loopery.sound.turnOn();" style="display:none;">turn sound on</a>
           <a class="hud-link" href="javascript:void(0);" style="float:left;" onclick="loopery.gameplay.resetLevel();">restart &oast;</a>
           <a class="hud-link" href="javascript:void(0);" style="float:right; margin-right:1em" onclick="loopery.loadNextLevel();">next &sc;</a>
           <a class="hud-link" href="javascript:void(0);" style="float:right;" onclick="loopery.loadPreviousLevel();">&pr; back</a>
@@ -54,7 +58,7 @@
 
         <div id="level_failed" class="level-message game-overlay">
           <div class="center-screen-h">
-            <h2>A DEATH HAS OCCURRED</h2>
+            <h2>DEATH HAS OCCURRED</h2>
             <a class="level_navigation" href="javascript:void(0);" onclick="loopery.gameplay.resetLevel();">try again</a>
           </div>
         </div>
@@ -85,6 +89,7 @@
   <script type="text/javascript" src="js/loopery.js"></script>
   <script type="text/javascript" src="js/levellist.js"></script>
   <script type="text/javascript" src="js/computations.js"></script>
+  <script type="text/javascript" src="js/sound.js"></script>
   
   <script type="text/javascript" src="js/objects.js"></script>
   <script type="text/javascript" src="js/objects/loop.js"></script>

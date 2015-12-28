@@ -32,9 +32,11 @@ loopery.presentation.start = function(initial_tips, endCallback) {
 
 loopery.presentation.stop = function() {
   this.running = false;
-  $(loopery.canvas_bg).fadeIn(500);
+  // $(loopery.canvas_bg).fadeIn(100);
+  $(loopery.canvas_bg).show()
   $(loopery.canvas).show();
-  $(loopery.presentation.canvas).fadeOut(500);
+  // $(loopery.presentation.canvas).fadeOut(100);
+  $(loopery.presentation.canvas).hide();
   $(loopery.repr_layer).show();
   if (this.endCallback) { this.endCallback(); }
 }

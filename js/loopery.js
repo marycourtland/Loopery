@@ -62,9 +62,6 @@ $("#game_bg").css({
 
 loopery.repr_layer = $("#game_reprs")[0];
 
-window.onload = function() {
-  loopery.start();
-}
 
 // the sole purpose of having loopery.objects is for the mouse to access them
 // TODO: refactor that
@@ -242,10 +239,14 @@ loopery.ontick(function() {
 
 $(document).ready(function() {
   $("#game_fadeout").hide(); // start with the fadeout layer hidden (i.e. game is not faded out)
-  $("#level_loader").hide();  
+  $("#level_loader").hide();
 
-  // Initial stage
-  loopery.setStage('levelmenu')
-  // loopery.setStage('editor')
+  if (loopery.sound) {
+    loopery.sound.load(function() {
+      // Initial stage
+      loopery.setStage('levelmenu');
+      loopery.start();   
+    }); 
+  }
 })
 
