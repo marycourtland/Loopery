@@ -190,20 +190,21 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
 loopery.Orb.Roles = {};
 
-
 loopery.Orb.Roles.player = {
   init: function(orb) {
     this.levelcomplete = false;
 
-    var goal_radius = loopery.display.orb_radius * 2; // TODO: this should depend on its loop size
-    var goal_canvas = loopery.requestCanvas(xy(goal_radius*3, goal_radius*3));
-    var goal_ctx = goal_canvas.getContext('2d');
 
     // TODO: update the position of this goal canvas whenever its 'parent' loop moves
     // (mostly for level editor)
     var end_track = orb.lookup({group: 'loops', id: orb.roles.player.end});
+
+    var goal_radius = end_track.radius * 2/3;
+    var goal_canvas = loopery.requestCanvas(xy(goal_radius*3, goal_radius*3));
+    var goal_ctx = goal_canvas.getContext('2d');
     goal_canvas.setPosition(end_track.loc);
 
+    var goal_rotation_dir = -1; // 1 = cw, -1 = ccw
 
     // detect levelcomplete
     $(orb).on('tick', function() {
@@ -230,6 +231,7 @@ loopery.Orb.Roles.player = {
 
       var end_track = this.lookup({group:'loops', id:this.roles.player.end});
       if (end_track) {
+        goal_rotation_dir = this.dir;
         showLevelCompleteAnimation(end_track.loc);
       }
     })
@@ -251,6 +253,9 @@ loopery.Orb.Roles.player = {
       lineWidth = (lineWidth !== undefined) ? lineWidth : 2;
       alpha = (alpha !== undefined) ? alpha : 1;
       var th = Math.PI / 3;
+
+      th_offset *= goal_rotation_dir;
+      th *= goal_rotation_dir;
 
       var p1 = rth(r, th_offset);
       var p2 = rth(r, th_offset + th);
