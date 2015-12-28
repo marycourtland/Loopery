@@ -167,6 +167,11 @@ loopery.gameplay = {
 
     loopery.state.redraw_bg = true;
 
+    // make sure the proper level navigation prev/next are showing
+    $(".level-prev")[loopery.isFirstLevel() ? 'hide' : 'show']();
+    $(".level-next")[loopery.isLastLevel() ? 'hide' : 'show']();
+
+    // todo: move this to the presentation module
     if (loopery.presentation) {
       var tips = [];
       var orbs = this.lookup({group:'orbs'});

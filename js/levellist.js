@@ -61,6 +61,14 @@ loopery.loadPreviousLevel = function() {
   loopery.startGameplay(loopery.gameplay.current_level - 1);
 }
 
+loopery.isFirstLevel = function() {
+  return loopery.gameplay.current_level === 0;
+}
+
+
+loopery.isLastLevel = function() {
+  return loopery.gameplay.current_level === loopery.levels.length - 1;
+}
 
 loopery.fetchLevelData = function(level_index) {
   var url = loopery.levels[level_index].url;
