@@ -12,7 +12,7 @@ loopery.refreshGameElements = function() {
   // Two canvases: background/foreground
   loopery.canvas_bg = $("#game_canvas_bg")[0];
   loopery.ctx_bg = loopery.canvas_bg.getContext('2d');
-  loopery.state.redraw_bg = true; // todo: unhackify thiss
+  loopery.state.redraw_bg = true; // todo: unhackify this
 
   loopery.configLayer(loopery.ctx);
   loopery.configLayer(loopery.ctx_bg);
@@ -115,6 +115,7 @@ loopery.stages.gameplay = {
 loopery.stages.editor = {
   // piggyback on the gameplay stage
   tick: function() {
+    loopery.recordTime();
     draw.clear(loopery.ctx);
     loopery.gameplay.tick();
     loopery.editor.tick();
