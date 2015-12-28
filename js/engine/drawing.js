@@ -191,5 +191,18 @@ var draw = {
       // Put the context back how it was before
       ctx.restore();
     });
+  },
+
+  inEachQuadrant: function(ctx, draw_callback) {
+    // Do the draw callback four times, NE, NW, SE, and SW from the origin
+
+    draw_callback(); // se quadrant
+    ctx.scale(-1, 1);
+    draw_callback(); // sw quadrant
+    ctx.scale(1, -1);
+    draw_callback(); // nw quadrant
+    ctx.scale(-1, 1);
+    draw_callback(); // ne quadrant
+    ctx.scale(1, -1);
   }
 }

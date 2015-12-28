@@ -27,6 +27,8 @@ loopery.editor.createGridCanvas = function() {
       'pointer-events': 'none'
     })
     .insertAfter("#game_canvas");
+
+  loopery.configLayer(this.grid_canvas[0].getContext('2d'));
   this.grid.redraw();
 }
 
@@ -50,6 +52,7 @@ loopery.editor.drawGridDot = function(pos) {
 loopery.editor.grids = {};
 
 loopery.editor.grids.rectangular = {
+  origin: xy(0, 0),
   size: xy(20, 20),
 
   getSizeFromInput: function() {
@@ -65,30 +68,42 @@ loopery.editor.grids.rectangular = {
 
   redraw: function() {
     loopery.editor.clearGrid();
-
     var size = this.getSizeFromInput();
-    var pos = xy(0, 0);
 
-    while (pos.y < loopery.size.y) {
-      while (pos.x < loopery.size.x) {
-        loopery.editor.drawGridDot(pos);
-        pos.xshift(size.x);
+    var start = xy(0, 0);
+    var end = add(this.origin, scale(loopery.size, 0.5));
+
+    var ctx = loopery.editor.grid_canvas[0].getContext('2d');
+    ctx.translate(this.origin.x, this.origin.y); // make sure center of grid is in the specified origin
+
+    // Draw each quadrant separately.
+    // Reason: to make sure the center of the screen is aligned with a dot
+
+    draw.inEachQuadrant(ctx, function() {
+      pos = start.copy();
+      while (pos.y < end.y) {
+        while (pos.x < end.x) {
+          loopery.editor.drawGridDot(pos);
+          pos.xshift(size.x);
+        }
+        pos.x = 0;
+        pos.yshift(size.y);
       }
-      pos.x = 0;
-      pos.yshift(size.y);
-    }
+    })
+
+    ctx.translate(-this.origin.x, -this.origin.y);
   },
 
   transformPos: function(pos) {
     return snapToGrid(pos, loopery.editor.grids.rectangular.getSizeFromInput());
   }
 }
-
+ 
 // =====================================================================================
 
 
 loopery.editor.grids.radial = {
-  origin: loopery.size.copy().scale(0.5),
+  origin: xy(0, 0),
   size: rth(20, Math.PI/20), // optimally this should be an integer fraction of 2pi
 
   getSizeFromInput: function() {
@@ -129,7 +144,7 @@ loopery.editor.grids.radial = {
 // =====================================================================================
 
 loopery.editor.grids.triangular = {
-  origin: loopery.size.copy().scale(0.5),
+  origin: xy(0, 0),
   size: rth(20, Math.PI/3), // optimally this should be an integer fraction of 2pi
 
   getSizeFromInput: function() {
@@ -143,32 +158,39 @@ loopery.editor.grids.triangular = {
 
   redraw: function() {
     loopery.editor.clearGrid();
-
     var size = this.getSizeFromInput();
-    var origin = xy(0, 0)
-    var pos = origin.copy();
 
-    loopery.ctx.globalAlpha = 0.7;
+    var start = xy(0, 0);
+    var end = add(this.origin, scale(loopery.size, 0.5));
 
-    while (pos.y < loopery.size.y) {
-      while (pos.x < loopery.size.x) {
-        loopery.editor.drawGridDot(pos);
-        pos.xshift(2 * size.x);
+    var ctx = loopery.editor.grid_canvas[0].getContext('2d');
+    ctx.translate(this.origin.x, this.origin.y); // make sure center of grid is in the specified origin
+
+    // Draw each quadrant separately.
+    // Reason: to make sure the center of the screen is aligned with a dot
+    draw.inEachQuadrant(ctx, function() {
+      var pos = start.copy();
+
+      while (pos.y < end.y) {
+        while (pos.x < end.x) {
+          loopery.editor.drawGridDot(pos);
+          pos.xshift(2 * size.x);
+        }
+
+        pos.x = start.x - size.x;
+        pos.yshift(size.y);
+
+        while (pos.x < end.x) {
+          loopery.editor.drawGridDot(pos);
+          pos.xshift(2 * size.x);
+        }
+
+        pos.x = start.x;
+        pos.yshift(size.y);
       }
+    })
 
-      pos.x = -size.x;
-      pos.yshift(size.y);
-
-      while (pos.x < loopery.size.x) {
-        loopery.editor.drawGridDot(pos);
-        pos.xshift(2 * size.x);
-      }
-
-      pos.x = 0;
-      pos.yshift(size.y);
-    }
-
-    loopery.ctx.globalAlpha = 1;
+    ctx.translate(-this.origin.x, -this.origin.y);
   },
 
   transformPos: function(pos) {
