@@ -33,6 +33,9 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
   }
 
   this.setupCanvas = function() {
+    if (this.$canvas) {
+      this.$canvas.remove();
+    }
     this.canvas = loopery.requestCanvas(xy(60, 60));
     this.$canvas = $(this.canvas);
     this.ctx = this.canvas.getContext('2d');

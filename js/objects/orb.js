@@ -37,6 +37,9 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
   }
 
   this.setupCanvas = function() {
+    if (this.$canvas) {
+      this.$canvas.remove();
+    }
     var orb_radius = loopery.display.orb_radius;
     this.canvas = loopery.requestCanvas(xy(orb_radius * 5, orb_radius * 5));
     this.$canvas = $(this.canvas);
