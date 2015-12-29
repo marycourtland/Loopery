@@ -77,8 +77,6 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     return distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
   }
 
-  window.kprefix = '';
-
   this.kill = function() {
     if (this.killed) { return; } // don't kill multiple times
     this.killed = true;
@@ -387,6 +385,10 @@ loopery.Orb.Roles.clock = {
 
 loopery.Orb.Roles.enemy = {
   init: function(orb) {
+    var canvas_size = loopery.display.orb_radius * 4;
+    this.enemy_spike_canvas = loopery.requestCanvas(xy(canvas_size, canvas_size));
+    // goal_canvas.setPosition(end_track.loc);
+
     $(orb).on('collision', function(evt, data) {
       data.orb.kill();
     })
@@ -398,23 +400,20 @@ loopery.Orb.Roles.enemy = {
   },
 
   drawSpikes: function(orb) {
-    var r = 0.3; // ratio of the spike length to orb radius
-    var w = 0.03; // ratio of the spike width to the complete circle
+    var r = 0.5; // ratio of the spike length to orb radius
+    var w = 0.05; // ratio of the spike width to the complete circle
     var n = 12; // number of spikes
     var th0 = loopery.state.frame % (2*Math.PI); // have the spikes spin a bit
+
+    draw.clear(orb.ctx);
+    orb.redrawCanvasRepr();
 
     for (var i = 0; i < n; i++) {
       var th = i * 2*Math.PI / n;
       var p0 = rth(loopery.display.orb_radius, th + th0);
       var p1 = rotate(p0, w*2*Math.PI);
-      //var p2 = rotate(p0, -w*2*Math.PI);
-      var p3 = p0.copy().scale(1 + r);
-      var loc = orb.getLoc();
-      draw.polygon(orb.ctx, [
-        p1.add(loc),
-        p0.add(loc),
-        p3.add(loc)
-      ], {
+      var p2 = p0.copy().scale(1 + r);
+      draw.polygon(orb.ctx, [p1, p0, p2], {
         fill: orb.color,
         stroke: orb.color
       })
