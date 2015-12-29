@@ -77,14 +77,18 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     return distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
   }
 
+  window.kprefix = '';
 
   this.kill = function() {
-    $(this).trigger('tick');
-    $(this).trigger('draw');
+    if (this.killed) { return; } // don't kill multiple times
     this.killed = true;
+
+    this.checkAndHandleCollision();
 
     // trigger a death animation
     this.makeDeathAnimation();
+
+    this.redrawCanvasRepr();
   }
 
   this.makeDeathAnimation = function() {
@@ -101,17 +105,24 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
         piece_pairs.push(pieces.splice(0, 2));
     }
 
-    // now setup the animation
-    var loc = this.getLoc();
-    var _this = this;
-    var T = 80;
+    // now setup the animation - random bits of an explody circle
+    function getExplosionRadius(frame) { return loopery.display.orb_radius + 20*Math.log(frame); }
 
-    // random bits of a circle
+    // var loc = this.getLoc();
+    var loc = xy(0, 0);
+    var color = this.color;
+    var T = 100;
+
+    var animation_size = getExplosionRadius(T) * 2; // maximum explosion radius
+    var animation_ctx = loopery.requestCanvas(xy(animation_size, animation_size)).getContext('2d');
+    animation_ctx.canvas.setPosition(this.getLoc());
+
     (new Animation(T, function(frame) {
+      draw.clear(animation_ctx);
       piece_pairs.forEach(function(angle_pair) {
-        draw.arc(_this.ctx, loc, loopery.display.orb_radius + 20*Math.log(frame), angle_pair[0], angle_pair[1], {
+        draw.arc(animation_ctx, loc, getExplosionRadius(frame), angle_pair[0], angle_pair[1], {
           fill: 'transparent',
-          stroke: _this.color,
+          stroke: color,
           lineWidth: loopery.display.orb_radius/frame
         });
       })
@@ -119,7 +130,8 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
     function() {
       // animation complete
-      $(_this).trigger('death');
+      $(this).trigger('death');
+      $(animation_ctx.canvas).remove();
     })).start();
   }
 
@@ -136,6 +148,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
   this.redrawCanvasRepr = function() {
     draw.clear(this.ctx);
+    if (this.killed) { return; }
     draw.circle(this.ctx, xy(0, 0), loopery.display.orb_radius, {
       fill: this.color,
       stroke: this.color
@@ -175,14 +188,18 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
     this.move();
 
+    this.checkAndHandleCollision();
+
+  });
+
+  this.checkAndHandleCollision = function() {
     // Detect collision
     var orbs = this.lookup({group: 'orbs'});
     for (var id in orbs) {
       if (orbs[id].killed) { continue; }
       if (this.isCollidingWith(orbs[id])) { $(this).trigger('collision', {orb: orbs[id]}) }
     }
-
-  });
+  }
 
 }
 
@@ -237,6 +254,7 @@ loopery.Orb.Roles.player = {
     })
 
     $(orb).on('death', function(evt) {
+      console.log('death')
       loopery.gameplay.showLevelFailed("A death has occurred");
     })
 

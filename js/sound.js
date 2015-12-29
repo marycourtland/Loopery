@@ -12,11 +12,9 @@ loopery.sound = {
     q.installPlugin(createjs.Sound);
 
     q.addEventListener("loadstart", function() {
-      console.log('Loading audio');
     });
 
     q.addEventListener("complete", function() {
-      console.log('Finished loading audio');
       if (typeof callback === 'function') { callback() };
       $("#turn-sound-on").hide();
       $("#turn-sound-off").show();
@@ -31,7 +29,7 @@ loopery.sound = {
 
   initSoundtrack: function() {
     this.soundtrack = createjs.Sound.play('soundtrack', 'none', 0, 0, -1);
-    this.soundtrack.volume = 0.2;
+    this.soundtrack.volume = 0.1;
   },
 
   turnOff: function() {

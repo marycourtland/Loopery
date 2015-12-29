@@ -23,9 +23,12 @@ var draw = {
     ctx.restore();
   },
 
-  clear: function(ctx) {
+  clear: function(ctx, p0, size) {
+    p0 = p0 || {x: -ctx.canvas.width/2, y:-ctx.canvas.height/2};
+    size = size || {x: ctx.canvas.width, y: ctx.canvas.height};
+
     ctx.closePath(); // just in case
-    ctx.clearRect(-loopery.size.x/2, -loopery.size.y/2, loopery.size.x, loopery.size.y);
+    ctx.clearRect(p0.x, p0.y, size.x, size.y);
     // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     // ctx.clearRect
   },
