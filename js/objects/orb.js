@@ -115,6 +115,8 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     var animation_ctx = loopery.requestCanvas(xy(animation_size, animation_size)).getContext('2d');
     animation_ctx.canvas.setPosition(this.getLoc());
 
+    var _this = this;
+
     (new Animation(T, function(frame) {
       draw.clear(animation_ctx);
       piece_pairs.forEach(function(angle_pair) {
@@ -128,7 +130,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
     function() {
       // animation complete
-      $(this).trigger('death');
+      $(_this).trigger('death');
       $(animation_ctx.canvas).remove();
     })).start();
   }
@@ -252,7 +254,6 @@ loopery.Orb.Roles.player = {
     })
 
     $(orb).on('death', function(evt) {
-      console.log('death')
       loopery.gameplay.showLevelFailed("A death has occurred");
     })
 
