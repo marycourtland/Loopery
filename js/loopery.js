@@ -242,6 +242,8 @@ loopery.ontick(function() {
 // ========== GOGOGO
 
 function go() {
+  $("#loading").fadeOut();
+  $("#game").fadeIn()
   loopery.setStage('levelmenu');
   loopery.start();
 }
@@ -250,6 +252,7 @@ function go() {
 $(document).ready(function() {
   $("#game_fadeout").hide(); // start with the fadeout layer hidden (i.e. game is not faded out)
   $("#level_loader").hide();
+  $("#game").hide();
 
   if (loopery.sound) {
     loopery.sound.load(function() {
