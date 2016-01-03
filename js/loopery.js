@@ -85,9 +85,7 @@ loopery.stages.titlescreen = {
 
 loopery.stages.levelmenu = {
   tick: function() {
-    draw.clear(loopery.ctx);
-    loopery.levelMenu.tick();
-    loopery.levelMenu.draw();
+    // nothing?
     loopery.next();
   },
   stageStart: function() { $("#level_menu").show(); },

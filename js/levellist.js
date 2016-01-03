@@ -1,31 +1,37 @@
 loopery.levels = [
   {
     url: 'levels/intro.json',
+    section: 'Some levels',
     link: null,
     data: null
   },
   {
     url: 'levels/boat.json',
-    link: null,
-    data: null
-  },
-  {
-    url: 'levels/shortpaths.json',
-    link: null,
-    data: null
-  },
-  {
-    url: 'levels/shortpaths2.json',
-    link: null,
-    data: null
-  },
-  {
-    url: 'levels/quitehard.json',
+    section: 'Some levels',
     link: null,
     data: null
   },
   {
     url: 'levels/advanceguard.json',
+    section: 'Some levels',
+    link: null,
+    data: null
+  },
+  {
+    url: 'levels/shortpaths.json',
+    section: 'More levels',
+    link: null,
+    data: null
+  },
+  {
+    url: 'levels/shortpaths2.json',
+    section: 'More levels',
+    link: null,
+    data: null
+  },
+  {
+    url: 'levels/quitehard.json',
+    section: 'More levels',
     link: null,
     data: null
   }
@@ -65,14 +71,15 @@ loopery.isFirstLevel = function() {
   return loopery.gameplay.current_level === 0;
 }
 
-
 loopery.isLastLevel = function() {
   return loopery.gameplay.current_level === loopery.levels.length - 1;
 }
 
+
 loopery.fetchLevelData = function(level_index) {
   var url = loopery.levels[level_index].url;
-  loopery.levels[level_index].link = loopery.levelMenu.makeLink();
+  var level_metadata = loopery.levels[level_index];
+  loopery.levelMenu.populateLink(level_metadata);
 
   if (loopery.isLevelSolved(level_index)) {
     loopery.levels[level_index].link.addClass('level-solved');

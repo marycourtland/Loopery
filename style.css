@@ -107,10 +107,6 @@ canvas {
   display: none;
 }
 
-  #level_menu h2 {
-    margin-top: 5em;
-  }
-
   #level_menu .level-menu-link {
     display: block;
     color: white;
@@ -128,6 +124,20 @@ canvas {
       color: white !important;
       text-decoration: none !important;
       font-size: 20px;
+    }
+
+  #level_menu .level-section {
+    background-color: rgba(255, 255, 255, 0.08);
+    width: 15rem;
+    padding: 2rem;
+    display: inline-block;
+    margin: 1rem 2rem;
+    vertical-align: top;
+  }
+
+    #level_menu .level-section h2 {
+      font-size: 14pt;
+      margin-bottom: 2rem;
     }
 
 #level_load, #level_save {

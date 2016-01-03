@@ -29,7 +29,7 @@ loopery.sound = {
 
   initSoundtrack: function() {
     this.soundtrack = createjs.Sound.play('soundtrack', 'none', 0, 0, -1);
-    this.soundtrack.volume = 0.1;
+    this.soundtrack.volume = 0.07;
   },
 
   turnOff: function() {
