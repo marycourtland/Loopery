@@ -37,12 +37,12 @@
 
       <div id="hud" class="game-overlay">
         <div>
-          <a class="hud-link" href="javascript:void(0);" style="float:left;" onclick="loopery.setStage('levelmenu');">&equiv; all levels</a>
-          <a class="hud-link" id="turn-sound-off" href="javascript:void(0);" style="float:left;" onclick="loopery.sound.turnOff();">turn sound off</a>
-          <a class="hud-link" id="turn-sound-on" href="javascript:void(0);" style="float:left;" onclick="loopery.sound.turnOn();" style="display:none;">turn sound on</a>
-          <a class="hud-link" href="javascript:void(0);" style="float:left;" onclick="loopery.gameplay.resetLevel();">restart &oast;</a>
-          <a class="hud-link level-next" href="javascript:void(0);" style="float:right; margin-right:1em" onclick="loopery.loadNextLevel();">next &sc;</a>
-          <a class="hud-link level-prev" href="javascript:void(0);" style="float:right;" onclick="loopery.loadPreviousLevel();">&pr; back</a>
+          <a class="hud-link button-click-sound" href="javascript:void(0);" style="float:left;" onclick="loopery.setStage('levelmenu');">&equiv; all levels</a>
+          <a class="hud-link button-click-sound" id="turn-sound-off" href="javascript:void(0);" style="float:left;" onclick="loopery.sound.turnOff();">turn sound off</a>
+          <a class="hud-link button-click-sound" id="turn-sound-on" href="javascript:void(0);" style="float:left;" onclick="loopery.sound.turnOn();" style="display:none;">turn sound on</a>
+          <a class="hud-link button-click-sound" href="javascript:void(0);" style="float:left;" onclick="loopery.gameplay.resetLevel();">restart &oast;</a>
+          <a class="hud-link button-click-sound level-next" href="javascript:void(0);" style="float:right; margin-right:1em" onclick="loopery.loadNextLevel();">next &sc;</a>
+          <a class="hud-link button-click-sound level-prev" href="javascript:void(0);" style="float:right;" onclick="loopery.loadPreviousLevel();">&pr; back</a>
         </div>
 
         <div id="game_fadeout" class="game-overlay"></div>
@@ -50,16 +50,16 @@
         <div id="level_complete" class="level-message game-overlay">
           <div class="center-screen-h">
             <h2>COMPLETE</h2>
-            <a class="level_navigation level-next" href="javascript:void(0);" onclick="loopery.loadNextLevel();">NEXT LEVEL</a>
-            <a class="level_navigation" href="javascript:void(0);" onclick="loopery.gameplay.resetLevel();">solve this one again</a>
-            <a class="level_navigation" href="javascript:void(0);" onclick="loopery.setStage('levelmenu');">back to the big list</a>
+            <a class="level_navigation button-click-sound level-next" href="javascript:void(0);" onclick="loopery.sound.stop('win'); loopery.loadNextLevel();">NEXT LEVEL</a>
+            <a class="level_navigation button-click-sound" href="javascript:void(0);" onclick="loopery.sound.stop('win'); loopery.gameplay.resetLevel();">solve this one again</a>
+            <a class="level_navigation button-click-sound" href="javascript:void(0);" onclick="loopery.sound.stop('win'); loopery.setStage('levelmenu');">back to the menu</a>
           </div>
         </div>
 
         <div id="level_failed" class="level-message game-overlay">
           <div class="center-screen-h">
             <h2>DEATH HAS OCCURRED</h2>
-            <a class="level_navigation" href="javascript:void(0);" onclick="loopery.gameplay.resetLevel();">try again</a>
+            <a class="level_navigation button-click-sound" href="javascript:void(0);" onclick="loopery.gameplay.resetLevel();">try again</a>
           </div>
         </div>
       </div>
@@ -71,8 +71,8 @@
         <h3>LOAD LEVEL</h3>
         Paste the text from another level here.
         <textarea id="level_input"></textarea>
-        <button onclick="loopery.exitLoader()">Go back</button>
-        <button onclick="loopery.loadInputLevel()">Load it!</button>
+        <button class="button-click-sound" onclick="loopery.exitLoader()">Go back</button>
+        <button class="button-click-sound" onclick="loopery.loadInputLevel()">Load it!</button>
       </div>
     </div>
     <div id="loading">
@@ -82,12 +82,10 @@
     </div>
     <div id="level_menu" class="game-overlay">
       <h1>LOOPERY</h1>
-      <h2>Loopery will be released soon!</span></h2>
-      <h3>In the mean time, here are a few sample levels.</h3>
-      <h3 style="margin-bottom:3rem;">Or, try out the <a href="editor.htm" style="text-decoration:underline; display:inline;">level editor</a>.</h3>
       <div id='level-sections'>
         <!-- sections full of levels will be populated here -->
       </div>
+      <h3 style="margin-top:3rem;">Want more? try out the <a href="editor.htm" style="text-decoration:underline; display:inline;">level editor</a>! (Still under construction.)</h3>
     </div>
   </body>
   
@@ -110,7 +108,7 @@
   <script type="text/javascript" src="js/animation.js"></script>
   <script type="text/javascript" src="js/menus/level_menu.js"></script>
   <script type="text/javascript" src="js/gameplay.js"></script>
-  <script type="text/javascript" src="js/presentation.js"></script>
+  <!--script type="text/javascript" src="js/presentation.js"></script-->
 
   
   <script type="text/javascript">

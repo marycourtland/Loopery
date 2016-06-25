@@ -1,0 +1,130 @@
+{
+  "info": {
+    "name": "Intro II"
+  },
+  "loops": [{
+    "id": 1,
+    "x": 0,
+    "y": 0,
+    "r": 60
+  }, {
+    "id": 2,
+    "x": 180,
+    "y": 30,
+    "r": 30
+  }, {
+    "id": 3,
+    "x": -240,
+    "y": -30,
+    "r": 90
+  }],
+  "joints": [{
+    "id": 5,
+    "loop": 3,
+    "connector": 4,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 6,
+    "loop": 1,
+    "connector": 4,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 8,
+    "loop": 1,
+    "connector": 7,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 9,
+    "loop": 3,
+    "connector": 7,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 11,
+    "loop": 1,
+    "connector": 10,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 12,
+    "loop": 2,
+    "connector": 10,
+    "winding": 1,
+    "state": false
+  }],
+  "connectors": [{
+    "id": 4,
+    "joint1": {
+      "id": 5,
+      "loop": 3,
+      "connector": 4,
+      "winding": -1,
+      "state": false
+    },
+    "joint2": {
+      "id": 6,
+      "loop": 1,
+      "connector": 4,
+      "winding": 1,
+      "state": false
+    }
+  }, {
+    "id": 7,
+    "joint1": {
+      "id": 8,
+      "loop": 1,
+      "connector": 7,
+      "winding": 1,
+      "state": false
+    },
+    "joint2": {
+      "id": 9,
+      "loop": 3,
+      "connector": 7,
+      "winding": 1,
+      "state": false
+    }
+  }, {
+    "id": 10,
+    "joint1": {
+      "id": 11,
+      "loop": 1,
+      "connector": 10,
+      "winding": -1,
+      "state": false
+    },
+    "joint2": {
+      "id": 12,
+      "loop": 2,
+      "connector": 10,
+      "winding": 1,
+      "state": false
+    }
+  }],
+  "orbs": [{
+    "id": 13,
+    "color": "#00ff00",
+    "start": 1,
+    "start_dir": 1,
+    "start_pos": 0.75,
+    "roles": {
+      "player": {
+        "end": 2
+      }
+    }
+  },
+  {
+    "id": 15,
+    "color": "#5800ff",
+    "start": 3,
+    "start_dir": -1,
+    "start_pos": 0.75,
+    "roles": {
+      "enemy": {}
+    }
+  }],
+  "decorations": []
+}

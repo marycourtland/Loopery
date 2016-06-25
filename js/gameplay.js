@@ -68,6 +68,7 @@ loopery.gameplay = {
   },
 
   resetLevel: function() {
+    loopery.sound.stop('death');
     this.forAllObjects(function(obj) {
       if (typeof obj.reset === 'function') {
         obj.reset();
@@ -250,6 +251,8 @@ loopery.gameplay = {
 
     this.disableAllJoints();
 
+    this.enableOnJoints();
+
     var orbs = this.lookup({group:'orbs'});
     for (var id in orbs) {
       var orb = orbs[id];
@@ -272,6 +275,7 @@ loopery.gameplay = {
       // ok enable all the joints
       var joints = this.lookup({group:'joints', loop_id: orb.track.id});
       for(var id in joints) {
+        if (joints[id].state) { joints[id].enable()}
 
         // but only if they're going in the right direction
         if (joints[id].winding !== orb.dir) { continue; }
@@ -284,6 +288,12 @@ loopery.gameplay = {
   disableAllJoints: function() {
     this.forAllObjectsInGroup('joints', function(joint) {
       joint.disable();
+    })
+  },
+
+  enableOnJoints: function() {
+    this.forAllObjectsInGroup('joints', function(joint) {
+      if (joint.state) joint.enable();
     })
   },
 
@@ -306,6 +316,12 @@ loopery.gameplay = {
     var joints = this.lookup({group:'joints', loop_id: loop.id});
     joints.forEach(function(joint) {
       joint.disable();
+    })
+  },
+
+  turnOffAllJoints: function() {
+    this.forAllObjectsInGroup('joints', function(joint) {
+      joint.state = false;
     })
   },
 

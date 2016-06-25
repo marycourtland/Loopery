@@ -303,39 +303,27 @@ var param_box_property_style = {
 
     // Give the new orb various roles
 
-    makeEditorButton("new-orb-role-player")
-      .addClass('new-orb-role')
-      .data('new-orb-role', 'player')
-      .appendTo(orb_params)
-      .togglebutton({
-        off: function() { $(this).text('Player role: OFF'); },
-        on: function() { $(this).text('Player role: ON'); }
-      })
 
-    makeEditorButton("new-orb-role-clock")
-      .addClass('new-orb-role')
-      .data('new-orb-role', 'clock')
-      .appendTo(orb_params)
-      .togglebutton({
-        off: function() { $(this).text('Clock role: OFF'); },
-        on: function() { $(this).text('Clock role: ON'); }
-      })
+    loopery.editor.toggle_role_button = makeEditorButton("new-orb-role", "Role: NONE").appendTo(orb_params);
 
-    makeEditorButton("new-orb-role-enemy")
-      .addClass('new-orb-role')
-      .data('new-orb-role', 'enemy')
-      .appendTo(orb_params)
-      .togglebutton({
-        off: function() { $(this).text('Enemy role: OFF'); },
-        on: function() { $(this).text('Enemy role: ON'); }
-      })
+    loopery.editor.toggle_role_button.togglebutton({
+      none: function() {
+        loopery.editor.toggle_role_button.data('role', '').text("Role: NONE");
+      },
 
+      player: function() {
+        loopery.editor.toggle_role_button.data('role', 'player').text("Role: PLAYER");
+      },
+
+      enemy: function() {
+        loopery.editor.toggle_role_button.data('role', 'enemy').text("Role: ENEMY");
+      },
+
+      clock: function() {
+        loopery.editor.toggle_role_button.data('role', 'clock').text("Role: CLOCK");
+      },
+    })
   })();
-
-
-function showOrbRoleParams() {
-  console.log('add new role');
-}
 
 
 // ------------------------------------------------------------------

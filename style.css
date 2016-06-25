@@ -71,6 +71,11 @@ canvas {
     margin-bottom: 0.4em;
   }
 
+#level-sections {
+  width: 800px;
+  margin: auto;
+}
+
 .level_navigation {
   display: block;
   font-size: 32px;
@@ -131,7 +136,7 @@ canvas {
     width: 15rem;
     padding: 2rem;
     display: inline-block;
-    margin: 1rem 2rem;
+    margin: 1rem 1rem;
     vertical-align: top;
   }
 

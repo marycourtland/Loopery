@@ -239,7 +239,14 @@ loopery.Orb.Roles.player = {
       var end_track = orb.lookup({group: 'loops', id: orb.roles.player.end});
       if (!end_track) { return; }
 
-      drawGoalStar(end_track.loc, goal_radius, loopery.state.frame / 100);
+      var params = {
+        stroke: orb.color
+      }
+      loopery.Orb.Roles.player.drawGoalStar(goal_ctx, end_track.loc, goal_radius,  loopery.state.frame / 100, goal_rotation_dir, params);
+
+      if (!this.killed) {
+        loopery.Orb.Roles.player.drawPlayer(this);
+      }
     })
 
     $(orb).on('levelcomplete', function(evt, data) {
@@ -248,6 +255,7 @@ loopery.Orb.Roles.player = {
 
       var end_track = this.lookup({group:'loops', id:this.roles.player.end});
       if (end_track) {
+        loopery.sound.start('win');
         goal_rotation_dir = this.dir;
         showLevelCompleteAnimation(end_track.loc);
       }
@@ -265,27 +273,7 @@ loopery.Orb.Roles.player = {
         loopery.gameplay.showLevelFailed("You're stuck!");
       }, 2000);
     })
-
-    function drawGoalStar(loc, r, th_offset, lineWidth, alpha) {
-      lineWidth = (lineWidth !== undefined) ? lineWidth : 2;
-      alpha = (alpha !== undefined) ? alpha : 1;
-      var th = Math.PI / 3;
-
-      th_offset *= goal_rotation_dir;
-      th *= goal_rotation_dir;
-
-      var p1 = rth(r, th_offset);
-      var p2 = rth(r, th_offset + th);
-      var p3 = rth(r, th_offset + 2 * th);
-      var p4 = rth(r, th_offset + 3 * th);
-      var p5 = rth(r, th_offset + 4 * th);
-      var p6 = rth(r, th_offset + 5 * th);
-
-      var params = {stroke: orb.color, lineWidth:lineWidth, lineCap:'round', alpha:alpha};
-      draw.line(goal_ctx, p1, p4, params);
-      draw.line(goal_ctx, p2, p5, params);
-      draw.line(goal_ctx, p3, p6, params);
-    }
+    
 
     function showLevelCompleteAnimation(loc) {
       var T = 80;
@@ -296,8 +284,13 @@ loopery.Orb.Roles.player = {
           // var width = (1 + 1/(5*(frame - 30)));
           // var width = (frame < 5) ? 2 : 2 / (frame - 10);
           var width = 2;
-          var alpha = (frame < 20) ? 1 : Math.max(1-(frame/50), 0);
-          drawGoalStar(loc, r0, loopery.state.frame / 5, width, alpha);
+          var params = {
+            lineWidth: width,
+            stroke: orb.color,
+            alpha:(frame < 20) ? 1 : Math.max(1-(frame/50), 0)
+          };
+
+          loopery.Orb.Roles.player.drawGoalStar(goal_ctx, loc, r0, loopery.state.frame / 5, goal_rotation_dir, params);
         },
         function end() {
           loopery.gameplay.completeLevel();
@@ -308,6 +301,57 @@ loopery.Orb.Roles.player = {
     $(orb).on('collision', function(evt, data) {
       // reverse direction!
       this.dir *= -1;
+    })
+  },
+
+  drawGoalStar: function(ctx, loc, r, th_offset, goalRotationDir, params) {
+    params = params || {};
+    params.lineWidth = params.lineWidth || 2;
+    params.alpha = params.alpha || 1;
+    params.stroke = params.stroke || 'white';
+    params.lineCap = params.lineCap || 'round';
+
+    var th = Math.PI / 3;
+
+    th_offset *= goalRotationDir;
+    th *= goalRotationDir;
+
+    var p1 = rth(r, th_offset);
+    var p2 = rth(r, th_offset + th);
+    var p3 = rth(r, th_offset + 2 * th);
+    var p4 = rth(r, th_offset + 3 * th);
+    var p5 = rth(r, th_offset + 4 * th);
+    var p6 = rth(r, th_offset + 5 * th);
+
+    draw.line(ctx, p1, p4, params);
+    draw.line(ctx, p2, p5, params);
+    draw.line(ctx, p3, p6, params);
+  },
+
+  drawPlayer: function(orb) {
+    var params = {
+      color: orb.color
+    }
+
+    draw.clear(orb.ctx);
+
+    if (orb.redrawCanvasRepr) orb.redrawCanvasRepr();
+
+    this.drawPlayerDecorations(orb.ctx, xy(0, 0), params);
+  },
+
+  // this is factored out to allow the level editor access
+  drawPlayerDecorations: function(ctx, loc, params) {
+    color = params.color || 'white'
+
+    var _gco = ctx.globalCompositeOperation;
+    ctx.globalCompositeOperation = 'destination-out';
+    draw.circle(ctx, xy(0, 0), loopery.display.orb_radius * 0.7, {
+      fill: 'black'
+    })
+    ctx.globalCompositeOperation = _gco;
+    draw.circle(ctx, xy(0, 0), loopery.display.orb_radius * 0.6, {
+      fill: color
     })
   },
 
@@ -392,6 +436,7 @@ loopery.Orb.Roles.enemy = {
 
     $(orb).on('collision', function(evt, data) {
       data.orb.kill();
+      loopery.sound.play('explode');
     })
 
     $(orb).on('draw', function() {
@@ -401,23 +446,39 @@ loopery.Orb.Roles.enemy = {
   },
 
   drawSpikes: function(orb) {
-    var r = 0.5; // ratio of the spike length to orb radius
-    var w = 0.05; // ratio of the spike width to the complete circle
-    var n = 12; // number of spikes
-    var th0 = loopery.state.frame % (2*Math.PI); // have the spikes spin a bit
+    var params = {
+      color: orb.color,
+      r: 0.5,    // ratio of the spike length to orb radius
+      w: 0.05,   // ratio of the spike width to the complete circle
+      n: 12,     // number of spikes
+      th0: loopery.state.frame % (2*Math.PI) // have the spikes spin a bit
+    }
 
     draw.clear(orb.ctx);
-    orb.redrawCanvasRepr();
+
+    if (orb.redrawCanvasRepr) orb.redrawCanvasRepr();
+
+    this.drawSpikeRing(orb.ctx, xy(0, 0), params);
+  },
+
+  // this is factored out to allow the level editor access
+  drawSpikeRing: function(ctx, loc, params) {
+    r = params.r || 0.5;
+    w = params.w || 0.05;
+    n = params.n || 12;
+    th0 = params.th0 || 0;
+    color = params.color;
 
     for (var i = 0; i < n; i++) {
       var th = i * 2*Math.PI / n;
       var p0 = rth(loopery.display.orb_radius, th + th0);
       var p1 = rotate(p0, w*2*Math.PI);
       var p2 = p0.copy().scale(1 + r);
-      draw.polygon(orb.ctx, [p1, p0, p2], {
-        fill: orb.color,
-        stroke: orb.color
+      draw.polygon(ctx, [p1, p0, p2].map(function(pos) { return add(loc, pos); }), {
+        fill: color,
+        stroke: color
       })
     }
   }
 }
+

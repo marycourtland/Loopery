@@ -44,6 +44,8 @@ loopery.enableEditor = function() {
   // loopery.loadLevelData('levels/blank_level.json', function(level_data) {
   //   loopery.gameplay.loadLevel(level_data);
   // });
+
+  loopery.gameplay.pause();
 }
 
 loopery.editor.saveLevel = function() {

@@ -2,7 +2,7 @@ loopery.levelMenu = {};
 
 loopery.levelMenu.addSection = function(name) {
   var id = this.turnSectionNameIntoId(name);
-  return $("<div></div>").addClass('level-section').attr('id', id).append('<h2>' + name + '</h2>').appendTo('#level-sections');
+  return $("<div></div>").addClass('level-section').addClass('button-click-sound').attr('id', id).append('<h2>' + name + '</h2>').appendTo('#level-sections');
 }
 
 loopery.levelMenu.turnSectionNameIntoId = function(name) {
@@ -17,7 +17,6 @@ loopery.levelMenu.populateLink = function(level_metadata) {
   if ($section.length === 0) {
     $section = loopery.levelMenu.addSection(level_metadata.section);
   }
-  console.log('got section:', $section);
   level_metadata.link = $("<a></a>").addClass('level-menu-link').appendTo($section);
   return level_metadata.link;
 }
@@ -26,5 +25,3 @@ loopery.levelMenu.populateLink = function(level_metadata) {
 loopery.levelMenu.attachLevelToLink = function(link, label, callback) {
   link.text(label).bind('click', callback);
 }
-
-s

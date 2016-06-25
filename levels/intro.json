@@ -1,6 +1,6 @@
 {
     "info": {
-        "name": "Intro"
+        "name": "Intro I"
     },
     "loops": [{
         "id": 1,
@@ -60,7 +60,7 @@
         "id": 7,
         "command": "text",
         "args": [
-            "use arrows to guide your orb to its goal",
+            "use arrows to navigate to the goal",
             {"x": 0, "y": 120},
             "centered"
         ],

@@ -1,39 +1,69 @@
+
 loopery.levels = [
   {
     url: 'levels/intro.json',
-    section: 'Some levels',
-    link: null,
-    data: null
+    section: 'INTRO'
   },
   {
-    url: 'levels/boat.json',
-    section: 'Some levels',
-    link: null,
-    data: null
+    url: 'levels/intro2.json',
+    section: 'INTRO'
   },
   {
     url: 'levels/advanceguard.json',
-    section: 'Some levels',
-    link: null,
-    data: null
+    section: 'INTRO'
+  },
+  {
+    url: 'levels/outofthewayadvanceguard.json',
+    section: 'INTRO'
+  },
+  {
+    url: 'levels/square1.json',
+    section: 'EASY'
+  },
+  {
+    url: 'levels/hexagon1.json',
+    section: 'EASY'
+  },
+  {
+    url: 'levels/longboat.json',
+    section: 'EASY'
   },
   {
     url: 'levels/shortpaths.json',
-    section: 'More levels',
-    link: null,
-    data: null
+    section: 'EASY'
   },
   {
     url: 'levels/shortpaths2.json',
-    section: 'More levels',
-    link: null,
-    data: null
+    section: 'A BIT HARDER'
+  },
+  {
+    url: 'levels/hexagon4.json',
+    section: 'A BIT HARDER'
+  },
+  {
+    url: 'levels/brg3.json',
+    section: 'A BIT HARDER'
+  },
+
+  {
+    url: 'levels/bhsl1.json',
+    section: 'A BIT HARDER'
+  },
+  {
+    url: 'levels/bhsl2.json',
+    section: 'MOST DIFFICULT'
+  },
+  {
+    url: 'levels/plus.json',
+    section: 'MOST DIFFICULT'
+  },
+  {
+    url: 'levels/bhsl3.json',
+    section: 'MOST DIFFICULT'
   },
   {
     url: 'levels/quitehard.json',
-    section: 'More levels',
-    link: null,
-    data: null
+    section: 'MOST DIFFICULT'
   }
 ]
 

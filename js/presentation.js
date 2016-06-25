@@ -2,7 +2,7 @@
 
 loopery.presentation = {};
 loopery.presentation.running = false;
-loopery.presentation.getSpeed = function() { return loopery.getFrameSpeed(loopery.orb_speed * 40 )};
+loopery.presentation.getSpeed = function() { return loopery.getFrameSpeed(loopery.orb_speed * 60 )};
 
 
 loopery.presentation.canvas = $("#presentation_canvas")[0];

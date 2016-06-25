@@ -70,6 +70,13 @@ loopery.objects = [];
 
 loopery.disable_gameplay = false;
 
+loopery.bindUiSounds = function() {
+  $(".button-click-sound").on("click", function(evt) {
+    if (!loopery.sound) return;
+    loopery.sound.play("button");
+  })
+}
+
 // ========== GAME STAGES
 loopery.stages.titlescreen = {
   tick: function() {
@@ -239,10 +246,14 @@ loopery.ontick(function() {
 
 // ========== GOGOGO
 
+// will be overwritten by level_editor.js
+loopery.start_stage = 'levelmenu';
+
 function go() {
+  loopery.bindUiSounds();
   $("#loading").fadeOut();
-  $("#game").fadeIn()
-  loopery.setStage('levelmenu');
+  $("#game").fadeIn();
+  loopery.setStage(loopery.start_stage);
   loopery.start();
 }
 

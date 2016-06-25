@@ -1,0 +1,449 @@
+{
+  "info": {
+    "name": "Easy I"
+  },
+  "loops": [
+    {
+      "id": 1,
+      "x": 0,
+      "y": 0,
+      "r": 40
+    },
+    {
+      "id": 2,
+      "x": 0,
+      "y": -160,
+      "r": 40
+    },
+    {
+      "id": 3,
+      "x": -160,
+      "y": -160,
+      "r": 40
+    },
+    {
+      "id": 4,
+      "x": -160,
+      "y": 0,
+      "r": 40
+    },
+    {
+      "id": 5,
+      "x": 160,
+      "y": 0,
+      "r": 40
+    },
+    {
+      "id": 6,
+      "x": 160,
+      "y": -160,
+      "r": 40
+    },
+    {
+      "id": 7,
+      "x": 160,
+      "y": 160,
+      "r": 40
+    },
+    {
+      "id": 8,
+      "x": 0,
+      "y": 160,
+      "r": 40
+    },
+    {
+      "id": 9,
+      "x": -160,
+      "y": 160,
+      "r": 40
+    }
+  ],
+  "joints": [
+    {
+      "id": 11,
+      "loop": 3,
+      "connector": 10,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 12,
+      "loop": 1,
+      "connector": 10,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 14,
+      "loop": 3,
+      "connector": 13,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 15,
+      "loop": 4,
+      "connector": 13,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 17,
+      "loop": 4,
+      "connector": 16,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 18,
+      "loop": 1,
+      "connector": 16,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 20,
+      "loop": 4,
+      "connector": 19,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 21,
+      "loop": 8,
+      "connector": 19,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 23,
+      "loop": 8,
+      "connector": 22,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 24,
+      "loop": 9,
+      "connector": 22,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 26,
+      "loop": 9,
+      "connector": 25,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 27,
+      "loop": 4,
+      "connector": 25,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 29,
+      "loop": 2,
+      "connector": 28,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 30,
+      "loop": 6,
+      "connector": 28,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 32,
+      "loop": 2,
+      "connector": 31,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 33,
+      "loop": 5,
+      "connector": 31,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 35,
+      "loop": 5,
+      "connector": 34,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 36,
+      "loop": 7,
+      "connector": 34,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 38,
+      "loop": 7,
+      "connector": 37,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 39,
+      "loop": 8,
+      "connector": 37,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 41,
+      "loop": 1,
+      "connector": 40,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 42,
+      "loop": 6,
+      "connector": 40,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 44,
+      "loop": 8,
+      "connector": 43,
+      "winding": -1,
+      "state": false
+    },
+    {
+      "id": 45,
+      "loop": 5,
+      "connector": 43,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 47,
+      "loop": 8,
+      "connector": 46,
+      "winding": 1,
+      "state": false
+    },
+    {
+      "id": 48,
+      "loop": 5,
+      "connector": 46,
+      "winding": 1,
+      "state": false
+    }
+  ],
+  "connectors": [
+    {
+      "id": 10,
+      "joint1": {
+        "id": 11,
+        "loop": 3,
+        "connector": 10,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 12,
+        "loop": 1,
+        "connector": 10,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 13,
+      "joint1": {
+        "id": 14,
+        "loop": 3,
+        "connector": 13,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 15,
+        "loop": 4,
+        "connector": 13,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 16,
+      "joint1": {
+        "id": 17,
+        "loop": 4,
+        "connector": 16,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 18,
+        "loop": 1,
+        "connector": 16,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 19,
+      "joint1": {
+        "id": 20,
+        "loop": 4,
+        "connector": 19,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 21,
+        "loop": 8,
+        "connector": 19,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 22,
+      "joint1": {
+        "id": 23,
+        "loop": 8,
+        "connector": 22,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 24,
+        "loop": 9,
+        "connector": 22,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 25,
+      "joint1": {
+        "id": 26,
+        "loop": 9,
+        "connector": 25,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 27,
+        "loop": 4,
+        "connector": 25,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 28,
+      "joint1": {
+        "id": 29,
+        "loop": 2,
+        "connector": 28,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 30,
+        "loop": 6,
+        "connector": 28,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 31,
+      "joint1": {
+        "id": 32,
+        "loop": 2,
+        "connector": 31,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 33,
+        "loop": 5,
+        "connector": 31,
+        "winding": -1,
+        "state": false
+      }
+    },
+    {
+      "id": 34,
+      "joint1": {
+        "id": 35,
+        "loop": 5,
+        "connector": 34,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 36,
+        "loop": 7,
+        "connector": 34,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 40,
+      "joint1": {
+        "id": 41,
+        "loop": 1,
+        "connector": 40,
+        "winding": -1,
+        "state": false
+      },
+      "joint2": {
+        "id": 42,
+        "loop": 6,
+        "connector": 40,
+        "winding": 1,
+        "state": false
+      }
+    },
+    {
+      "id": 46,
+      "joint1": {
+        "id": 47,
+        "loop": 8,
+        "connector": 46,
+        "winding": 1,
+        "state": false
+      },
+      "joint2": {
+        "id": 48,
+        "loop": 5,
+        "connector": 46,
+        "winding": 1,
+        "state": false
+      }
+    }
+  ],
+  "orbs": [
+    {
+      "id": 49,
+      "color": "#00ff00",
+      "start": 3,
+      "start_dir": -1,
+      "start_pos": 0.75,
+      "roles": {
+        "player": {
+          "end": 7
+        }
+      }
+    }
+  ],
+  "decorations": []
+} 

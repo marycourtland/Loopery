@@ -110,6 +110,9 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
   this.toggle = function() {
     this.state = !this.state;
     loopery.state.redraw_bg = true;
+
+    // sound effect
+    if (this.state === true) loopery.sound.play('joint');
   }
 
   this.attemptTransfer = function(orb) {
@@ -153,10 +156,16 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     if (new_joints.length === 0) {
       $(orb).trigger('stuck');
     }
+    
+    // *throws hands up*
+    // Just ALWAYS turn all clickers off. Makes everything simpler.
+    if (!!orb.roles.player) loopery.gameplay.turnOffAllJoints();
 
     if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles && orb.roles.player) {
       loopery.gameplay.initPlayerEnabledJoints();
     }
+
+    loopery.sound.stop('connector');
   }
 
   this.transferOrbToConnector = function(orb) {
@@ -170,6 +179,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles && orb.roles.player) {
       loopery.gameplay.initPlayerEnabledJoints();
     }
+
+    loopery.sound.start('connector');
   }
 
   this.getConnectorEnd = function() {

@@ -1,0 +1,236 @@
+{
+  "info": {
+    "name": "Intro IV"
+  },
+  "loops": [{
+    "id": 2,
+    "x": 0,
+    "y": 0,
+    "r": 40
+  }, {
+    "id": 3,
+    "x": 160,
+    "y": 0,
+    "r": 40
+  }, {
+    "id": 4,
+    "x": -160,
+    "y": 0,
+    "r": 40
+  }, {
+    "id": 5,
+    "x": -80,
+    "y": -138.5640646055102,
+    "r": 40
+  }, {
+    "id": 6,
+    "x": 80,
+    "y": 138.5640646055102,
+    "r": 40
+  }],
+  "joints": [{
+    "id": 9,
+    "loop": 2,
+    "connector": 8,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 10,
+    "loop": 6,
+    "connector": 8,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 12,
+    "loop": 6,
+    "connector": 11,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 13,
+    "loop": 3,
+    "connector": 11,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 15,
+    "loop": 2,
+    "connector": 14,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 16,
+    "loop": 3,
+    "connector": 14,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 18,
+    "loop": 2,
+    "connector": 17,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 19,
+    "loop": 5,
+    "connector": 17,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 21,
+    "loop": 5,
+    "connector": 20,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 22,
+    "loop": 4,
+    "connector": 20,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 24,
+    "loop": 4,
+    "connector": 23,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 25,
+    "loop": 2,
+    "connector": 23,
+    "winding": 1,
+    "state": false
+  }],
+  "connectors": [{
+    "id": 8,
+    "joint1": {
+      "id": 9,
+      "loop": 2,
+      "connector": 8,
+      "winding": -1,
+      "state": false
+    },
+    "joint2": {
+      "id": 10,
+      "loop": 6,
+      "connector": 8,
+      "winding": 1,
+      "state": false
+    }
+  }, {
+    "id": 11,
+    "joint1": {
+      "id": 12,
+      "loop": 6,
+      "connector": 11,
+      "winding": -1,
+      "state": false
+    },
+    "joint2": {
+      "id": 13,
+      "loop": 3,
+      "connector": 11,
+      "winding": 1,
+      "state": false
+    }
+  }, {
+    "id": 14,
+    "joint1": {
+      "id": 15,
+      "loop": 2,
+      "connector": 14,
+      "winding": 1,
+      "state": false
+    },
+    "joint2": {
+      "id": 16,
+      "loop": 3,
+      "connector": 14,
+      "winding": -1,
+      "state": false
+    }
+  }, {
+    "id": 17,
+    "joint1": {
+      "id": 18,
+      "loop": 2,
+      "connector": 17,
+      "winding": -1,
+      "state": false
+    },
+    "joint2": {
+      "id": 19,
+      "loop": 5,
+      "connector": 17,
+      "winding": 1,
+      "state": false
+    }
+  }, {
+    "id": 20,
+    "joint1": {
+      "id": 21,
+      "loop": 5,
+      "connector": 20,
+      "winding": -1,
+      "state": false
+    },
+    "joint2": {
+      "id": 22,
+      "loop": 4,
+      "connector": 20,
+      "winding": 1,
+      "state": false
+    }
+  }, {
+    "id": 23,
+    "joint1": {
+      "id": 24,
+      "loop": 4,
+      "connector": 23,
+      "winding": -1,
+      "state": false
+    },
+    "joint2": {
+      "id": 25,
+      "loop": 2,
+      "connector": 23,
+      "winding": 1,
+      "state": false
+    }
+  }],
+  "orbs": [
+    {
+      "id": 26,
+      "color": "#00ff00",
+      "start": 2,
+      "start_dir": -1,
+      "start_pos": 0,
+      "roles": {
+        "player": {
+          "end": 3
+        }
+      }
+    },
+    {
+      "id": 27,
+      "color": "#5800ff",
+      "start": 5,
+      "start_dir": -1,
+      "start_pos": 0.5,
+      "roles": {
+        "enemy": {}
+      }
+    },
+    {
+      "id": 28,
+      "color": "#5800ff",
+      "start": 6,
+      "start_dir": 1,
+      "start_pos": 0.5,
+      "roles": {
+        "enemy": {}
+      }
+    }
+  ],
+  "decorations": []
+}
