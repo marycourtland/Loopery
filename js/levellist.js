@@ -1,4 +1,3 @@
-
 loopery.levels = [
   {
     url: 'levels/intro.json',
@@ -25,11 +24,11 @@ loopery.levels = [
     section: 'EASY'
   },
   {
-    url: 'levels/longboat.json',
+    url: 'levels/hexagon4.json',
     section: 'EASY'
   },
   {
-    url: 'levels/shortpaths.json',
+    url: 'levels/longboat.json',
     section: 'EASY'
   },
   {
@@ -37,20 +36,19 @@ loopery.levels = [
     section: 'A BIT HARDER'
   },
   {
-    url: 'levels/hexagon4.json',
+    url: 'levels/shortpaths.json',
     section: 'A BIT HARDER'
   },
   {
     url: 'levels/brg3.json',
     section: 'A BIT HARDER'
   },
-
   {
-    url: 'levels/bhsl1.json',
+    url: 'levels/bhsl2.json',
     section: 'A BIT HARDER'
   },
   {
-    url: 'levels/bhsl2.json',
+    url: 'levels/bhsl1.json',
     section: 'MOST DIFFICULT'
   },
   {
@@ -105,15 +103,27 @@ loopery.isLastLevel = function() {
   return loopery.gameplay.current_level === loopery.levels.length - 1;
 }
 
-
-loopery.fetchLevelData = function(level_index) {
-  var url = loopery.levels[level_index].url;
+loopery.setupLevelData = function(level_data) {
+  var level_index = level_data.index;
   var level_metadata = loopery.levels[level_index];
   loopery.levelMenu.populateLink(level_metadata);
 
   if (loopery.isLevelSolved(level_index)) {
     loopery.levels[level_index].link.addClass('level-solved');
   }
+
+  level_data.info = level_data.info || {};
+  level_data.info.index = level_index;
+  loopery.levels[level_index].data = level_data;
+  loopery.levelMenu.attachLevelToLink(loopery.levels[level_index].link, level_data.info.name, function() {
+    loopery.startGameplay(level_index);
+  });
+}
+
+
+loopery.fetchLevelData = function(level_index, callback) {
+  callback = (typeof callback === 'function') ? callback : function() {};
+  var url = loopery.levels[level_index].url;
 
   $.ajax({
     url: url,
@@ -122,31 +132,38 @@ loopery.fetchLevelData = function(level_index) {
       var level_data;
       try {
         level_data = (typeof data === 'object') ? data : JSON.parse(data);
-      }
-      catch(e) {
+      } catch(e) {
         console.warn('Error parsing level JSON at ' + url + ':', e);
         return;
       }
-      level_data.info = level_data.info || {};
-      level_data.info.index = level_index;
-      loopery.levels[level_index].data = level_data;
-      loopery.levelMenu.attachLevelToLink(loopery.levels[level_index].link, level_data.info.name, function() {
-        loopery.startGameplay(level_index);
-      });
+      level_data.index = level_index;
+      callback(level_data);
     },
 
     error: function(response) {
       console.warn('Error loading level JSON at ' + url + ':', response);
-      loopery.levels[level_index].link.remove();
+      callback(null);
     }
   })
 }
 
-// Load each level and add it to the menu
-$(document).ready(function() {
-  for (var index = 0; index < loopery.levels.length; index++) {
-    loopery.fetchLevelData(index);
+// load levels
+loopery.initLevels = function() {
+  if (loopery.features.asyncLevels) {
+    loopery.levels.forEach(function(metadata, i) {
+      loopery.fetchLevelData(i, function(level_data) {
+        if (level_data) loopery.setupLevelData(level_data);
+      })
+    })
   }
-})
+  else {
+    // Levels should be available in `levelData`
+    // TODO: this is very messy and needs improvement
+    loopery.levels = window.levelData;
 
-
+    levelData.forEach(function(level, i) {
+      level.data.index = i;
+      loopery.setupLevelData(level.data);
+    })
+  }
+}

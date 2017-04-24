@@ -257,6 +257,12 @@ loopery.editor.linear_tool.button = makeEditorButton(
   function() { loopery.editor.setTool(loopery.editor.linear_tool); }
 ).appendTo(loopery.editor.menu);
 
+loopery.editor.complete_connector_tool.button = makeEditorButton(
+  "editor-complete-connectors",
+  "Complete Connectors",
+  function() { loopery.editor.setTool(loopery.editor.complete_connector_tool); }
+).appendTo(loopery.editor.menu);
+
 loopery.editor.orb_tool.button = makeEditorButton(
   "editor-orb",
   "Add Orb",

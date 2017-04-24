@@ -10,7 +10,7 @@ loopery.sound = {
     'soundtrack': {
       path: 'loopery.mp3',
       loop: true,
-      autostart: true,
+      autostart: false,
       volume: 0.07
     },
     'connector': {
@@ -65,10 +65,7 @@ loopery.sound = {
       var data = this.assets[id];
 
       // Start looping sounds right away and pause them
-      if (data.loop) {
-        this.assets[id].sound = createjs.Sound.play(id, 'none', 0, 0, (data.loop ? -1 : 0 ));
-        this.assets[id].sound.volume = data.volume;
-        this.assets[id].paused = !this.assets[id].autostart;
+      if (data.loop && this.assets[id].autostart) {
         this.refreshSound(id);
       }
     }
@@ -101,8 +98,15 @@ loopery.sound = {
   },
 
   // Turn sound on or off appropriately
-  refreshSound:  function(id) {
-    if (!this.assets[id] || !this.assets[id].sound) return;
+  refreshSound: function(id) {
+    if (!this.assets[id]) return;
+
+    if (!this.assets[id].sound) {
+      this.assets[id].sound = createjs.Sound.play(id, 'none', 0, 0, (this.assets[id].loop ? -1 : 0 ));
+      this.assets[id].sound.volume = this.assets[id].volume;
+      this.assets[id].paused = false; 
+    }
+
     if (!this.on) {
       this.assets[id].sound.paused = true;
     }
@@ -121,7 +125,7 @@ loopery.sound = {
   //   Play is for one-off sound effects (no looping, regardless of id)
 
   start: function(id) {
-    if (this.assets[id] && this.assets[id].sound) {
+    if (this.assets[id]) {
       this.assets[id].paused = false;
       this.refreshSound(id);
     }
@@ -148,7 +152,10 @@ loopery.sound = {
     else {
       console.warn('No sound exists for id ' + id);
     }
+  },
+
+  isPlaying: function(id) {
+    console.log('isPlaying?', this.on , this.assets[id] , this.assets[id].sound , (this.assets[id].sound ? !this.assets[id].sound.paused : '--'));
+    return this.on && this.assets[id] && this.assets[id].sound && !this.assets[id].sound.paused;
   }
 }
-
-

@@ -49,27 +49,6 @@ loopery.requestCanvas = function(size) {
 
   return canvas;
 }
-
-loopery.refreshGameElements();
-
-
-loopery.bg = $("#game_bg")[0];
-$("#game_bg").css({
-  backgroundColor: loopery.display.bg_color,
-  width: loopery.size.x,
-  height: loopery.size.y,
-})
-
-loopery.repr_layer = $("#game_reprs")[0];
-
-
-// the sole purpose of having loopery.objects is for the mouse to access them
-// TODO: refactor that
-// also the level editor uses the GameObject stuff which uses this
-loopery.objects = [];
-
-loopery.disable_gameplay = false;
-
 loopery.bindUiSounds = function() {
   $(".button-click-sound").on("click", function(evt) {
     if (!loopery.sound) return;
@@ -78,17 +57,6 @@ loopery.bindUiSounds = function() {
 }
 
 // ========== GAME STAGES
-loopery.stages.titlescreen = {
-  tick: function() {
-    draw.clear(loopery.ctx);
-    loopery.setFont(loopery.display.font_title);
-    draw.text(loopery.ctx, loopery.title, xy(400, 150), "centered");
-    loopery.setFont(loopery.display.font_large, "italic");
-    draw.text(loopery.ctx, "Click to continue", xy(400, 250), "centered");
-    loopery.next();
-    //setTimeout(function() { loopery.exitTitlescreen(); }, 1*1000);
-  }
-}
 
 loopery.stages.levelmenu = {
   tick: function() {
@@ -108,12 +76,22 @@ loopery.stages.gameplay = {
 
     loopery.next();
   },
-  stageStart: function() { $("#hud").show(); },
-  stageEnd: function() {
+  stageStart: function() {
+    $("#hud").show();
+    if (!loopery.sound.isPlaying('soundtrack')) {
+      setTimeout(function() { loopery.sound.start('soundtrack'); }, 1000);
+    }
+  },
+  stageEnd: function(next_stage) {
     loopery.gameplay.clear();
     $("#hud").hide();
     $('.game-repr').remove();
-    if (loopery.presentation) { draw.clear(loopery.presentation.ctx); }
+    if (loopery.presentation) {
+      draw.clear(loopery.presentation.ctx);
+    }
+    if (next_stage !== 'gameplay') {
+      loopery.sound.stop('soundtrack');
+    }
   }
 }
 
@@ -140,7 +118,7 @@ loopery.stages.editor = {
 loopery.setStage = function(stage_name) {
   if (!(stage_name in loopery.stages)) { return; }
 
-  if (loopery.currentStage && typeof loopery.currentStage.stageEnd === 'function') { loopery.currentStage.stageEnd(); }
+  if (loopery.currentStage && typeof loopery.currentStage.stageEnd === 'function') { loopery.currentStage.stageEnd(stage_name); }
   loopery.currentStage = loopery.stages[stage_name];
   if (loopery.currentStage && typeof loopery.currentStage.stageStart === 'function') { loopery.currentStage.stageStart(); }
 
@@ -155,13 +133,8 @@ loopery.startGameplay = function(level_index) {
   loopery.gameplay.loadLevel(level_data);
 }
 
-loopery.ctx.canvas.addEventListener("click", function(event) {
-  if (loopery.currentStage === loopery.stages.titlescreen) { loopery.setStage('levelmenu'); }
-})
-
 loopery.restart = function() {
-  loopery.current_level = 0;
-  loopery.setStage('titlescreen');
+  console.warn('loopery.restart is deprecated!')
 }
 
 loopery.startCurrentLevel = function() {
@@ -246,6 +219,30 @@ loopery.ontick(function() {
 
 // ========== GOGOGO
 
+loopery.refreshGameElements();
+
+
+loopery.bg = $("#game_bg")[0];
+$("#game_bg").css({
+  backgroundColor: loopery.display.bg_color,
+  width: loopery.size.x,
+  height: loopery.size.y,
+})
+
+loopery.repr_layer = $("#game_reprs")[0];
+
+
+// the sole purpose of having loopery.objects is for the mouse to access them
+// TODO: refactor that
+// also the level editor uses the GameObject stuff which uses this
+loopery.objects = [];
+
+loopery.disable_gameplay = false;
+
+
+// ...
+
+
 // will be overwritten by level_editor.js
 loopery.start_stage = 'levelmenu';
 
@@ -257,11 +254,12 @@ function go() {
   loopery.start();
 }
 
-
 $(document).ready(function() {
   $("#game_fadeout").hide(); // start with the fadeout layer hidden (i.e. game is not faded out)
   $("#level_loader").hide();
   $("#game").hide();
+
+  loopery.initLevels();
 
   if (loopery.sound) {
     loopery.sound.load(function() {

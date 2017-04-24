@@ -42,7 +42,7 @@ loopery.editor.clearGrid = function() {
 }
 
 loopery.editor.drawGridDot = function(pos) {
-  draw.circle(this.grid_canvas[0].getContext('2d'), pos, 1, {fill: 'white'});
+  draw.circle(this.grid_canvas[0].getContext('2d'), pos, 1, {fill: 'gray', stroke: 'gray'});
 }
 
 // =====================================================================================

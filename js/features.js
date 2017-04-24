@@ -16,3 +16,5 @@ loopery.features.toggleAllJointsOnLoop = false;
 // - For single-player-orb levels, the player can't set up a long circuit of tracks
 // - If there are multiple orbs, the player could use them as dummies to set up a circuit
 loopery.features.clickersOnlyOnPlayerLoops = true;
+
+loopery.features.asyncLevels = true;
