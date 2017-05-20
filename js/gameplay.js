@@ -18,6 +18,12 @@ loopery.gameplay = {
 
   animations: [],
 
+  tick_callbacks: {
+    beforeNextTick: []
+    // this might be more robust if the callbacks were scheduled
+    // to actual ticks, but this will do for now
+  },
+
   clear: function() {
     var _this = this;
     loopery.objectTypes.forEach(function(obj) {
@@ -216,6 +222,10 @@ loopery.gameplay = {
   tick: function() {
     if (this.paused) { return; }
 
+    this.tick_callbacks.beforeNextTick.forEach(function(cb) { cb(); })
+    delete this.tick_callbacks.beforeNextTick;
+    this.tick_callbacks.beforeNextTick = [];
+
     // check for destroyed objects
     this.forAllObjects(function(obj) {
       if (obj.destroyed) loopery.gameplay.removeObject(obj);
@@ -225,6 +235,11 @@ loopery.gameplay = {
     this.triggerForAllObjectGroups('tick', {}, {ordering: 'renderOrder'});
 
     if (loopery.presentation && loopery.presentation.running) { loopery.presentation.tick(); }
+  },
+
+  beforeNextTick: function(callback) {
+    if (typeof callback !== 'function') { callback = function() {}; console.warn("don't do this"); }
+    this.tick_callbacks.beforeNextTick.push(callback);
   },
 
   erase: function() {

@@ -10,6 +10,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     this.start_dir = data.start_dir;
     this.start_pos = data.start_pos;
     this.roles = data.roles;
+    this.radius = loopery.display.orb_radius;
 
     // apply roles
     for (var role in this.roles) {
@@ -74,7 +75,19 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
   this.isCollidingWith = function(orb) {
     if (orb.id === this.id) { return false; }
-    return distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
+    // if (orb.track.id !== this.track.id) { return false; }
+    // if (orb.dir === this.dir) { return false; }
+
+    var d = distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
+
+    if (d && orb.track.id !== this.track.id) {
+      console.log('nope 1')
+    }
+    if (d && orb.dir === this.dir) {
+      console.log('nope 2')
+    }
+
+    return d
   }
 
   this.kill = function() {
@@ -300,7 +313,10 @@ loopery.Orb.Roles.player = {
 
     $(orb).on('collision', function(evt, data) {
       // reverse direction!
-      this.dir *= -1;
+      var self = this;
+      loopery.gameplay.beforeNextTick(function() {
+        self.dir *= 1;
+      })
     })
   },
 
