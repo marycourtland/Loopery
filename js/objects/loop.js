@@ -81,6 +81,16 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     );
     this.show_shade = false;
   }
+
+  this.shouldJointsBeVisible = function() {
+    // Show joints for any loop w/ a player orb on it
+    var orbs = this.lookup({loop_id: this.id, group: 'orbs'});
+
+    var player_orbs = orbs.filter(function(orb) {
+      return ('player' in orb.roles);
+    });
+    return player_orbs.length > 0;
+  }
   
   $(this).on('draw', function() {
     if (!loopery.state.redraw_bg) { return; }

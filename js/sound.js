@@ -155,7 +155,6 @@ loopery.sound = {
   },
 
   isPlaying: function(id) {
-    console.log('isPlaying?', this.on , this.assets[id] , this.assets[id].sound , (this.assets[id].sound ? !this.assets[id].sound.paused : '--'));
     return this.on && this.assets[id] && this.assets[id].sound && !this.assets[id].sound.paused;
   }
 }

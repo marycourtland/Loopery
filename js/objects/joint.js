@@ -11,6 +11,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     this.initial_state = data.state;
     this.reset();
 
+    this.turn_off_after_use = true; // currently this feature isn't implemented
+
     // Position on loop; this will be set by connector
     this.pos = null;
 
@@ -146,6 +148,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
   }
 
   this.transferOrbToLoop = function(orb) {
+    var prev_loop = orb.prev_loop;
     orb.track = this.loop;
     orb.oldpos = null;
     orb.pos = this.pos;
@@ -157,13 +160,14 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
       $(orb).trigger('stuck');
     }
     
-    // *throws hands up*
-    // Just ALWAYS turn all clickers off. Makes everything simpler.
-    if (!!orb.roles.player) loopery.gameplay.turnOffAllJoints();
+    // Disable all joints in the previous loop
+    if (!!orb.roles.player) loopery.gameplay.disableJointsOnLoop(prev_loop);
 
     if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles && orb.roles.player) {
       loopery.gameplay.initPlayerEnabledJoints();
     }
+
+    if (this.turn_off_after_use) this.state = false; // disable joints immediately after they're used
 
     loopery.sound.stop('connector');
   }
@@ -171,6 +175,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
   this.transferOrbToConnector = function(orb) {
     // var pos_diff = Math.abs(orb.pos - this.pos);
     var pos_diff = shortestDistanceOnCircle(this.pos, orb.pos, 1)
+    orb.prev_loop = orb.track;
     orb.track = this.connector;
     orb.oldpos = null;
     orb.pos = (this.getConnectorEnd() === 0 ? pos_diff : 1 - pos_diff);
@@ -179,6 +184,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles && orb.roles.player) {
       loopery.gameplay.initPlayerEnabledJoints();
     }
+
+    if (this.turn_off_after_use) this.state = false; // turn off joints immediately after they're used
 
     loopery.sound.start('connector');
   }

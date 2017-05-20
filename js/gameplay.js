@@ -443,6 +443,7 @@ loopery.gameplay = {
 
     joins.forEach(function(join) {
       var id_name = join.source + '_id';
+      // note: single vs plural issues here-! ('orb' needs to be substring of 'orbs')
       if ('group' in params && params.group.match(join.target) && id_name in params) {
         var target_results = [];
         for (var id in results) {
