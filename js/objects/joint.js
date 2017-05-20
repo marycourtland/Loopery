@@ -11,7 +11,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     this.initial_state = data.state;
     this.reset();
 
-    this.turn_off_after_use = true; // currently this feature isn't implemented
+    this.turn_off_after_player = true; // currently this feature isn't implemented
 
     // Position on loop; this will be set by connector
     this.pos = null;
@@ -167,7 +167,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
       loopery.gameplay.initPlayerEnabledJoints();
     }
 
-    if (this.turn_off_after_use) this.state = false; // disable joints immediately after they're used
+    if (this.turn_off_after_player && orb.roles.player) this.state = false; // disable joints immediately after they're used
 
     loopery.sound.stop('connector');
   }
@@ -185,7 +185,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
       loopery.gameplay.initPlayerEnabledJoints();
     }
 
-    if (this.turn_off_after_use) this.state = false; // turn off joints immediately after they're used
+    if (this.turn_off_after_player && orb.roles.player) this.state = false; // turn off joints immediately after they're used
 
     loopery.sound.start('connector');
   }
