@@ -1,3 +1,5 @@
+var asset_path = 'assets/';
+
 loopery.sound = {
 
   assets: {
@@ -55,7 +57,7 @@ loopery.sound = {
     });
 
     for (var id in this.assets) {
-      q.loadFile({id:id, src:this.assets[id].path});
+      q.loadFile({id:id, src: asset_path + this.assets[id].path});
     }
   },
 
