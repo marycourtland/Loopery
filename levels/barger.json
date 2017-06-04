@@ -1,0 +1,162 @@
+{
+  "info": {
+    "name": "Barger demo"
+  },
+  "loops": [{
+    "id": 2,
+    "x": 0,
+    "y": -120,
+    "r": 40
+  }, {
+    "id": 3,
+    "x": 120,
+    "y": 0,
+    "r": 40
+  }, {
+    "id": 4,
+    "x": -120,
+    "y": 0,
+    "r": 40
+  }, {
+    "id": 5,
+    "x": 0,
+    "y": 120,
+    "r": 40
+  }],
+  "joints": [{
+    "id": 7,
+    "loop": 4,
+    "connector": 6,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 8,
+    "loop": 2,
+    "connector": 6,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 10,
+    "loop": 2,
+    "connector": 9,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 11,
+    "loop": 3,
+    "connector": 9,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 13,
+    "loop": 3,
+    "connector": 12,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 14,
+    "loop": 5,
+    "connector": 12,
+    "winding": -1,
+    "state": false
+  }, {
+    "id": 16,
+    "loop": 5,
+    "connector": 15,
+    "winding": 1,
+    "state": false
+  }, {
+    "id": 17,
+    "loop": 4,
+    "connector": 15,
+    "winding": -1,
+    "state": false
+  }],
+  "connectors": [{
+    "id": 6,
+    "joint1": {
+      "id": 7,
+      "loop": 4,
+      "connector": 6,
+      "winding": 1,
+      "state": false
+    },
+    "joint2": {
+      "id": 8,
+      "loop": 2,
+      "connector": 6,
+      "winding": -1,
+      "state": false
+    }
+  }, {
+    "id": 9,
+    "joint1": {
+      "id": 10,
+      "loop": 2,
+      "connector": 9,
+      "winding": 1,
+      "state": false
+    },
+    "joint2": {
+      "id": 11,
+      "loop": 3,
+      "connector": 9,
+      "winding": -1,
+      "state": false
+    }
+  }, {
+    "id": 12,
+    "joint1": {
+      "id": 13,
+      "loop": 3,
+      "connector": 12,
+      "winding": 1,
+      "state": false
+    },
+    "joint2": {
+      "id": 14,
+      "loop": 5,
+      "connector": 12,
+      "winding": -1,
+      "state": false
+    }
+  }, {
+    "id": 15,
+    "joint1": {
+      "id": 16,
+      "loop": 5,
+      "connector": 15,
+      "winding": 1,
+      "state": false
+    },
+    "joint2": {
+      "id": 17,
+      "loop": 4,
+      "connector": 15,
+      "winding": -1,
+      "state": false
+    }
+  }],
+  "orbs": [{
+    "id": 18,
+    "color": "#d83400",
+    "start": 4,
+    "start_dir": -1,
+    "start_pos": 0.5,
+    "roles": {
+      "barger": {}
+    }
+  }, {
+    "id": 19,
+    "color": "#00ff00",
+    "start": 3,
+    "start_dir": 1,
+    "start_pos": 0.5,
+    "roles": {
+      "player": {
+        "end": 4
+      }
+    }
+  }],
+  "decorations": []
+}

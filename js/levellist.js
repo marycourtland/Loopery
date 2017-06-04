@@ -62,6 +62,18 @@ loopery.levels = [
   {
     url: 'levels/quitehard.json',
     section: 'MOST DIFFICULT'
+  },
+  {
+    url: 'levels/barger.json',
+    section: 'EXPERIMENTAL'
+  },
+  {
+    url: 'levels/barger2.json',
+    section: 'EXPERIMENTAL'
+  },
+  {
+    url: 'levels/barger3.json',
+    section: 'EXPERIMENTAL'
   }
 ]
 
@@ -106,7 +118,7 @@ loopery.isLastLevel = function() {
 loopery.setupLevelData = function(level_data) {
   var level_index = level_data.index;
   var level_metadata = loopery.levels[level_index];
-  loopery.levelMenu.populateLink(level_metadata);
+  loopery.levelMenu.populateLink(level_metadata, level_index);
 
   if (loopery.isLevelSolved(level_index)) {
     loopery.levels[level_index].link.addClass('level-solved');
@@ -147,8 +159,20 @@ loopery.fetchLevelData = function(level_index, callback) {
   })
 }
 
+loopery.getLevelSections = function() {
+  var sections = [];
+  loopery.levels.forEach(function(metadata, i) {
+    if (sections.indexOf(metadata.section) === -1) sections.push(metadata.section);
+  })
+  return sections;
+}
+
 // load levels
 loopery.initLevels = function() {
+  loopery.getLevelSections().forEach(function(name) {
+    loopery.levelMenu.addSection(name);
+  })
+
   if (loopery.features.asyncLevels) {
     loopery.levels.forEach(function(metadata, i) {
       loopery.fetchLevelData(i, function(level_data) {

@@ -11,6 +11,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     this.start_pos = data.start_pos;
     this.roles = data.roles;
     this.radius = loopery.display.orb_radius;
+    this.currentCollisions = {};
 
     // apply roles
     for (var role in this.roles) {
@@ -35,6 +36,9 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
         loopery.Orb.Roles[role].reset(this);
       }
     }
+
+    if (this.track.group === 'loops') $(this).trigger('newLoop');
+    else $(this).trigger('newConnector');
   }
 
   this.setupCanvas = function() {
@@ -75,19 +79,10 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
   this.isCollidingWith = function(orb) {
     if (orb.id === this.id) { return false; }
-    // if (orb.track.id !== this.track.id) { return false; }
-    // if (orb.dir === this.dir) { return false; }
+    if (orb.track.id !== this.track.id) { return false; }
+    if (orb.dir === this.dir) { return false; }
 
-    var d = distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
-
-    if (d && orb.track.id !== this.track.id) {
-      console.log('nope 1')
-    }
-    if (d && orb.dir === this.dir) {
-      console.log('nope 2')
-    }
-
-    return d
+    return distance(orb.getLoc(), this.getLoc()) < loopery.display.orb_radius;
   }
 
   this.kill = function() {
@@ -209,8 +204,11 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     // Detect collision
     var orbs = this.lookup({group: 'orbs'});
     for (var id in orbs) {
+      if (id === this.id) { continue; }
       if (orbs[id].killed) { continue; }
-      if (this.isCollidingWith(orbs[id])) { $(this).trigger('collision', {orb: orbs[id]}) }
+      if (this.isCollidingWith(orbs[id])) {
+        $(this).trigger('collision', {orb: orbs[id]})
+      }
     }
   }
 
@@ -223,7 +221,6 @@ loopery.Orb.Roles = {};
 loopery.Orb.Roles.player = {
   init: function(orb) {
     this.levelcomplete = false;
-
 
     // TODO: update the position of this goal canvas whenever its 'parent' loop moves
     // (mostly for level editor)
@@ -448,7 +445,6 @@ loopery.Orb.Roles.enemy = {
   init: function(orb) {
     var canvas_size = loopery.display.orb_radius * 4;
     this.enemy_spike_canvas = loopery.requestCanvas(xy(canvas_size, canvas_size));
-    // goal_canvas.setPosition(end_track.loc);
 
     $(orb).on('collision', function(evt, data) {
       data.orb.kill();
@@ -495,6 +491,72 @@ loopery.Orb.Roles.enemy = {
         stroke: color
       })
     }
+  }
+}
+
+
+loopery.Orb.Roles.barger = {
+  init: function(orb) {
+    // var canvas_size = loopery.display.orb_radius * 4;
+    // orb.barger_canvas = loopery.requestCanvas(xy(canvas_size, canvas_size));
+
+    orb.currentJoints = []; // don't re-lookup these every tick
+    if (orb.track && orb.track.group === 'loops') $(orb).trigger(newLoop);
+
+    $(orb).on('newConnector', function() {
+      orb.currentJoints = [];
+    });
+
+    $(orb).on('newLoop', function() {
+      orb.currentJoints = orb.lookup({group:'joints', loop_id: orb.track.id}).filter(function(joint) {
+        return joint.winding === orb.dir;
+      });
+    });
+
+    $(orb).on('collision', function(evt, data) {
+      // reverse direction!
+      var self = this;
+      loopery.gameplay.beforeNextTick(function() {
+        self.dir *= 1;
+      })
+    })
+
+    $(orb).on('tick', function() {
+      // Check for joints ahead on the loop
+      var pos_ahead = orb.pos + orb.dir * 0.1;
+
+      (orb.currentJoints || []).forEach(function(joint) {
+        if (joint.state) return; // it's already turned on
+
+        if (isBetweenOnCircle(orb.pos, pos_ahead, joint.pos, 1)) {
+          joint.toggle();
+        }
+      })
+    })
+
+    $(orb).on('draw', function() {
+      if (this.killed) return;
+      loopery.Orb.Roles.barger.drawArrow(this);
+    });
+  },
+
+  drawArrow: function(orb) {
+    //draw.clear(orb.ctx);
+
+    if (orb.redrawCanvasRepr) orb.redrawCanvasRepr();
+
+    var loc = orb.track.getPosCoords(orb.pos); // this is in the track's frame
+    var tip = subtract(orb.track.getPosCoords(orb.track.getNextPos(orb.pos, orb.dir, 1)), loc);
+    tip.normalize(loopery.display.orb_radius * 1.7);
+
+    //.rotate(orb.dir * Math.PI/2);
+    var edge1 = rth(loopery.display.orb_radius + 0.8, tip.th + Math.PI/2);
+    var edge2 = rth(loopery.display.orb_radius + 0.8, tip.th - Math.PI/2);
+
+    draw.polygon(orb.ctx, [edge1, tip, edge2], {
+      fill: orb.color,
+      stroke: orb.color
+    })
   }
 }
 

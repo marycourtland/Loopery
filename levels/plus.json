@@ -221,24 +221,12 @@
     "loop": 11,
     "connector": 48,
     "winding": 1,
-    "state": false
+    "state": true
   }, {
     "id": 50,
     "loop": 14,
     "connector": 48,
     "winding": -1,
-    "state": false
-  }, {
-    "id": 52,
-    "loop": 11,
-    "connector": 51,
-    "winding": -1,
-    "state": false
-  }, {
-    "id": 53,
-    "loop": 16,
-    "connector": 51,
-    "winding": 1,
     "state": false
   }, {
     "id": 55,
@@ -455,18 +443,6 @@
     "loop": 20,
     "connector": 105,
     "winding": -1,
-    "state": false
-  }, {
-    "id": 109,
-    "loop": 21,
-    "connector": 108,
-    "winding": 1,
-    "state": false
-  }, {
-    "id": 110,
-    "loop": 20,
-    "connector": 108,
-    "winding": 1,
     "state": false
   }, {
     "id": 112,
@@ -1482,6 +1458,33 @@
     "start_pos": 0,
     "roles": {
       "enemy": {}
+    }
+  }, {
+    "id": 181,
+    "color": "#d83400",
+    "start": 2,
+    "start_dir": 1,
+    "start_pos": 0.5,
+    "roles": {
+      "barger": {}
+    }
+  }, {
+    "id": 182,
+    "color": "#d83400",
+    "start": 29,
+    "start_dir": -1,
+    "start_pos": 0,
+    "roles": {
+      "barger": {}
+    }
+  }, {
+    "id": 183,
+    "color": "#d83400",
+    "start": 30,
+    "start_dir": -1,
+    "start_pos": 0.25,
+    "roles": {
+      "barger": {}
     }
   }],
   "decorations": []

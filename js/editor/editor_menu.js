@@ -325,6 +325,10 @@ var param_box_property_style = {
         loopery.editor.toggle_role_button.data('role', 'enemy').text("Role: ENEMY");
       },
 
+      barger: function() {
+        loopery.editor.toggle_role_button.data('role', 'barger').text("Role: BARGER");
+      },
+
       clock: function() {
         loopery.editor.toggle_role_button.data('role', 'clock').text("Role: CLOCK");
       },

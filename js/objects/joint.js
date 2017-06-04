@@ -170,6 +170,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     if (this.turn_off_after_player && orb.roles.player) this.state = false; // disable joints immediately after they're used
 
     loopery.sound.stop('connector');
+
+    $(orb).trigger("newLoop");
   }
 
   this.transferOrbToConnector = function(orb) {
@@ -188,6 +190,8 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     if (this.turn_off_after_player && orb.roles.player) this.state = false; // turn off joints immediately after they're used
 
     loopery.sound.start('connector');
+
+    $(orb).trigger("newConnector");
   }
 
   this.getConnectorEnd = function() {
