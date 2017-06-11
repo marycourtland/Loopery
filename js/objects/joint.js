@@ -109,13 +109,17 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     this.redrawCanvasRepr();
   }
 
-  this.toggle = function() {
-    this.state = !this.state;
+  this.setState = function(state) {
+    this.state = state;
     loopery.state.redraw_bg = true;
 
     // sound effect
     if (this.state === true) loopery.sound.play('joint');
   }
+
+  this.toggle = function() { this.setState(!this.state); }
+  this.toggleOn = function() { this.setState(true); }
+  this.toggleOff = function() { this.setState(false); }
 
   this.attemptTransfer = function(orb) {
     if (orb.oldpos === null) { return; } // in this case, the orb hasn't moved yet

@@ -501,10 +501,19 @@ loopery.Orb.Roles.barger = {
     // orb.barger_canvas = loopery.requestCanvas(xy(canvas_size, canvas_size));
 
     orb.currentJoints = []; // don't re-lookup these every tick
+    orb.lastBargedJoint = null;
+
     if (orb.track && orb.track.group === 'loops') $(orb).trigger(newLoop);
 
     $(orb).on('newConnector', function() {
       orb.currentJoints = [];
+
+      // this is the joint that the orb just barged through
+      setTimeout(function() {
+        if (orb.lastBargedJoint) {
+          orb.lastBargedJoint.toggleOff();
+        }
+      }, loopery.barger_off_delay);
     });
 
     $(orb).on('newLoop', function() {
@@ -529,7 +538,8 @@ loopery.Orb.Roles.barger = {
         if (joint.state) return; // it's already turned on
 
         if (isBetweenOnCircle(orb.pos, pos_ahead, joint.pos, 1)) {
-          joint.toggle();
+          joint.toggleOn();
+          orb.lastBargedJoint = joint; // save so that it can be turned off later
         }
       })
     })
