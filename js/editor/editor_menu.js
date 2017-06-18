@@ -122,6 +122,7 @@ $.fn.togglebutton = function(callbacks) {
       },
       on: function() {
         // turn on gameplay, leave normal editing mode
+        loopery.gameplay.resetLevel();
         loopery.gameplay.resume();
         $(this).html("&#9612;&#9612;");
       }

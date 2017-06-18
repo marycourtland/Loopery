@@ -88,6 +88,7 @@ loopery.stages.gameplay = {
     $('.game-repr').remove();
     if (loopery.presentation) {
       draw.clear(loopery.presentation.ctx);
+      loopery.presentation.reset();
     }
     if (next_stage !== 'gameplay') {
       loopery.sound.stop('soundtrack');

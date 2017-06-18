@@ -2,6 +2,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
   this.group = 'orbs';
   this.id = id;
   this.lookup = lookup_func;
+  Events.init(this);
 
   this.init = function(data) {
     this.color = data.color || 'white';
@@ -37,8 +38,8 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
       }
     }
 
-    if (this.track.group === 'loops') $(this).trigger('newLoop');
-    else $(this).trigger('newConnector');
+    if (this.track.group === 'loops') this.emit('newLoop');
+    else this.emit('newConnector');
   }
 
   this.setupCanvas = function() {
@@ -138,12 +139,12 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
 
     function() {
       // animation complete
-      $(_this).trigger('death');
+      _this.emit('death');
       $(animation_ctx.canvas).remove();
     })).start();
   }
 
-  $(this).on('draw', function() {
+  this.on('draw', 'draw_orb', function() {
     if (this.killed) { return; }
     // this.drawScaled(1);
     this.updateCanvasRepr();
@@ -189,7 +190,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
     }
   }
 
-  $(this).on('tick', function() {
+  this.on('tick', 'tick_orb', function() {
     if (this.killed) { return; }
     // if (game.disable_gameplay) return;
     // if (this.disabled) return;
@@ -207,7 +208,7 @@ loopery.Orb = function(id, canvas_context, lookup_func) {
       if (id === this.id) { continue; }
       if (orbs[id].killed) { continue; }
       if (this.isCollidingWith(orbs[id])) {
-        $(this).trigger('collision', {orb: orbs[id]})
+        this.emit('collision', {orb: orbs[id]})
       }
     }
   }
@@ -234,16 +235,16 @@ loopery.Orb.Roles.player = {
     var goal_rotation_dir = -1; // 1 = cw, -1 = ccw
 
     // detect levelcomplete
-    $(orb).on('tick', function() {
+    orb.on('tick', 'tick_orb_player', function() {
       if (this.killed) { return; }
-      if (this.track.id === this.roles.player.end) { $(this).trigger('levelcomplete'); }
+      if (this.track.id === this.roles.player.end) { this.emit('levelcomplete'); }
     })
 
-    $(orb).on('erase', function() {
+    orb.on('erase', 'erase_orb_player', function() {
       draw.clear(goal_ctx);
     })
 
-    $(orb).on('draw', function() {
+    orb.on('draw', 'draw_orb_player', function() {
       if (this.levelcomplete) { return; }
 
       var end_track = orb.lookup({group: 'loops', id: orb.roles.player.end});
@@ -259,7 +260,7 @@ loopery.Orb.Roles.player = {
       }
     })
 
-    $(orb).on('levelcomplete', function(evt, data) {
+    orb.on('levelcomplete', 'levelcomplete_orb_player', function(evt, data) {
       if (this.levelcomplete) { return; }
       this.levelcomplete = true;
 
@@ -271,11 +272,11 @@ loopery.Orb.Roles.player = {
       }
     })
 
-    $(orb).on('death', function(evt) {
+    orb.on('death', 'death_orb_player', function(evt) {
       loopery.gameplay.showLevelFailed("A death has occurred");
     })
 
-    $(orb).on('stuck', function(evt) {
+    orb.on('stuck', 'stuck_orb_player',function(evt) {
       if (this.track.id === this.roles.player.end) { return; } // levelcomplete; doesn't matter if it's stuck
 
       // TODO: on levels with multiple player orbs, only show this message this if all of them are stuck
@@ -308,7 +309,7 @@ loopery.Orb.Roles.player = {
       )).start();
     }
 
-    $(orb).on('collision', function(evt, data) {
+    orb.on('collision', 'collision_orb_player', function(evt, data) {
       // reverse direction!
       var self = this;
       loopery.gameplay.beforeNextTick(function() {
@@ -380,7 +381,7 @@ loopery.Orb.Roles.clock = {
     orb.initial_clock_angle = 0;        // the angle of the clock relative to the track angle
     orb.initial_clock_spin_rate = 0.05; // rad/tick
 
-    $(orb).on('tick', function() {
+    orb.on('tick', 'tick_orb_clock', function() {
       if (this.killed) { return; }
       // Calculate angles
       var loc1 = this.getLocFromPos(this.oldpos);
@@ -390,7 +391,7 @@ loopery.Orb.Roles.clock = {
       this.clock_angle += this.clock_spin_rate;
     });
 
-    $(orb).on('draw', function() {
+    orb.on('draw', 'draw_orb_clock', function() {
       this.drawClockHand();
 
       if (this.roles.clock.tie_to_center) { this.drawTieLineTo(this.track.loc); }
@@ -446,12 +447,12 @@ loopery.Orb.Roles.enemy = {
     var canvas_size = loopery.display.orb_radius * 4;
     this.enemy_spike_canvas = loopery.requestCanvas(xy(canvas_size, canvas_size));
 
-    $(orb).on('collision', function(evt, data) {
+    orb.on('collision', 'collision_orb_enemy', function(data) {
       data.orb.kill();
       loopery.sound.play('explode');
     })
 
-    $(orb).on('draw', function() {
+    orb.on('draw', 'draw_orb_enemy', function() {
       if (this.killed) return;
       loopery.Orb.Roles.enemy.drawSpikes(this);
     });
@@ -503,9 +504,9 @@ loopery.Orb.Roles.barger = {
     orb.currentJoints = []; // don't re-lookup these every tick
     orb.lastBargedJoint = null;
 
-    if (orb.track && orb.track.group === 'loops') $(orb).trigger(newLoop);
+    if (orb.track && orb.track.group === 'loops') orb.emit(newLoop); // ??
 
-    $(orb).on('newConnector', function() {
+    orb.on('newConnector', 'newconnector_orb_barger', function() {
       orb.currentJoints = [];
 
       // this is the joint that the orb just barged through
@@ -516,13 +517,13 @@ loopery.Orb.Roles.barger = {
       }, loopery.barger_off_delay);
     });
 
-    $(orb).on('newLoop', function() {
+    orb.on('newLoop', 'newloop_orb_barger', function() {
       orb.currentJoints = orb.lookup({group:'joints', loop_id: orb.track.id}).filter(function(joint) {
         return joint.winding === orb.dir;
       });
     });
 
-    $(orb).on('collision', function(evt, data) {
+    orb.on('collision', 'collision_orb_barger', function(evt, data) {
       // reverse direction!
       var self = this;
       loopery.gameplay.beforeNextTick(function() {
@@ -530,7 +531,7 @@ loopery.Orb.Roles.barger = {
       })
     })
 
-    $(orb).on('tick', function() {
+    orb.on('tick', 'tick_orb_barger', function() {
       // Check for joints ahead on the loop
       var pos_ahead = orb.pos + orb.dir * 0.1;
 
@@ -544,7 +545,7 @@ loopery.Orb.Roles.barger = {
       })
     })
 
-    $(orb).on('draw', function() {
+    orb.on('draw', 'draw_orb_barger', function() {
       if (this.killed) return;
       loopery.Orb.Roles.barger.drawArrow(this);
     });

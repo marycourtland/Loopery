@@ -12,6 +12,15 @@ loopery.configLayer(loopery.presentation.ctx);
 loopery.presentation.tips = [];
 // tip object: {track:trackobj, pos:position, dir:dir}
 
+loopery.presentation.currentObjs = [];
+
+loopery.presentation.reset = function() {
+  this.tips = [];
+  this.running = false;
+  this.currentObjs = [];
+  this.endCallback = function() {};
+}
+
 loopery.presentation.start = function(initial_tips, endCallback) {
   this.tips = initial_tips;
   this.running = true;
@@ -20,8 +29,8 @@ loopery.presentation.start = function(initial_tips, endCallback) {
   // reset presentation status of each track
   var loops = loopery.gameplay.lookup({group:'loops'});
   var connectors = loopery.gameplay.lookup({group:'connectors'});
-  for (var id in loops) { loops[id].presented = false; }
-  for (var id in connectors) { connectors[id].presented = false; }
+  for (var id in loops) { loops[id].presented = false; loopery.presentation.currentObjs.push(loops[id]); }
+  for (var id in connectors) { connectors[id].presented = false; loopery.presentation.currentObjs.push(connectors[id]); }
 
   draw.clear(loopery.presentation.ctx);
   $(loopery.presentation.canvas).show();
@@ -31,7 +40,8 @@ loopery.presentation.start = function(initial_tips, endCallback) {
 }
 
 loopery.presentation.stop = function() {
-  this.running = false;
+  this.reset();
+
   // $(loopery.canvas_bg).fadeIn(100);
   $(loopery.canvas_bg).show()
   $(loopery.canvas).show();
@@ -69,7 +79,9 @@ loopery.presentation.tick = function() {
     loopery.presentation.tips.push(tip);
   });
 
-  if (this.tips.filter(function(tip) { return !tip.done; }).length === 0) {
+  if (this.tips.filter(function(tip) { return !tip.done; }).length === 0
+    && this.currentObjs.filter(function(obj) { return !obj.presented; }).length === 0
+  ) {
     this.stop();
   }
 }

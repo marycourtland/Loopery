@@ -48,180 +48,7 @@ function Vector(vec_params, mode) {
   this.y = vec_params.y;
   this.r = vec_params.r;
   this.th = vec_params.th;
-  
-  this._set_rth = function(r, th, override_constant) {
-    if (this.constant && !override_constant) return;
-    this.r = r;
-    this.th = mod(th, 2*Math.PI);
-    this._update_xy(override_constant);
-    return this;
-  }
 
-  this._set_xy = function(x, y, override_constant) {
-    if (this.constant && !override_constant) return;
-    this.x = x;
-    this.y = y;
-    this._update_rth(override_constant);
-    return this;
-  }
-
-  this._update_rth = function(override_constant) {
-    if (this.constant && !override_constant) return;
-    this.r = Math.sqrt(this.x*this.x + this.y*this.y);
-    this.th = mod(Math.atan2(this.y, this.x), 2*Math.PI);
-    return this;
-  }
-
-  this._update_xy = function(override_constant) {
-    if (this.constant && !override_constant) return;
-    this.x = this.r * Math.cos(this.th);
-    this.y = this.r * Math.sin(this.th);
-    return this;
-  }
-
-  this.add = function(v) {
-    this._set_xy(this.x + v.x, this.y + v.y);
-    return this;
-  }
-
-  this.subtract = function(v) {
-    this._set_xy(this.x - v.x, this.y - v.y);
-    return this;
-  }
-
-  this.neg = function() {
-    this._set_rth(-this.r, this.th);
-    return this;
-  }
-
-  this.xshift = function(dx) {
-    this._set_xy(this.x + dx, this.y);
-    return this;
-  }
-
-  this.yshift = function(dy) {
-    this._set_xy(this.x, this.y + dy);
-    return this;
-  }
-
-  this.normalize = function(r) {
-    if (r == null) r = 1;
-    this._set_rth(r, this.th);
-  }
-
-  this.scale = function(c) {
-    this._set_rth(this.r * c, this.th);
-    return this;
-  }
-
-  this.rotate = function(radians) {
-    this._set_rth(this.r, this.th + radians);
-    return this;
-  }
-
-  this.xreflect = function() {
-    this._set_xy(this.x * -1, this.y);
-    return this;
-  }
-
-  this.yreflect = function() {
-    this._set_xy(this.x, this.y * -1);
-    return this;
-  }
-
-  this.reflect = function(v) { // reflect about this axis
-    var dtheta = v.th - this.th;
-    this._set_rth(this.r, mod360_symmetric(v.th + dtheta));
-    return this;
-  }
-
-  this._transform = function(args) {
-    this.transform.apply(this, arguments);
-    return this;
-  }
-
-  this.transform = function(args) { // affine transform
-    var matrix = getTransformationMatrix(arguments);
-    if (isIdentMatrix(matrix)) return this;
-    //console.log("Transforming point: " + this);
-    //console.log("Using matrix:");
-    //console.log(matrixString(matrix));
-    var v = [this.x, this.y, 1];
-    var vector = transpose(v);
-    output = matrixMultiply(matrix, vector);
-    this._set_xy(output[0][0]/output[2][0], output[1][0]/output[2][0]);
-    //console.log("Output: " + this + "\n");
-    return this;
-  }
-
-  this.round = function(decimals) {
-    this._set_xy(round(this.x, decimals), round(this.y, decimals), true);
-    return this;
-  }
-
-  this.toString = function() {
-    return this.mode[0] + "(" + this[this.mode[1]] + "," + this[this.mode[2]] + ")";
-  }
-
-  this.marker = function(ctx) {
-    marker(ctx, this)
-  }
-
-  this.arrowOn = function(ctx, center, color) {
-    if (!color) { color = 'black' };
-    ctx.fillStyle = color;
-    ctx.strokeStyle = color;
-    if (!center) { center = xy(0, 0); }
-    var end = add(center, this);
-    draw.line(ctx, center, end, {stroke:color});
-    
-    arrowhead1 = rth(-5, this.th);
-    arrowhead1.rotate(radians(20));
-    arrowhead1.add(end);
-    
-    arrowhead2 = rth(-5, this.th);
-    arrowhead2.rotate(radians(-20));
-    arrowhead2.add(end);
-    
-    ctx.beginPath()
-    ctx.moveTo(arrowhead1.x, arrowhead1.y);
-    ctx.lineTo(end.x, end.y);
-    ctx.lineTo(arrowhead2.x, arrowhead2.y);
-    ctx.fill();
-  }
-  this.copy = function() {
-    return xy(this.x, this.y);
-  }
-
-  this.snapToGrid = function(gridsize, origin) {
-    var origin = origin || xy(0, 0);
-    this._set_xy(
-      round(this.x / gridsize.x) * gridsize.x,
-      round(this.y / gridsize.y) * gridsize.y
-    ).add(origin);
-    return this;
-  }
-
-  this.snapToGridRadial = function(gridsize, origin) {
-    var origin = origin || rth(0, 0);
-    this.subtract(origin)._set_rth(
-      round(this.r / gridsize.r) * gridsize.r,
-      round(this.th / gridsize.th) * gridsize.th
-    ).add(origin);
-    return this;
-  }
-
-  this.snapToGridTriangular = function(gridsize, origin) {
-    var origin = origin || rth(0, 0);
-    // first snap to the outer rectangular grid
-    var preliminary_snap = this.copy().snapToGrid(scale(gridsize, 2), origin);
-    var effective_pos = subtract(this, preliminary_snap);
-    var diff = rth(
-      round(effective_pos.r / gridsize.r) * gridsize.r,
-      round(effective_pos.th / gridsize.th) * gridsize.th
-    )
-    return preliminary_snap.add(diff);
-  }
   
   if (mode && !this.mode) { this.mode = mode; }
   if (this.x!=null && this.y!=null) {
@@ -237,6 +64,185 @@ function Vector(vec_params, mode) {
     throw "argument error: a vector must be constructed with a complete set of coordinates."
   }
 }
+
+Vector.prototype = {};
+
+
+Vector.prototype._set_rth = function(r, th, override_constant) {
+  if (this.constant && !override_constant) return;
+  this.r = r;
+  this.th = mod(th, 2*Math.PI);
+  this._update_xy(override_constant);
+  return this;
+}
+
+Vector.prototype._set_xy = function(x, y, override_constant) {
+  if (this.constant && !override_constant) return;
+  this.x = x;
+  this.y = y;
+  this._update_rth(override_constant);
+  return this;
+}
+
+Vector.prototype._update_rth = function(override_constant) {
+  if (this.constant && !override_constant) return;
+  this.r = Math.sqrt(this.x*this.x + this.y*this.y);
+  this.th = mod(Math.atan2(this.y, this.x), 2*Math.PI);
+  return this;
+}
+
+Vector.prototype._update_xy = function(override_constant) {
+  if (this.constant && !override_constant) return;
+  this.x = this.r * Math.cos(this.th);
+  this.y = this.r * Math.sin(this.th);
+  return this;
+}
+
+Vector.prototype.add = function(v) {
+  this._set_xy(this.x + v.x, this.y + v.y);
+  return this;
+}
+
+Vector.prototype.subtract = function(v) {
+  this._set_xy(this.x - v.x, this.y - v.y);
+  return this;
+}
+
+Vector.prototype.neg = function() {
+  this._set_rth(-this.r, this.th);
+  return this;
+}
+
+Vector.prototype.xshift = function(dx) {
+  this._set_xy(this.x + dx, this.y);
+  return this;
+}
+
+Vector.prototype.yshift = function(dy) {
+  this._set_xy(this.x, this.y + dy);
+  return this;
+}
+
+Vector.prototype.normalize = function(r) {
+  if (r == null) r = 1;
+  this._set_rth(r, this.th);
+}
+
+Vector.prototype.scale = function(c) {
+  this._set_rth(this.r * c, this.th);
+  return this;
+}
+
+Vector.prototype.rotate = function(radians) {
+  this._set_rth(this.r, this.th + radians);
+  return this;
+}
+
+Vector.prototype.xreflect = function() {
+  this._set_xy(this.x * -1, this.y);
+  return this;
+}
+
+Vector.prototype.yreflect = function() {
+  this._set_xy(this.x, this.y * -1);
+  return this;
+}
+
+Vector.prototype.reflect = function(v) { // reflect about this axis
+  var dtheta = v.th - this.th;
+  this._set_rth(this.r, mod360_symmetric(v.th + dtheta));
+  return this;
+}
+
+Vector.prototype._transform = function(args) {
+  this.transform.apply(this, arguments);
+  return this;
+}
+
+Vector.prototype.transform = function(args) { // affine transform
+  var matrix = getTransformationMatrix(arguments);
+  if (isIdentMatrix(matrix)) return this;
+  //console.log("Transforming point: " + this);
+  //console.log("Using matrix:");
+  //console.log(matrixString(matrix));
+  var v = [this.x, this.y, 1];
+  var vector = transpose(v);
+  output = matrixMultiply(matrix, vector);
+  this._set_xy(output[0][0]/output[2][0], output[1][0]/output[2][0]);
+  //console.log("Output: " + this + "\n");
+  return this;
+}
+
+Vector.prototype.round = function(decimals) {
+  this._set_xy(round(this.x, decimals), round(this.y, decimals), true);
+  return this;
+}
+
+Vector.prototype.toString = function() {
+  return this.mode[0] + "(" + this[this.mode[1]] + "," + this[this.mode[2]] + ")";
+}
+
+Vector.prototype.marker = function(ctx) {
+  marker(ctx, this)
+}
+
+Vector.prototype.arrowOn = function(ctx, center, color) {
+  if (!color) { color = 'black' };
+  ctx.fillStyle = color;
+  ctx.strokeStyle = color;
+  if (!center) { center = xy(0, 0); }
+  var end = add(center, this);
+  draw.line(ctx, center, end, {stroke:color});
+  
+  arrowhead1 = rth(-5, this.th);
+  arrowhead1.rotate(radians(20));
+  arrowhead1.add(end);
+  
+  arrowhead2 = rth(-5, this.th);
+  arrowhead2.rotate(radians(-20));
+  arrowhead2.add(end);
+  
+  ctx.beginPath()
+  ctx.moveTo(arrowhead1.x, arrowhead1.y);
+  ctx.lineTo(end.x, end.y);
+  ctx.lineTo(arrowhead2.x, arrowhead2.y);
+  ctx.fill();
+}
+Vector.prototype.copy = function() {
+  return xy(this.x, this.y);
+}
+
+Vector.prototype.snapToGrid = function(gridsize, origin) {
+  var origin = origin || xy(0, 0);
+  this._set_xy(
+    round(this.x / gridsize.x) * gridsize.x,
+    round(this.y / gridsize.y) * gridsize.y
+  ).add(origin);
+  return this;
+}
+
+Vector.prototype.snapToGridRadial = function(gridsize, origin) {
+  var origin = origin || rth(0, 0);
+  this.subtract(origin)._set_rth(
+    round(this.r / gridsize.r) * gridsize.r,
+    round(this.th / gridsize.th) * gridsize.th
+  ).add(origin);
+  return this;
+}
+
+Vector.prototype.snapToGridTriangular = function(gridsize, origin) {
+  var origin = origin || rth(0, 0);
+  // first snap to the outer rectangular grid
+  var preliminary_snap = this.copy().snapToGrid(scale(gridsize, 2), origin);
+  var effective_pos = subtract(this, preliminary_snap);
+  var diff = rth(
+    round(effective_pos.r / gridsize.r) * gridsize.r,
+    round(effective_pos.th / gridsize.th) * gridsize.th
+  )
+  return preliminary_snap.add(diff);
+}
+
+
 function xy(x, y, constant) { return new Vector({x:x, y:y, constant:constant}); }
 function rth(r, th, constant) { return new Vector({r:r, th:th, constant:constant}); }
 

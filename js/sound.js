@@ -15,12 +15,6 @@ loopery.sound = {
       autostart: false,
       volume: 0.07
     },
-    'connector': {
-      path: 'railroad.mp3',
-      loop: true,
-      autostart: false,
-      volume: 0.05
-    },
     'joint': {
       path: 'laser.wav',
       loop: false,

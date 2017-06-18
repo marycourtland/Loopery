@@ -24,7 +24,7 @@ loopery.levels = [
     section: 'EASY'
   },
   {
-    url: 'levels/hexagon4.json',
+    url: 'levels/shortpaths2.json',
     section: 'EASY'
   },
   {
@@ -32,19 +32,19 @@ loopery.levels = [
     section: 'EASY'
   },
   {
-    url: 'levels/shortpaths2.json',
-    section: 'A BIT HARDER'
-  },
-  {
     url: 'levels/shortpaths.json',
     section: 'A BIT HARDER'
   },
   {
-    url: 'levels/brg3.json',
+    url: 'levels/intermediate2.json',
     section: 'A BIT HARDER'
   },
   {
     url: 'levels/bhsl2.json',
+    section: 'A BIT HARDER'
+  },
+  {
+    url: 'levels/intermediate4.json',
     section: 'A BIT HARDER'
   },
   {

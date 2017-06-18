@@ -4,6 +4,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
   this.ctx = canvas_context;
   this.lookup = lookup_func;
   this.show_shade = false;
+  Events.init(this);
 
   this.init = function(data) {
     this.old_loc = xy(-1, -1);
@@ -22,7 +23,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     // todo: shading
   }
 
-  $(this).on('tick', function() {});
+  this.on('tick', 'tick_loop', function() {});
 
   // See if the loop has moved placement (e.g. in level editor)
   this.hasMoved = function() {
@@ -92,7 +93,7 @@ loopery.Loop = function(id, canvas_context, lookup_func) {
     return player_orbs.length > 0;
   }
   
-  $(this).on('draw', function() {
+  this.on('draw', 'draw_loop', function() {
     if (!loopery.state.redraw_bg) { return; }
     if (this.show_shade || (loopery.display.shade_hovered_circle_track && this.contains(loopery.mouse.pos))) {
       this.shade();

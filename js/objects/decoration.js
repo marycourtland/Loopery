@@ -6,6 +6,7 @@ loopery.Decoration = function(id, canvas_context, lookup_func) {
   this.ctx = canvas_context;
   this.lookup = lookup_func;
   this.draw = null;
+  Events.init(this);
 
   this.init = function(data) {
     this.draw = data;
@@ -15,9 +16,9 @@ loopery.Decoration = function(id, canvas_context, lookup_func) {
     return this.draw;
   }
   
-  $(this).on('tick', function() {});
+  this.on('tick', 'tick_decoration', function() {});
 
-  $(this).on('draw', function() {
+  this.on('draw', 'draw_decoration', function() {
     if (!loopery.state.redraw_bg) { return; }
     if (!this.draw) { return; }
     var cmd = this.draw.command;

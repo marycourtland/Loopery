@@ -3,6 +3,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
   this.id = id;
   this.ctx = canvas_context;
   this.lookup = lookup_func;
+  Events.init(this);
 
   this.init = function(data, parent) {
     this.loop = this.lookup({id:data.loop, group:'loops'});
@@ -16,7 +17,7 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     // Position on loop; this will be set by connector
     this.pos = null;
 
-    this.enabled = true;
+    this.enabled = true; // whether the joint is visible
   }
 
   this.reset = function() {
@@ -48,37 +49,51 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     })
   }
 
-  $(this).on('tick', function() {
-    // Transfer any orb which is on this joint
-    // TODO: maybe there's an easier way for this joint to have access to orbs
-    // or, even better, to know which orbs are on its relevant tracks
-    for (var orb_id in loopery.gameplay.levelObjects.orbs) {
-      var orb = loopery.gameplay.levelObjects.orbs[orb_id];
-      this.attemptTransfer(orb);
-    }
-  });
+  this.events = {
+    tick: function() {
+      // Transfer any orb which is on this joint
+      // TODO: maybe there's an easier way for this joint to have access to orbs
+      // or, even better, to know which orbs are on its relevant tracks
+      for (var orb_id in loopery.gameplay.levelObjects.orbs) {
+        var orb = loopery.gameplay.levelObjects.orbs[orb_id];
+        this.attemptTransfer(orb);
+      }
+    },
 
-  $(this).on('erase', function() {
-    // todo: this could be cached or something - it gets calculated multiple times per loop
-    var proximity_scale = this.getProximityScale(distance(this.getLoc(), loopery.mouse.pos));
+    erase: function() {
+      // todo: this could be cached or something - it gets calculated multiple times per loop
+      var proximity_scale = this.getProximityScale(distance(this.getLoc(), loopery.mouse.pos));
 
-    if (proximity_scale > 1) {
-      draw.clear(this.ctx)
-    }
-  });
+      if (proximity_scale > 1) {
+        draw.clear(this.ctx)
+      }
+    },
 
-  $(this).on('draw', function() {
-    if (!this.enabled) { return; }
-    // this.drawArrowClicker();
+    draw: function() {
+      if (!this.enabled) { return; }
+      // this.drawArrowClicker();
 
-    var proximity_scale = this.getProximityScale(distance(this.getLoc(), loopery.mouse.pos));
+      var proximity_scale = this.getProximityScale(distance(this.getLoc(), loopery.mouse.pos));
 
-    if (proximity_scale > 1) {
-      this.redrawCanvasRepr();
-      if (this.contains(loopery.mouse.pos)) {
-        loopery.showPointer();
+      if (proximity_scale > 1) {
+        this.redrawCanvasRepr();
+        if (this.contains(loopery.mouse.pos)) {
+          loopery.showPointer();
+        }
       }
     }
+  }
+
+  this.on('erase', 'erase_joint', function() {
+    this.events.erase.apply(this);
+  })
+
+  this.on('tick', 'tick_joint', function() {
+    this.events.tick.apply(this);
+  });
+
+  this.on('draw', 'draw_joint', function() {
+    this.events.draw.apply(this);
   });
 
   this.redrawCanvasRepr = function() {
@@ -161,21 +176,19 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     // See if the orb is stuck with no joints to click
     var new_joints = this.lookup({group:'joints', loop_id: this.loop.id}).filter(function(joint) { return joint.winding === orb.dir; });
     if (new_joints.length === 0) {
-      $(orb).trigger('stuck');
+      orb.emit('stuck');
     }
     
     // Disable all joints in the previous loop
-    if (!!orb.roles.player) loopery.gameplay.disableJointsOnLoop(prev_loop);
-
-    if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles && orb.roles.player) {
-      loopery.gameplay.initPlayerEnabledJoints();
+    if (!!orb.roles.player && loopery.features.clickersOnlyOnPlayerLoops) {
+      // todo, if multiple player orbs: don't disable joints on previous loop if there's a player still there
+      loopery.gameplay.disableJointsOnLoop(prev_loop);
+      loopery.gameplay.initPlayerEnabledJointsForOrb(orb);
     }
 
     if (this.turn_off_after_player && orb.roles.player) this.state = false; // disable joints immediately after they're used
 
-    loopery.sound.stop('connector');
-
-    $(orb).trigger("newLoop");
+    orb.emit("newLoop");
   }
 
   this.transferOrbToConnector = function(orb) {
@@ -187,15 +200,14 @@ loopery.Joint = function(id, canvas_context, lookup_func) {
     orb.pos = (this.getConnectorEnd() === 0 ? pos_diff : 1 - pos_diff);
     orb.dir = (this.getConnectorEnd() === 0 ? 1 : -1);
 
-    if (loopery.features.clickersOnlyOnPlayerLoops && orb.roles && orb.roles.player) {
-      loopery.gameplay.initPlayerEnabledJoints();
+    if (!!orb.roles.player && loopery.features.clickersOnlyOnPlayerLoops) {
+      loopery.gameplay.disableJointsOnLoop(orb.prev_loop);
+      loopery.gameplay.initPlayerEnabledJointsForOrb(orb);
     }
 
     if (this.turn_off_after_player && orb.roles.player) this.state = false; // turn off joints immediately after they're used
 
-    loopery.sound.start('connector');
-
-    $(orb).trigger("newConnector");
+    orb.emit("newConnector");
   }
 
   this.getConnectorEnd = function() {

@@ -3,6 +3,7 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
   this.id = id;
   this.ctx = canvas_context;
   this.lookup = lookup_func;
+  Events.init(this);
 
   this.init = function(data) {
     // set joints
@@ -43,11 +44,11 @@ loopery.Connector = function(id, canvas_context, lookup_func) {
 
 
   this.tick = function() {}
-  $(this).on('tick', function() {
+  this.on('tick', 'tick_connector', function() {
     this.checkPlacement();
   })
 
-  $(this).on('draw', function() {
+  this.on('draw', 'draw_connector', function() {
     if (!loopery.state.redraw_bg) { return; }
 
     var color = loopery.display.track_color;

@@ -1459,33 +1459,6 @@
     "roles": {
       "enemy": {}
     }
-  }, {
-    "id": 181,
-    "color": "#d83400",
-    "start": 2,
-    "start_dir": 1,
-    "start_pos": 0.5,
-    "roles": {
-      "barger": {}
-    }
-  }, {
-    "id": 182,
-    "color": "#d83400",
-    "start": 29,
-    "start_dir": -1,
-    "start_pos": 0,
-    "roles": {
-      "barger": {}
-    }
-  }, {
-    "id": 183,
-    "color": "#d83400",
-    "start": 30,
-    "start_dir": -1,
-    "start_pos": 0.25,
-    "roles": {
-      "barger": {}
-    }
   }],
   "decorations": []
 }

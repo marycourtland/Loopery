@@ -13,6 +13,7 @@
     <script type="text/javascript" src = "js/engine/mouse.js"></script>
     <script type="text/javascript" src = "js/engine/keyboard.js"></script>
     <script type="text/javascript" src = "js/engine/gameobject.js"></script>
+    <script type="text/javascript" src = "js/engine/events.js"></script>
     <title>Loopery</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script>
@@ -40,7 +41,7 @@
           <a class="hud-link button-click-sound" href="javascript:void(0);" style="float:left;" onclick="loopery.setStage('levelmenu');">&equiv; all levels</a>
           <a class="hud-link button-click-sound" id="turn-sound-off" href="javascript:void(0);" style="float:left;" onclick="loopery.sound.turnOff();">turn sound off</a>
           <a class="hud-link button-click-sound" id="turn-sound-on" href="javascript:void(0);" style="float:left;" onclick="loopery.sound.turnOn();" style="display:none;">turn sound on</a>
-          <a class="hud-link button-click-sound" href="javascript:void(0);" style="float:left;" onclick="loopery.gameplay.resetLevel();">restart &oast;</a>
+          <a class="hud-link button-click-sound" href="javascript:void(0);" style="float:left;" onclick="loopery.gameplay.resetLevel();">restart</a>
           <a class="hud-link button-click-sound level-next" href="javascript:void(0);" style="float:right; margin-right:1em" onclick="loopery.loadNextLevel();">next &sc;</a>
           <a class="hud-link button-click-sound level-prev" href="javascript:void(0);" style="float:right;" onclick="loopery.loadPreviousLevel();">&pr; back</a>
         </div>
@@ -109,7 +110,7 @@
   <script type="text/javascript" src="js/animation.js"></script>
   <script type="text/javascript" src="js/menus/level_menu.js"></script>
   <script type="text/javascript" src="js/gameplay.js"></script>
-  <!-- // <script type="text/javascript" src="js/presentation.js"></script> -->
+  <script type="text/javascript" src="js/presentation.js"></script>
 
   
   <script type="text/javascript">

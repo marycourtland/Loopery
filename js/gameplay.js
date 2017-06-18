@@ -183,16 +183,15 @@ loopery.gameplay = {
       var tips = [];
       var orbs = this.lookup({group:'orbs'});
       for (var id in orbs) {
-        if (orbs[id].roles.player) {
-          tips.push({
-            initialpos: 0,
-            oldpos: 0.001,
-            pos: 0.001,
-            dir: 1,
-            track: orbs[id].track
-          })
-        }
+        tips.push({
+          initialpos: 0,
+          oldpos: 0.001,
+          pos: 0.001,
+          dir: 1,
+          track: orbs[id].track
+        })
       }
+
       loopery.presentation.start(tips, function() {});
     }
   },
@@ -222,6 +221,12 @@ loopery.gameplay = {
   tick: function() {
     if (this.paused) { return; }
 
+
+    if (loopery.presentation && loopery.presentation.running) {
+      loopery.presentation.tick();
+      return;
+    }
+
     this.tick_callbacks.beforeNextTick.forEach(function(cb) { cb(); })
     delete this.tick_callbacks.beforeNextTick;
     this.tick_callbacks.beforeNextTick = [];
@@ -234,7 +239,6 @@ loopery.gameplay = {
     // trigger tick
     this.triggerForAllObjectGroups('tick', {}, {ordering: 'renderOrder'});
 
-    if (loopery.presentation && loopery.presentation.running) { loopery.presentation.tick(); }
   },
 
   beforeNextTick: function(callback) {
@@ -270,33 +274,35 @@ loopery.gameplay = {
 
     var orbs = this.lookup({group:'orbs'});
     for (var id in orbs) {
-      var orb = orbs[id];
+      loopery.gameplay.initPlayerEnabledJointsForOrb(orbs[id]);
+    }
+  },
 
-      // only enable joints for player orbs
-      if (!orb.roles.player) { continue; }
+  initPlayerEnabledJointsForOrb: function(orb) {
+    // only enable joints for player orbs
+    if (!orb.roles.player) { return; }
 
-      if (orb.track.group === 'loops') {
-        this.enableJointsOnLoop(orb.track, orb.dir);
-      }
-      else if (orb.track.group === 'connectors') {
-        // enable clickers for loops on both sides of a connector
-        var joint_behind = (orb.dir === 1) ? orb.track.joints[1] : orb.track.joints[0];
-        var joint_ahead = (orb.dir === 1) ? orb.track.joints[0] : orb.track.joints[1];
+    if (orb.track.group === 'loops') {
+      this.enableJointsOnLoop(orb.track, orb.dir);
+    }
+    else if (orb.track.group === 'connectors') {
+      // enable clickers for loops on both sides of a connector
+      var joint_behind = (orb.dir === 1) ? orb.track.joints[1] : orb.track.joints[0];
+      var joint_ahead = (orb.dir === 1) ? orb.track.joints[0] : orb.track.joints[1];
 
-        this.enableJointsOnLoop(joint_behind.loop, -joint_behind.winding);
-        this.enableJointsOnLoop(joint_ahead.loop, joint_ahead.winding);
-      }
+      this.enableJointsOnLoop(joint_behind.loop, -joint_behind.winding);
+      this.enableJointsOnLoop(joint_ahead.loop, joint_ahead.winding);
+    }
 
-      // ok enable all the joints
-      var joints = this.lookup({group:'joints', loop_id: orb.track.id});
-      for(var id in joints) {
-        if (joints[id].state) { joints[id].enable()}
+    // ok enable all the joints
+    var joints = this.lookup({group:'joints', loop_id: orb.track.id});
+    for(var id in joints) {
+      if (joints[id].state) { joints[id].enable(); }
 
-        // but only if they're going in the right direction
-        if (joints[id].winding !== orb.dir) { continue; }
+      // but only if they're going in the right direction
+      if (joints[id].winding !== orb.dir) { return; }
 
-        joints[id].enable();
-      }
+      joints[id].enable();
     }
   },
 
@@ -347,7 +353,8 @@ loopery.gameplay = {
     for (var i = 0; i < obj_types.length; i++) {
       object_group = obj_types[i].group;
       for (var id in this.levelObjects[object_group]) {
-        $(this.levelObjects[object_group][id]).trigger(trigger, data);
+        var obj = this.levelObjects[object_group][id];
+        obj.emit(trigger, data);
       }
     }
   },
